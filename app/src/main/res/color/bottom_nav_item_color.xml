@@ -3,11 +3,11 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:color="@color/white"
+        android:color="@color/bottom_nav_item_selected"
         android:state_checked="true" />
 
     <item
-        android:color="#A0FFFFFF"
+        android:color="@color/bottom_nav_item_unselected"
         android:state_checked="false" />
 
 </selector>

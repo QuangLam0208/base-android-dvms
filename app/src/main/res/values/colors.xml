@@ -14,4 +14,8 @@
     <color name="tertiary_color">#F5F5F5</color>
     <color name="accent_color">#15CCA3</color>
     <color name="loading_overlay_bg">#B3000000</color>
+
+    <!-- Bottom Navigation -->
+    <color name="bottom_nav_item_selected">#15CCA3</color>
+    <color name="bottom_nav_item_unselected">#718096</color>
 </resources>
