@@ -1,8 +1,21 @@
 package com.base.android.di.module;
 
+import android.content.Context;
+
+import androidx.core.util.Supplier;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.base.android.MVVMApplication;
+import com.base.android.ViewModelProviderFactory;
 import com.base.android.data.Repository;
+import com.base.android.di.scope.ActivityScope;
 import com.base.android.di.scope.FragmentScope;
 import com.base.android.ui.base.fragment.BaseFragment;
+import com.base.android.ui.company.CompanyViewModel;
+import com.base.android.ui.courses.CoursesViewModel;
+import com.base.android.ui.main.MainViewModel;
+import com.base.android.ui.mentor.MentorViewModel;
+import com.base.android.ui.reviews.ReviewsViewModel;
 
 import javax.inject.Named;
 
@@ -23,6 +36,39 @@ public class FragmentModule {
     @FragmentScope
     String provideToken(Repository repository) {
         return repository.getToken();
+    }
+
+
+    @Provides
+    @FragmentScope
+    CoursesViewModel provideCoursesViewModel(Repository repository, Context application) {
+        Supplier<CoursesViewModel> supplier = () -> new CoursesViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<CoursesViewModel> factory = new ViewModelProviderFactory<>(CoursesViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(CoursesViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    ReviewsViewModel provideReviewsViewModel(Repository repository, Context application) {
+        Supplier<ReviewsViewModel> supplier = () -> new ReviewsViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<ReviewsViewModel> factory = new ViewModelProviderFactory<>(ReviewsViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(ReviewsViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    MentorViewModel provideMentorViewModel(Repository repository, Context application) {
+        Supplier<MentorViewModel> supplier = () -> new MentorViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<MentorViewModel> factory = new ViewModelProviderFactory<>(MentorViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(MentorViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    CompanyViewModel provideCompanyViewModel(Repository repository, Context application) {
+        Supplier<CompanyViewModel> supplier = () -> new CompanyViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<CompanyViewModel> factory = new ViewModelProviderFactory<>(CompanyViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(CompanyViewModel.class);
     }
 
 }
