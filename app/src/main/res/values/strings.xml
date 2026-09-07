@@ -14,4 +14,6 @@
 
     <!-- Course Card -->
     <string name="button_more">Xem thêm</string>
+
+    <string name="mgs_please_fill_in_all_the_required_information">Please fill in all the required information</string>
 </resources>
