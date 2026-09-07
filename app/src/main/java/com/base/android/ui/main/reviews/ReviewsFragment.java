@@ -1,16 +1,16 @@
-package com.base.android.ui.company;
+package com.base.android.ui.main.reviews;
 
 import com.base.android.BR;
 
 import com.base.android.R;
-import com.base.android.databinding.FragmentCompanyBinding;
+import com.base.android.databinding.FragmentReviewsBinding;
 import com.base.android.di.component.FragmentComponent;
 import com.base.android.ui.base.fragment.BaseFragment;
 
-public class CompanyFragment extends BaseFragment<FragmentCompanyBinding, CompanyViewModel> {
+public class ReviewsFragment extends BaseFragment<FragmentReviewsBinding, ReviewsViewModel> {
 
-    public static CompanyFragment newInstance() {
-        return new CompanyFragment();
+    public static ReviewsFragment newInstance() {
+        return new ReviewsFragment();
     }
 
     @Override
@@ -20,7 +20,7 @@ public class CompanyFragment extends BaseFragment<FragmentCompanyBinding, Compan
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_company;
+        return R.layout.fragment_reviews;
     }
 
     @Override

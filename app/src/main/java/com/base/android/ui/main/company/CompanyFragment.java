@@ -1,16 +1,16 @@
-package com.base.android.ui.mentor;
+package com.base.android.ui.main.company;
 
 import com.base.android.BR;
 
 import com.base.android.R;
-import com.base.android.databinding.FragmentMentorBinding;
+import com.base.android.databinding.FragmentCompanyBinding;
 import com.base.android.di.component.FragmentComponent;
 import com.base.android.ui.base.fragment.BaseFragment;
 
-public class MentorFragment extends BaseFragment<FragmentMentorBinding, MentorViewModel> {
+public class CompanyFragment extends BaseFragment<FragmentCompanyBinding, CompanyViewModel> {
 
-    public static MentorFragment newInstance() {
-        return new MentorFragment();
+    public static CompanyFragment newInstance() {
+        return new CompanyFragment();
     }
 
     @Override
@@ -20,7 +20,7 @@ public class MentorFragment extends BaseFragment<FragmentMentorBinding, MentorVi
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_mentor;
+        return R.layout.fragment_company;
     }
 
     @Override

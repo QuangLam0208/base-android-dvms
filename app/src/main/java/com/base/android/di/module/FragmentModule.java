@@ -8,14 +8,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.base.android.MVVMApplication;
 import com.base.android.ViewModelProviderFactory;
 import com.base.android.data.Repository;
-import com.base.android.di.scope.ActivityScope;
 import com.base.android.di.scope.FragmentScope;
 import com.base.android.ui.base.fragment.BaseFragment;
-import com.base.android.ui.company.CompanyViewModel;
-import com.base.android.ui.courses.CoursesViewModel;
-import com.base.android.ui.main.MainViewModel;
-import com.base.android.ui.mentor.MentorViewModel;
-import com.base.android.ui.reviews.ReviewsViewModel;
+import com.base.android.ui.main.company.CompanyViewModel;
+import com.base.android.ui.main.courses.CoursesViewModel;
+import com.base.android.ui.main.mentor.MentorViewModel;
+import com.base.android.ui.main.reviews.ReviewsViewModel;
 
 import javax.inject.Named;
 

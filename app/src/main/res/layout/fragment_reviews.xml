@@ -5,11 +5,11 @@
     <data>
         <variable
             name="f"
-            type="com.base.android.ui.reviews.ReviewsFragment" />
+            type="com.base.android.ui.main.reviews.ReviewsFragment" />
 
         <variable
             name="vm"
-            type="com.base.android.ui.reviews.ReviewsViewModel" />
+            type="com.base.android.ui.main.reviews.ReviewsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

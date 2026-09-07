@@ -14,10 +14,10 @@ import com.base.android.R;
 import com.base.android.databinding.ActivityMainBinding;
 import com.base.android.di.component.ActivityComponent;
 import com.base.android.ui.base.activity.BaseActivity;
-import com.base.android.ui.company.CompanyFragment;
-import com.base.android.ui.courses.CoursesFragment;
-import com.base.android.ui.mentor.MentorFragment;
-import com.base.android.ui.reviews.ReviewsFragment;
+import com.base.android.ui.main.company.CompanyFragment;
+import com.base.android.ui.main.courses.CoursesFragment;
+import com.base.android.ui.main.mentor.MentorFragment;
+import com.base.android.ui.main.reviews.ReviewsFragment;
 
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {

@@ -5,11 +5,11 @@
     <data>
         <variable
             name="f"
-            type="com.base.android.ui.company.CompanyFragment" />
+            type="com.base.android.ui.main.company.CompanyFragment" />
 
         <variable
             name="vm"
-            type="com.base.android.ui.company.CompanyViewModel" />
+            type="com.base.android.ui.main.company.CompanyViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

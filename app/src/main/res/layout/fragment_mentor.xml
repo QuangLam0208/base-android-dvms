@@ -5,11 +5,11 @@
     <data>
         <variable
             name="f"
-            type="com.base.android.ui.mentor.MentorFragment" />
+            type="com.base.android.ui.main.mentor.MentorFragment" />
 
         <variable
             name="vm"
-            type="com.base.android.ui.mentor.MentorViewModel" />
+            type="com.base.android.ui.main.mentor.MentorViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

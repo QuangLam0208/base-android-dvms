@@ -1,4 +1,4 @@
-package com.base.android.ui.reviews;
+package com.base.android.ui.main.reviews;
 
 import com.base.android.MVVMApplication;
 import com.base.android.data.Repository;

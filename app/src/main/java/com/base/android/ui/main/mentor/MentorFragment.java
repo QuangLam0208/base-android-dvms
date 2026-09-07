@@ -1,16 +1,16 @@
-package com.base.android.ui.reviews;
+package com.base.android.ui.main.mentor;
 
 import com.base.android.BR;
 
 import com.base.android.R;
-import com.base.android.databinding.FragmentReviewsBinding;
+import com.base.android.databinding.FragmentMentorBinding;
 import com.base.android.di.component.FragmentComponent;
 import com.base.android.ui.base.fragment.BaseFragment;
 
-public class ReviewsFragment extends BaseFragment<FragmentReviewsBinding, ReviewsViewModel> {
+public class MentorFragment extends BaseFragment<FragmentMentorBinding, MentorViewModel> {
 
-    public static ReviewsFragment newInstance() {
-        return new ReviewsFragment();
+    public static MentorFragment newInstance() {
+        return new MentorFragment();
     }
 
     @Override
@@ -20,7 +20,7 @@ public class ReviewsFragment extends BaseFragment<FragmentReviewsBinding, Review
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_reviews;
+        return R.layout.fragment_mentor;
     }
 
     @Override
