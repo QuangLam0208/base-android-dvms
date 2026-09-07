@@ -18,4 +18,8 @@
     <!-- Bottom Navigation -->
     <color name="bottom_nav_item_selected">#15CCA3</color>
     <color name="bottom_nav_item_unselected">#718096</color>
+
+    <!-- Card Course -->
+    <color name="course_card_background">#090C0F</color>
+    <color name="course_short_description">#AEAEAE</color>
 </resources>

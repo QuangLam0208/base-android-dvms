@@ -11,4 +11,7 @@
     <string name="tab_reviews">Reviews</string>
     <string name="tab_mentor">Mentor</string>
     <string name="tab_company">Company</string>
+
+    <!-- Course Card -->
+    <string name="button_more">Xem thêm</string>
 </resources>

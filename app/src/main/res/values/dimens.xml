@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Card -->
+    <dimen name="course_card_margin_horizontal">15.60dp</dimen>
+    <dimen name="course_card_margin_vertical">10.40dp</dimen>
+    <dimen name="course_card_corner_radius">13dp</dimen>
+    <dimen name="course_card_padding">16.90dp</dimen>
+
+    <!-- Course Image -->
+    <dimen name="course_image_height">195.00dp</dimen>
+    <dimen name="course_image_corner_radius">11.70dp</dimen>
+
+    <!-- Course Name -->
+    <dimen name="course_name_margin_top">19dp</dimen>
+    <dimen name="course_name_text_size">20sp</dimen>
+
+    <!-- Course Price -->
+    <dimen name="course_price_margin_top">8dp</dimen>
+    <dimen name="course_price_text_size">25sp</dimen>
+
+    <!-- Course Description -->
+    <dimen name="course_description_margin_top">8dp</dimen>
+    <dimen name="course_description_line_spacing">3dp</dimen>
+    <dimen name="course_description_text_size">14sp</dimen>
+
+    <!-- View More Button -->
+    <dimen name="course_button_width">150dp</dimen>
+    <dimen name="course_button_height">50dp</dimen>
+    <dimen name="course_button_margin_top">12dp</dimen>
+    <dimen name="course_button_padding_horizontal">14dp</dimen>
+    <dimen name="course_button_padding_vertical">8dp</dimen>
+    <dimen name="course_button_corner_radius">11.70dp</dimen>
+    <dimen name="course_button_text_size">16sp</dimen>
+    <dimen name="course_button_icon_padding">4dp</dimen>
+
+</resources>
