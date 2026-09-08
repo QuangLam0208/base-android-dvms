@@ -16,4 +16,14 @@
     <string name="button_more">Xem thêm</string>
 
     <string name="mgs_please_fill_in_all_the_required_information">Please fill in all the required information</string>
+
+    <!-- Login Screen -->
+    <string name="login_brand_name">BANKPICK</string>
+    <string name="login_label_username">Người dùng</string>
+    <string name="login_label_password">Mật mã</string>
+    <string name="login_hint_username">Username</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_with_qr">Đăng nhập bằng mã QR</string>
+    <string name="login_button">Đăng nhập</string>
+    <string name="login_forgot_password">Quên mật khẩu?</string>
 </resources>

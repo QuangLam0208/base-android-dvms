@@ -28,8 +28,18 @@ public class AppPreferencesService implements PreferencesService {
     }
 
     @Override
+    public String getRefreshToken() {
+        return mPrefs.getString(KEY_BEARER_REFRESH_TOKEN, Constants.VALUE_BEARER_TOKEN_DEFAULT);
+    }
+
+    @Override
     public void setToken(String token) {
         mPrefs.edit().putString(KEY_BEARER_TOKEN, token).apply();
+    }
+
+    @Override
+    public void setRefreshToken(String refreshToken) {
+        mPrefs.edit().putString(KEY_BEARER_REFRESH_TOKEN, refreshToken).apply();
     }
 
     @Override

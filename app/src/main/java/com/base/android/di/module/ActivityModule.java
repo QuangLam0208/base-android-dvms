@@ -11,6 +11,7 @@ import com.base.android.data.Repository;
 import com.base.android.di.scope.ActivityScope;
 import com.base.android.ui.base.activity.BaseActivity;
 import com.base.android.ui.main.MainViewModel;
+import com.base.android.ui.main.account.login.LoginViewModel;
 import com.base.android.utils.GetInfo;
 
 import javax.inject.Named;
@@ -50,5 +51,11 @@ public class ActivityModule {
         return new ViewModelProvider(activity, factory).get(MainViewModel.class);
     }
 
-
+    @Provides
+    @ActivityScope
+    LoginViewModel provideLoginViewModel(Repository repository, Context application) {
+        Supplier<LoginViewModel> supplier = () -> new LoginViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<LoginViewModel> factory = new ViewModelProviderFactory<>(LoginViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(LoginViewModel.class);
+    }
 }

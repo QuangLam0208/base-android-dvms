@@ -26,4 +26,18 @@
     <!-- Toast -->
     <color name="bg_toast_normal">#444A68</color>
     <color name="bg_toast_warning">#360E17</color>
+
+    <!-- Login Screen -->
+    <color name="login_background">#1B1C1F</color>
+    <color name="login_header_bg">#292B2E</color>
+    <color name="login_input_bg">#27292D</color>
+    <color name="login_input_stroke">#3A3C42</color>
+    <color name="login_label_text">#FFFFFF</color>
+    <color name="login_input_text">#FFFFFF</color>
+    <color name="login_input_hint">#757A82</color>
+    <color name="login_qr_text">#FFFFFF</color>
+    <color name="login_btn_bg">#232D93</color>
+    <color name="login_btn_text">#FFFFFF</color>
+    <color name="login_icon_tint">#A6ABB4</color>
+    <color name="login_forgot_password">#4AA3BA</color>
 </resources>

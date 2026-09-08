@@ -4,9 +4,12 @@ import android.content.SharedPreferences;
 
 public interface PreferencesService {
     public static final String KEY_BEARER_TOKEN="KEY_BEARER_TOKEN";
+    public static final String KEY_BEARER_REFRESH_TOKEN="KEY_BEARER_REFRESH_TOKEN";
 
     String getToken();
+    String getRefreshToken();
     void setToken(String token);
+    void setRefreshToken(String refreshToken);
 
     void removeKey(String key);
     void removeAllKeys();

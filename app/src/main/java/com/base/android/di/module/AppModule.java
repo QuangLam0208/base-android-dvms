@@ -9,6 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.base.android.di.qualifier.MasterApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,6 +32,7 @@ import com.base.android.data.local.room.AppDbService;
 import com.base.android.data.local.room.RoomService;
 import com.base.android.data.remote.ApiService;
 import com.base.android.data.remote.AuthInterceptor;
+import com.base.android.data.remote.MasterApiService;
 import com.base.android.di.qualifier.ApiInfo;
 import com.base.android.di.qualifier.DatabaseInfo;
 import com.base.android.di.qualifier.PreferenceInfo;
@@ -117,6 +119,27 @@ public class AppModule {
     @Singleton
     public ApiService apiService(Retrofit retrofit) {
         return retrofit.create(ApiService.class);
+    }
+
+    // Create master api service
+    @Provides
+    @Singleton
+    @MasterApi
+    Retrofit provideMasterRetrofit(OkHttpClient client) {
+        return new Retrofit.Builder()
+                .client(client)
+                .baseUrl(BuildConfig.MASTER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .build();
+
+    }
+
+    @Provides
+    @Singleton
+    @MasterApi
+    MasterApiService provideMasterApiService(@MasterApi Retrofit retrofit) {
+        return retrofit.create(MasterApiService.class);
     }
 
 

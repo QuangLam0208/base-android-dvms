@@ -1,5 +1,6 @@
 package com.base.android.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -136,6 +137,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         super.onResume();
 
     }
+    @Override
+    public void doExpireSession() {
+        Intent intent = new Intent(this, com.base.android.ui.main.account.login.LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
