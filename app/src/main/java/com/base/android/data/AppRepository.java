@@ -13,7 +13,11 @@ public class AppRepository implements Repository {
     private final RoomService roomService;
 
     @Inject
-    public AppRepository(PreferencesService preferencesHelper, ApiService apiService, RoomService roomService) {
+    public AppRepository(
+            PreferencesService preferencesHelper,
+            ApiService apiService,
+            RoomService roomService
+    ) {
         this.mPreferencesHelper = preferencesHelper;
         this.mApiService = apiService;
         this.roomService = roomService;

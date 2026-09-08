@@ -8,6 +8,7 @@ import com.base.android.MVVMApplication;
 import com.base.android.data.Repository;
 import com.base.android.data.model.other.ToastMessage;
 
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import lombok.Setter;
 
 public class BaseFragmentViewModel extends ViewModel {
@@ -16,6 +17,7 @@ public class BaseFragmentViewModel extends ViewModel {
     protected final MVVMApplication application;
     protected final MutableLiveData<ToastMessage> mErrorMessage = new MutableLiveData<>();
     protected final ObservableBoolean mIsLoading = new ObservableBoolean();
+    protected final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
     @Setter
@@ -48,4 +50,11 @@ public class BaseFragmentViewModel extends ViewModel {
     public void hideLoading(){
         mIsLoading.set(false);
     }
+
+    @Override
+    protected void onCleared() {
+        compositeDisposable.dispose();
+        super.onCleared();
+    }
 }
+

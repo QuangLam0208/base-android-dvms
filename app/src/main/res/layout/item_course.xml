@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/course_card_margin_horizontal"
-    android:layout_marginVertical="@dimen/course_card_margin_vertical"
+    android:layout_marginHorizontal="@dimen/_16sdp"
+    android:layout_marginVertical="@dimen/_10sdp"
     app:cardBackgroundColor="@color/course_card_background"
-    app:cardCornerRadius="@dimen/course_card_corner_radius"
+    app:cardCornerRadius="@dimen/_13sdp"
     app:cardElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/course_card_padding">
+        android:padding="@dimen/_17sdp">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/course_image_height"
+            android:layout_height="@dimen/_196sdp"
             app:cardBackgroundColor="@color/course_card_background"
-            app:cardCornerRadius="@dimen/course_image_corner_radius"
+            app:cardCornerRadius="@dimen/_12sdp"
             app:cardElevation="0dp">
 
             <ImageView
@@ -37,7 +36,7 @@
             android:id="@+id/tv_course_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/course_name_margin_top"
+            android:layout_marginTop="@dimen/_19sdp"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/course_name_text_size"
             android:textStyle="bold"
@@ -47,7 +46,7 @@
             android:id="@+id/tv_course_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/course_price_margin_top"
+            android:layout_marginTop="@dimen/_8sdp"
             android:textColor="@color/accent_color"
             android:textSize="@dimen/course_price_text_size"
             android:textStyle="bold"
@@ -57,9 +56,9 @@
             android:id="@+id/tv_course_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/course_description_margin_top"
+            android:layout_marginTop="@dimen/_8sdp"
             android:ellipsize="end"
-            android:lineSpacingExtra="@dimen/course_description_line_spacing"
+            android:lineSpacingExtra="@dimen/_3sdp"
             android:maxLines="2"
             android:textColor="@color/course_short_description"
             android:textSize="@dimen/course_description_text_size"
@@ -72,17 +71,17 @@
             android:layout_marginTop="@dimen/course_button_margin_top"
             android:backgroundTint="@color/accent_color"
             android:minHeight="0dp"
-            android:paddingHorizontal="@dimen/course_button_padding_horizontal"
-            android:paddingVertical="@dimen/course_button_padding_vertical"
+            android:paddingHorizontal="@dimen/_14sdp"
+            android:paddingVertical="@dimen/_8sdp"
             android:text="@string/button_more"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/course_button_text_size"
             android:textStyle="bold"
-            app:cornerRadius="@dimen/course_button_corner_radius"
+            app:cornerRadius="@dimen/_12sdp"
             app:icon="@drawable/ic_arrow_drop_down"
             app:iconGravity="textEnd"
-            app:iconPadding="@dimen/course_button_icon_padding"
+            app:iconPadding="@dimen/_4sdp"
             app:iconTint="@color/white" />
 
     </LinearLayout>

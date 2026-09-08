@@ -1,13 +1,22 @@
 package com.base.android.data.model.api;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 import lombok.Data;
 
 @Data
 public class ResponseListObj<T> {
-    private List<T> data;
+    @SerializedName("content")
+    private List<T> content;
+
+    @SerializedName("page")
     private Integer page;
-    private Integer totalPage;
+
+    @SerializedName("totalPages")
+    private Integer totalPages;
+
+    @SerializedName("totalElements")
     private Long totalElements;
 }
