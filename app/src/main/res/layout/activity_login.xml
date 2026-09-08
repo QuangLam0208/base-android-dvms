@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="a"
+            type="com.base.android.ui.main.account.login.LoginActivity" />
+
+        <variable
+            name="vm"
+            type="com.base.android.ui.main.account.login.LoginViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/login_background"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/root_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:onClick="@{() -> a.onRootClick()}">
+
+            <!-- Top Header Inverted Triangle Background -->
+            <ImageView
+                android:id="@+id/iv_header_bg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_header_height"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_login_top_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Logo & Brand Header -->
+            <LinearLayout
+                android:id="@+id/layout_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_44sdp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_logo"
+                    android:layout_width="@dimen/login_logo_size"
+                    android:layout_height="@dimen/login_logo_size"
+                    android:contentDescription="@string/login_brand_name"
+                    android:src="@drawable/ic_bankpick_logo" />
+
+                <TextView
+                    android:id="@+id/tv_brand_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:letterSpacing="0.06"
+                    android:text="@string/login_brand_name"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16ssp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Label: Người dùng -->
+            <TextView
+                android:id="@+id/tv_label_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_32sdp"
+                android:text="@string/login_label_username"
+                android:textColor="@color/login_label_text"
+                android:textSize="@dimen/_13ssp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_header_bg" />
+
+            <!-- Input: Username -->
+            <EditText
+                android:id="@+id/et_username"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/login_input_height"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_login_input"
+                android:hint="@string/login_hint_username"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:onClick="@{() -> a.onInputClick(etUsername)}"
+                android:paddingHorizontal="@dimen/_14sdp"
+                android:singleLine="true"
+                android:text="@={vm.username}"
+                android:textColor="@color/login_input_text"
+                android:textColorHint="@color/login_input_hint"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_label_username" />
+
+            <!-- Label: Mật mã -->
+            <TextView
+                android:id="@+id/tv_label_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/login_label_password"
+                android:textColor="@color/login_label_text"
+                android:textSize="@dimen/_13ssp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_username" />
+
+            <!-- Input: Password Container -->
+            <FrameLayout
+                android:id="@+id/fl_password_input"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/login_input_height"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/bg_login_input"
+                android:onClick="@{() -> a.onPasswordContainerClick()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_label_password">
+
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="@string/login_hint_password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:onClick="@{() -> a.onInputClick(etPassword)}"
+                    android:paddingStart="@dimen/_14sdp"
+                    android:paddingEnd="@dimen/_42sdp"
+                    android:singleLine="true"
+                    android:text="@={vm.password}"
+                    android:textColor="@color/login_input_text"
+                    android:textColorHint="@color/login_input_hint"
+                    android:textSize="@dimen/_13ssp" />
+
+                <ImageView
+                    android:id="@+id/iv_toggle_password"
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:contentDescription="@null"
+                    android:onClick="@{() -> a.togglePasswordVisibility()}"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_visibility_off"
+                    app:tint="@color/login_icon_tint" />
+            </FrameLayout>
+
+            <!-- Login with QR option -->
+            <LinearLayout
+                android:id="@+id/layout_login_qr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:onClick="@{() -> a.onQrCodeClick()}"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fl_password_input">
+
+                <ImageView
+                    android:id="@+id/iv_qr_code"
+                    android:layout_width="@dimen/login_qr_icon_size"
+                    android:layout_height="@dimen/login_qr_icon_size"
+                    android:contentDescription="@string/login_with_qr"
+                    android:src="@drawable/ic_qr_code" />
+
+                <TextView
+                    android:id="@+id/tv_login_qr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="@string/login_with_qr"
+                    android:textColor="@color/login_qr_text"
+                    android:textSize="@dimen/_13ssp" />
+            </LinearLayout>
+
+            <!-- Login Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_login"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/login_button_height"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_70sdp"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:backgroundTint="@color/login_btn_bg"
+                android:onClick="@{() -> a.handleLogin()}"
+                android:text="@string/login_button"
+                android:textAllCaps="false"
+                android:textColor="@color/login_btn_text"
+                android:textSize="@dimen/_13ssp"
+                android:textStyle="bold"
+                app:cornerRadius="@dimen/login_button_corner_radius"
+                app:layout_constraintBottom_toTopOf="@id/tv_forgot_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_login_qr"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <!-- Forgot Password Link -->
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_24sdp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> a.onForgotPasswordClick()}"
+                android:padding="@dimen/_4sdp"
+                android:text="@string/login_forgot_password"
+                android:textColor="@color/login_forgot_password"
+                android:textSize="@dimen/_13ssp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
