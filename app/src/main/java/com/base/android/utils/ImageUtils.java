@@ -38,6 +38,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
+import com.base.android.BuildConfig;
+import com.base.android.constant.Constants;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -58,6 +61,27 @@ public final class ImageUtils {
 
     private ImageUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+    public static String getFullImageUrl(String imagePath) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            return "";
+        }
+        if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+            return imagePath;
+        }
+        String baseUrl = BuildConfig.MEDIA_URL;
+        if (!baseUrl.endsWith("/")) {
+            baseUrl += "/";
+        }
+        String downloadPath = Constants.IMAGE_DOWNLOAD_PATH;
+        if (downloadPath.startsWith("/")) {
+            downloadPath = downloadPath.substring(1);
+        }
+        if (!downloadPath.endsWith("/") && !imagePath.startsWith("/")) {
+            downloadPath += "/";
+        }
+        return baseUrl + downloadPath + imagePath;
     }
 
     public static byte[] bitmap2Bytes(final Bitmap bitmap, final CompressFormat format) {

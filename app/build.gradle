@@ -13,8 +13,26 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "BASE_URL", "\"https://tenant-api-spos.itz.io.vn/\""
-        buildConfigField "String", "UPDATE_URL", "\"https://update.digibes.de/qrlive/qrcode_random.txt\""
+        Properties properties = new Properties()
+        if (project.rootProject.file('local.properties').exists()) {
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        }
+
+        buildConfigField "String", "MEDIA_URL", properties.getProperty("MEDIA_URL")
+        buildConfigField "String", "MEDIA_URL_VTT", properties.getProperty("MEDIA_URL_VTT")
+        buildConfigField "String", "MEDIA_URL_VIDEO", properties.getProperty("MEDIA_URL_VIDEO")
+        buildConfigField "String", "MEDIA_URL_UPLOAD", properties.getProperty("MEDIA_URL_UPLOAD")
+
+        buildConfigField "String", "MQTT_BROKER", properties.getProperty("MQTT_BROKER")
+        buildConfigField "String", "MQTT_USERNAME", properties.getProperty("MQTT_USERNAME")
+        buildConfigField "String", "MQTT_PASSWORD", properties.getProperty("MQTT_PASSWORD")
+
+        buildConfigField "String", "CLIENT_ID", properties.getProperty("GOOGLE_CLIENT_ID")
+        buildConfigField "String", "ONESIGNAL_APP_ID", properties.getProperty("ONESIGNAL_APP_ID")
+
+        buildConfigField "String", "BASE_URL", properties.getProperty("BASE_URL", "\"https://fallback-url.com/\"")
+        buildConfigField "String", "MASTER_URL", properties.getProperty("MASTER_URL", "\"https://fallback-auth.com/\"")
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
