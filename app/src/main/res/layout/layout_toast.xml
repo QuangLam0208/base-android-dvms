@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:paddingVertical="@dimen/_12sdp"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toast_container"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/bg_toast_normal">
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="@dimen/_14sdp"
+    android:paddingEnd="@dimen/_16sdp"
+    android:paddingVertical="@dimen/_9sdp"
+    android:background="@drawable/bg_toast_normal"
+    android:elevation="@dimen/_4sdp">
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="@dimen/_16sdp"
-        android:layout_height="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_12sdp"
-        android:src="@drawable/ic_bell"
-        android:layout_marginStart="@dimen/_12sdp"/>
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_bell" />
 
     <TextView
         android:id="@+id/mgs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="@dimen/_12sdp"
-        android:text="@string/mgs_please_fill_in_all_the_required_information"/>
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="2"
+        android:ellipsize="end"
+        tools:text="Đăng nhập thành công!" />
 </LinearLayout>
