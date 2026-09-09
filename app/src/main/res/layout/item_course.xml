@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/_16sdp"
-    android:layout_marginVertical="@dimen/_10sdp"
+    android:layout_marginHorizontal="@dimen/_8sdp"
+    android:layout_marginTop="@dimen/_8sdp"
     app:cardBackgroundColor="@color/course_card_background"
     app:cardCornerRadius="@dimen/_13sdp"
     app:cardElevation="0dp">
