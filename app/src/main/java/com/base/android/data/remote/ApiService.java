@@ -6,8 +6,8 @@ import com.base.android.data.model.api.ResponseListObj;
 import com.base.android.data.model.api.ResponseWrapper;
 import com.base.android.data.model.api.request.login.LoginRequest;
 import com.base.android.data.model.api.response.classroom.ClassRoomResponse;
-import com.base.android.data.model.api.response.course.CourseResponse;
 import com.base.android.data.model.api.response.login.LoginResponse;
+import com.base.android.data.model.api.response.mentor.MentorResponse;
 
 import java.util.Map;
 
@@ -22,10 +22,19 @@ public interface ApiService {
     @Headers({"IgnoreAuth: 1"})
     Observable<ResponseWrapper<LoginResponse>> login(@Body LoginRequest request);
 
-    @GET("/v1/course/list")
-    Observable<ResponseWrapper<ResponseListObj<CourseResponse>>> getListCourse(@QueryMap Map<String, Object> query);
-
     @GET("/v1/class-room/public/list")
     @Headers({"IgnoreAuth: 1"})
     Observable<ResponseWrapper<ResponseListObj<ClassRoomResponse>>> getListClassRoom(@QueryMap Map<String, Object> query);
+
+    @GET("/v1/mentor/public/list")
+    @Headers({"IgnoreAuth: 1"})
+    Observable<ResponseWrapper<ResponseListObj<MentorResponse>>> getPublicMentors();
+
+//    @GET("/v1/rating/public/list")
+//    @Headers({"IgnoreAuth: 1"})
+//    Observable<ResponseWrapper<PageResponse<RatingResponse>>> getPublicRatings();
+//
+//    @GET("/v1/company/public/list")
+//    @Headers({"IgnoreAuth: 1"})
+//    Observable<ResponseWrapper<PageResponse<CompanyResponse>>> getPublicCompanies();
 }

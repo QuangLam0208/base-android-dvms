@@ -32,4 +32,7 @@
     <string name="profile_title">Hồ sơ cá nhân</string>
     <string name="logout">Đăng xuất</string>
     <string name="logout_success">Đăng xuất thành công</string>
+
+    <!-- Mentor Screen -->
+    <string name="empty_mentor_list">Không có mentor nào</string>
 </resources>
