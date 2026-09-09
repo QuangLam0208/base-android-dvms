@@ -168,8 +168,6 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
         if (shifted) {
             viewBinding.btnLogin.post(() -> {
-                viewBinding.layoutBottomContainer.bringToFront();
-                viewBinding.btnLogin.bringToFront();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     viewBinding.btnLogin.setTranslationZ(50f);
                 }
