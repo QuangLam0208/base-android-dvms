@@ -6,6 +6,7 @@ import com.base.android.data.model.api.ResponseListObj;
 import com.base.android.data.model.api.ResponseWrapper;
 import com.base.android.data.model.api.request.login.LoginRequest;
 import com.base.android.data.model.api.response.classroom.ClassRoomResponse;
+import com.base.android.data.model.api.response.company.CompanyResponse;
 import com.base.android.data.model.api.response.login.LoginResponse;
 import com.base.android.data.model.api.response.mentor.MentorResponse;
 import com.base.android.data.model.api.response.rating.RatingResponse;
@@ -34,8 +35,8 @@ public interface ApiService {
     @GET("/v1/rating/public/list")
     @Headers({"IgnoreAuth: 1"})
     Observable<ResponseWrapper<ResponseListObj<RatingResponse>>> getPublicRatings();
-//
-//    @GET("/v1/company/public/list")
-//    @Headers({"IgnoreAuth: 1"})
-//    Observable<ResponseWrapper<PageResponse<CompanyResponse>>> getPublicCompanies();
+
+    @GET("/v1/company/public/list")
+    @Headers({"IgnoreAuth: 1"})
+    Observable<ResponseWrapper<ResponseListObj<CompanyResponse>>> getPublicCompanies();
 }
