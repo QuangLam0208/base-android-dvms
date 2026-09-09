@@ -12,6 +12,7 @@ import com.base.android.di.scope.ActivityScope;
 import com.base.android.ui.base.activity.BaseActivity;
 import com.base.android.ui.main.MainViewModel;
 import com.base.android.ui.main.account.login.LoginViewModel;
+import com.base.android.ui.main.splash.SplashViewModel;
 import com.base.android.utils.GetInfo;
 
 import javax.inject.Named;
@@ -57,5 +58,13 @@ public class ActivityModule {
         Supplier<LoginViewModel> supplier = () -> new LoginViewModel(repository, (MVVMApplication)application);
         ViewModelProviderFactory<LoginViewModel> factory = new ViewModelProviderFactory<>(LoginViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(LoginViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    SplashViewModel provideSplashViewModel(Repository repository, Context application) {
+        Supplier<SplashViewModel> supplier = () -> new SplashViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<SplashViewModel> factory = new ViewModelProviderFactory<>(SplashViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(SplashViewModel.class);
     }
 }

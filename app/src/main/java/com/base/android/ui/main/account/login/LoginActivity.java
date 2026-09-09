@@ -34,6 +34,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     private boolean isPasswordVisible = false;
     private ViewTreeObserver.OnGlobalLayoutListener keyboardLayoutListener;
     private boolean isButtonShifted = false;
+    private int lastKnownKeypadHeight = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +87,12 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
                 setButtonShifted(true);
             }
         });
+
+        // Cho phép nút Đăng nhập hiển thị vượt ra ngoài container mà không bị clip
+        viewBinding.rootLayout.setClipChildren(false);
+        viewBinding.rootLayout.setClipToPadding(false);
+        viewBinding.layoutBottomContainer.setClipChildren(false);
+        viewBinding.layoutBottomContainer.setClipToPadding(false);
     }
 
     public void onInputClick(View view) {
@@ -152,44 +159,58 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     }
 
     private void setButtonShifted(boolean shifted) {
-        if (isButtonShifted == shifted) return;
+        setButtonShifted(shifted, false);
+    }
+
+    private void setButtonShifted(boolean shifted, boolean forceUpdate) {
+        if (isButtonShifted == shifted && !forceUpdate) return;
         isButtonShifted = shifted;
 
         if (shifted) {
             viewBinding.btnLogin.post(() -> {
-                float targetMargin = getResources().getDimension(R.dimen._14sdp);
-                float currentTop = viewBinding.btnLogin.getTop();
-                float qrBottom = viewBinding.layoutLoginQr.getBottom();
+                viewBinding.layoutBottomContainer.bringToFront();
+                viewBinding.btnLogin.bringToFront();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    viewBinding.btnLogin.setTranslationZ(50f);
+                }
 
-                // Calculate distance to move btn_login up so its top is directly under layout_login_qr
-                float shiftDistance = currentTop - (qrBottom + targetMargin);
+                int[] btnLoc = new int[2];
+                viewBinding.btnLogin.getLocationOnScreen(btnLoc);
+                float currentBtnTop = btnLoc[1] - viewBinding.btnLogin.getTranslationY();
+
+                int[] qrLoc = new int[2];
+                viewBinding.layoutLoginQr.getLocationOnScreen(qrLoc);
+                float qrBottom = qrLoc[1] + viewBinding.layoutLoginQr.getHeight();
+
+                float targetMargin = getResources().getDimension(R.dimen._14sdp);
+                float targetY = qrBottom + targetMargin;
+
+                Rect r = new Rect();
+                getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
+                int keyboardTop = r.bottom;
+                int btnHeight = viewBinding.btnLogin.getHeight();
+
+                // Đảm bảo nút không bị bàn phím che nếu bàn phím quá cao
+                if (keyboardTop > 0 && targetY + btnHeight > keyboardTop - 10) {
+                    targetY = (keyboardTop - 10) - btnHeight;
+                }
+
+                float shiftDistance = currentBtnTop - targetY;
                 if (shiftDistance > 0) {
                     viewBinding.btnLogin.animate()
                             .translationY(-shiftDistance)
                             .setDuration(220)
                             .start();
                 }
-
-                // If after shifting, button bottom is still near keyboard, slightly scroll to show it completely
-                viewBinding.scrollView.postDelayed(() -> {
-                    Rect r = new Rect();
-                    getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
-
-                    int[] btnLoc = new int[2];
-                    viewBinding.btnLogin.getLocationOnScreen(btnLoc);
-                    int btnBottomOnScreen = btnLoc[1] + viewBinding.btnLogin.getHeight();
-
-                    if (btnBottomOnScreen > r.bottom - 20) {
-                        int needScroll = btnBottomOnScreen - (r.bottom - 20);
-                        viewBinding.scrollView.smoothScrollBy(0, needScroll);
-                    }
-                }, 240);
             });
         } else {
             viewBinding.btnLogin.animate()
                     .translationY(0f)
                     .setDuration(220)
                     .start();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                viewBinding.btnLogin.setTranslationZ(0f);
+            }
             viewBinding.scrollView.smoothScrollTo(0, 0);
         }
     }
@@ -237,9 +258,12 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
                 // Keyboard is open (height > 15% of screen height)
                 boolean keyboardOpen = keypadHeight > screenHeight * 0.15;
                 if (keyboardOpen) {
-                    setButtonShifted(true);
+                    boolean heightChanged = (keypadHeight != lastKnownKeypadHeight);
+                    lastKnownKeypadHeight = keypadHeight;
+                    setButtonShifted(true, heightChanged);
                 } else if (previousKeypadHeight > screenHeight * 0.15) {
-                    setButtonShifted(false);
+                    lastKnownKeypadHeight = 0;
+                    setButtonShifted(false, false);
                 }
                 previousKeypadHeight = keypadHeight;
             }
