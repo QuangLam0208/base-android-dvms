@@ -19,7 +19,7 @@
     <string name="mgs_please_fill_in_all_the_required_information">Please fill in all the required information</string>
 
     <!-- Login Screen -->
-    <string name="login_brand_name">BANKPICK</string>
+    <string name="login_brand_name">iLearning</string>
     <string name="login_label_username">Người dùng</string>
     <string name="login_label_password">Mật mã</string>
     <string name="login_hint_username">Username</string>

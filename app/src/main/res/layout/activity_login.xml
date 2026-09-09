@@ -54,7 +54,7 @@
                     android:layout_width="@dimen/login_logo_size"
                     android:layout_height="@dimen/login_logo_size"
                     android:contentDescription="@string/login_brand_name"
-                    android:src="@drawable/ic_bankpick_logo" />
+                    android:src="@drawable/ic_ilearning_logo" />
 
                 <TextView
                     android:id="@+id/tv_brand_name"

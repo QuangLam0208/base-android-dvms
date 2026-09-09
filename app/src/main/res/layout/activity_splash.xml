@@ -32,7 +32,7 @@
                 android:layout_width="@dimen/_72sdp"
                 android:layout_height="@dimen/_72sdp"
                 android:contentDescription="@string/login_brand_name"
-                android:src="@drawable/ic_bankpick_logo" />
+                android:src="@drawable/ic_ilearning_logo" />
 
             <TextView
                 android:id="@+id/tv_brand_name"
