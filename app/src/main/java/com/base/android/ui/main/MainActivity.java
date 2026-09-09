@@ -15,6 +15,7 @@ import com.base.android.R;
 import com.base.android.databinding.ActivityMainBinding;
 import com.base.android.di.component.ActivityComponent;
 import com.base.android.ui.base.activity.BaseActivity;
+import com.base.android.ui.main.account.profile.ProfileFragment;
 import com.base.android.ui.main.company.CompanyFragment;
 import com.base.android.ui.main.courses.CoursesFragment;
 import com.base.android.ui.main.mentor.MentorFragment;
@@ -27,6 +28,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private static final String TAG_REVIEWS = "TAG_REVIEWS";
     private static final String TAG_MENTOR = "TAG_MENTOR";
     private static final String TAG_COMPANY = "TAG_COMPANY";
+    private static final String TAG_PROFILE = "TAG_PROFILE";
     private static final String KEY_CURRENT_TAG = "KEY_CURRENT_TAG";
 
     private String currentTag = TAG_COURSES;
@@ -73,6 +75,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         } else if (itemId == R.id.tab_company) {
             switchTab(TAG_COMPANY);
             return true;
+        } else if (itemId == R.id.tab_profile) {
+            switchTab(TAG_PROFILE);
+            return true;
         }
         return false;
     }
@@ -111,6 +116,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 return MentorFragment.newInstance();
             case TAG_COMPANY:
                 return CompanyFragment.newInstance();
+            case TAG_PROFILE:
+                return ProfileFragment.newInstance();
             case TAG_COURSES:
             default:
                 return CoursesFragment.newInstance();

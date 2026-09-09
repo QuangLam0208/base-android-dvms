@@ -11,6 +11,7 @@
     <string name="tab_reviews">Reviews</string>
     <string name="tab_mentor">Mentor</string>
     <string name="tab_company">Company</string>
+    <string name="tab_profile">Profile</string>
 
     <!-- Course Card -->
     <string name="button_more">Xem thêm</string>
@@ -26,4 +27,9 @@
     <string name="login_with_qr">Đăng nhập bằng mã QR</string>
     <string name="login_button">Đăng nhập</string>
     <string name="login_forgot_password">Quên mật khẩu?</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title">Hồ sơ cá nhân</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="logout_success">Đăng xuất thành công</string>
 </resources>

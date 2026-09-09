@@ -10,6 +10,7 @@ import com.base.android.ViewModelProviderFactory;
 import com.base.android.data.Repository;
 import com.base.android.di.scope.FragmentScope;
 import com.base.android.ui.base.fragment.BaseFragment;
+import com.base.android.ui.main.account.profile.ProfileViewModel;
 import com.base.android.ui.main.company.CompanyViewModel;
 import com.base.android.ui.main.courses.CoursesViewModel;
 import com.base.android.ui.main.mentor.MentorViewModel;
@@ -67,6 +68,14 @@ public class FragmentModule {
         Supplier<CompanyViewModel> supplier = () -> new CompanyViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<CompanyViewModel> factory = new ViewModelProviderFactory<>(CompanyViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(CompanyViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    ProfileViewModel provideProfileViewModel(Repository repository, Context application) {
+        Supplier<ProfileViewModel> supplier = () -> new ProfileViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<ProfileViewModel> factory = new ViewModelProviderFactory<>(ProfileViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(ProfileViewModel.class);
     }
 
 }
