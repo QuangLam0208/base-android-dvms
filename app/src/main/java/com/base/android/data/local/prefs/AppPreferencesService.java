@@ -122,4 +122,18 @@ public class AppPreferencesService implements PreferencesService {
         }
         return Primitives.wrap(mModelClass).cast(object);
     }
+
+    @Override
+    public void setAppLanguage(String langCode) {
+        setString(KEY_LANGUAGE_CODE, langCode);
+    }
+
+    @Override
+    public String getAppLanguage() {
+        String lang = getStringVal(KEY_LANGUAGE_CODE);
+        if (lang == null || lang.isEmpty()) {
+            return "vi";
+        }
+        return lang;
+    }
 }

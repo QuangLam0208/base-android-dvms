@@ -17,7 +17,13 @@ import com.base.android.di.component.AppComponent;
 import com.base.android.di.component.DaggerAppComponent;
 import com.base.android.others.MyTimberDebugTree;
 import com.base.android.others.MyTimberReleaseTree;
+import android.content.Context;
+import com.base.android.constant.Constants;
+import com.base.android.data.local.prefs.AppPreferencesService;
+import com.base.android.data.local.prefs.PreferencesService;
+import com.base.android.helper.LocaleHelper;
 import com.base.android.utils.DialogUtils;
+import com.google.gson.Gson;
 import timber.log.Timber;
 
 public class MVVMApplication extends Application implements LifecycleObserver {
@@ -27,6 +33,14 @@ public class MVVMApplication extends Application implements LifecycleObserver {
     @Getter
     private AppComponent appComponent;
     private Boolean inBackground;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        PreferencesService prefs = new AppPreferencesService(base, Constants.PREF_NAME, new Gson());
+        String langCode = prefs.getAppLanguage();
+        super.attachBaseContext(LocaleHelper.setLocale(base, langCode));
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -72,7 +72,6 @@
             android:backgroundTint="@color/accent_color"
             android:minHeight="0dp"
             android:paddingHorizontal="@dimen/_14sdp"
-            android:paddingVertical="@dimen/_8sdp"
             android:text="@string/button_more"
             android:textAllCaps="false"
             android:textColor="@color/white"

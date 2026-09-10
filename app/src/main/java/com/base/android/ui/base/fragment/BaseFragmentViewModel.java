@@ -51,6 +51,14 @@ public class BaseFragmentViewModel extends ViewModel {
         mIsLoading.set(false);
     }
 
+    public void setLanguage(String code) {
+        repository.getSharedPreferences().setAppLanguage(code);
+    }
+
+    public String getLanguage() {
+        return repository.getSharedPreferences().getAppLanguage();
+    }
+
     @Override
     protected void onCleared() {
         compositeDisposable.dispose();

@@ -67,4 +67,12 @@ public class BaseViewModel extends ViewModel {
     public void changeProgressBarMsg(String message){
         progressBarMsg.setValue(message);
     }
+
+    public void setLanguage(String code) {
+        repository.getSharedPreferences().setAppLanguage(code);
+    }
+
+    public String getLanguage() {
+        return repository.getSharedPreferences().getAppLanguage();
+    }
 }

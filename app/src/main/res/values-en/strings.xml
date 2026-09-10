@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Base</string>
+    <string name="msg_loading">Please wait...</string>
+
+    <!--Network error-->
+    <string name="newtwork_error">Unable to connect, please check your network connection.</string>
+    <string name="newtwork_error_button_retry">Retry</string>
+    <string name="newtwork_error_button_exit">Exit</string>
+
+    <string name="tab_courses">Courses</string>
+    <string name="tab_reviews">Reviews</string>
+    <string name="tab_mentor">Mentor</string>
+    <string name="tab_company">Company</string>
+    <string name="tab_profile">Profile</string>
+
+    <!-- Course Card -->
+    <string name="button_more">See more</string>
+
+    <string name="mgs_please_fill_in_all_the_required_information">Please fill in all the required information</string>
+
+    <!-- Login Screen -->
+    <string name="login_brand_name">iLearning</string>
+    <string name="login_label_username">Username</string>
+    <string name="login_label_password">Password</string>
+    <string name="login_hint_username">Username</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_with_qr">Login with QR Code</string>
+    <string name="login_button">Login</string>
+    <string name="login_forgot_password">Forgot password?</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title">Profile</string>
+    <string name="logout">Log out</string>
+    <string name="logout_success">Logged out successfully</string>
+    <string name="choose_avatar_title">Choose profile picture</string>
+    <string name="choose_from_camera">Take photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="language">Language</string>
+    <string name="language_vi">Tiếng Việt</string>
+    <string name="language_en">English</string>
+    <string name="choose_language_title">Select Language</string>
+    <string name="permission_camera_required">Camera permission is required to take photos</string>
+    <string name="permission_storage_required">Storage permission is required to select photos</string>
+    <string name="error_open_camera">Unable to open camera</string>
+
+    <!-- Mentor Screen -->
+    <string name="empty_mentor_list">No mentors available</string>
+
+    <!-- Error Messages -->
+    <string name="error_load_courses">Unable to load course list.</string>
+    <string name="error_load_reviews">Unable to load review list.</string>
+    <string name="error_load_mentors">Unable to load mentor list.</string>
+    <string name="error_load_companies">Unable to load company list.</string>
+</resources>

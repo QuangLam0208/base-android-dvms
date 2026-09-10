@@ -25,14 +25,26 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.base.android.MVVMApplication;
 import com.base.android.R;
 import com.base.android.constant.Constants;
+import com.base.android.data.local.prefs.AppPreferencesService;
+import com.base.android.data.local.prefs.PreferencesService;
 import com.base.android.di.component.ActivityComponent;
 import com.base.android.di.component.DaggerActivityComponent;
 import com.base.android.di.module.ActivityModule;
+import com.base.android.helper.LocaleHelper;
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity{
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        PreferencesService prefs = new AppPreferencesService(newBase, Constants.PREF_NAME, new Gson());
+        String langCode = prefs.getAppLanguage();
+        Context context = LocaleHelper.setLocale(newBase, langCode);
+        super.attachBaseContext(context);
+    }
 
     protected B viewBinding;
 

@@ -1,22 +1,22 @@
 <resources>
     <string name="app_name">Base</string>
-    <string name="msg_loading">Xin chờ…</string>
+    <string name="msg_loading">Xin chờ...</string>
 
     <!--Network error-->
     <string name="newtwork_error">Không thể kết nối, vui lòng kiểm tra kết nối mạng của bạn.</string>
     <string name="newtwork_error_button_retry">Thử lại</string>
     <string name="newtwork_error_button_exit">Thoát</string>
 
-    <string name="tab_courses">Courses</string>
-    <string name="tab_reviews">Reviews</string>
+    <string name="tab_courses">Khóa học</string>
+    <string name="tab_reviews">Đánh giá</string>
     <string name="tab_mentor">Mentor</string>
-    <string name="tab_company">Company</string>
-    <string name="tab_profile">Profile</string>
+    <string name="tab_company">Doanh nghiệp</string>
+    <string name="tab_profile">Hồ sơ</string>
 
     <!-- Course Card -->
     <string name="button_more">Xem thêm</string>
 
-    <string name="mgs_please_fill_in_all_the_required_information">Please fill in all the required information</string>
+    <string name="mgs_please_fill_in_all_the_required_information">Vui lòng điền đầy đủ thông tin</string>
 
     <!-- Login Screen -->
     <string name="login_brand_name">iLearning</string>

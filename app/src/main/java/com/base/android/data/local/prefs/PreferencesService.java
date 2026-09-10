@@ -33,4 +33,8 @@ public interface PreferencesService {
     float getFloatVal(String key);
 
     <T> T getObjectVal(String key, Class<T> mModelClass);
+
+    String KEY_LANGUAGE_CODE = "KEY_LANGUAGE_CODE";
+    void setAppLanguage(String langCode);
+    String getAppLanguage();
 }

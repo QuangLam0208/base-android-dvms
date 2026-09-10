@@ -24,12 +24,12 @@ import com.base.android.ui.main.reviews.ReviewsFragment;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
 
-    private static final String TAG_COURSES = "TAG_COURSES";
-    private static final String TAG_REVIEWS = "TAG_REVIEWS";
-    private static final String TAG_MENTOR = "TAG_MENTOR";
-    private static final String TAG_COMPANY = "TAG_COMPANY";
-    private static final String TAG_PROFILE = "TAG_PROFILE";
-    private static final String KEY_CURRENT_TAG = "KEY_CURRENT_TAG";
+    public static final String TAG_COURSES = "TAG_COURSES";
+    public static final String TAG_REVIEWS = "TAG_REVIEWS";
+    public static final String TAG_MENTOR = "TAG_MENTOR";
+    public static final String TAG_COMPANY = "TAG_COMPANY";
+    public static final String TAG_PROFILE = "TAG_PROFILE";
+    public static final String KEY_CURRENT_TAG = "KEY_CURRENT_TAG";
 
     private String currentTag = TAG_COURSES;
     private Fragment activeFragment;
@@ -47,17 +47,46 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private void setupInitialFragment (@Nullable Bundle savedInstanceState) {
         FragmentManager fm = getSupportFragmentManager();
         if (savedInstanceState == null) {
-            currentTag = TAG_COURSES;
-            activeFragment = CoursesFragment.newInstance();
-            fm.beginTransaction()
-                    .add(R.id.fragment_container, activeFragment, TAG_COURSES)
-                    .commit();
+            String initialTag = getIntent().getStringExtra(KEY_CURRENT_TAG);
+            if (initialTag != null && !initialTag.isEmpty()) {
+                currentTag = initialTag;
+                activeFragment = createFragmentByTag(currentTag);
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, activeFragment, currentTag)
+                        .commit();
+                int bottomNavItemId = getBottomNavItemIdByTag(currentTag);
+                if (bottomNavItemId != 0 && bottomNavItemId != R.id.tab_courses) {
+                    viewBinding.bottomNavigation.setSelectedItemId(bottomNavItemId);
+                }
+            } else {
+                currentTag = TAG_COURSES;
+                activeFragment = CoursesFragment.newInstance();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, activeFragment, TAG_COURSES)
+                        .commit();
+            }
         } else {
             currentTag = savedInstanceState.getString(KEY_CURRENT_TAG, TAG_COURSES);
             activeFragment = fm.findFragmentByTag(currentTag);
             if (activeFragment == null) {
                 activeFragment = fm.findFragmentByTag(TAG_COURSES);
             }
+        }
+    }
+
+    private int getBottomNavItemIdByTag(String tag) {
+        switch (tag) {
+            case TAG_REVIEWS:
+                return R.id.tab_reviews;
+            case TAG_MENTOR:
+                return R.id.tab_mentor;
+            case TAG_COMPANY:
+                return R.id.tab_company;
+            case TAG_PROFILE:
+                return R.id.tab_profile;
+            case TAG_COURSES:
+            default:
+                return R.id.tab_courses;
         }
     }
 
