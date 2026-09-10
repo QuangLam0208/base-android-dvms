@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Base</string>
-    <string name="msg_loading">Xin chờ...</string>
+    <string name="msg_loading">Xin chờ…</string>
 
     <!--Network error-->
     <string name="newtwork_error">Không thể kết nối, vui lòng kiểm tra kết nối mạng của bạn.</string>
@@ -32,6 +32,13 @@
     <string name="profile_title">Hồ sơ cá nhân</string>
     <string name="logout">Đăng xuất</string>
     <string name="logout_success">Đăng xuất thành công</string>
+    <string name="choose_avatar_title">Chọn ảnh đại diện</string>
+    <string name="choose_from_camera">Chụp ảnh</string>
+    <string name="choose_from_gallery">Chọn từ thư viện</string>
+    <string name="cancel">Hủy</string>
+    <string name="permission_camera_required">Cần cấp quyền Camera để chụp ảnh</string>
+    <string name="permission_storage_required">Cần cấp quyền bộ nhớ để chọn ảnh</string>
+    <string name="error_open_camera">Không thể mở máy ảnh</string>
 
     <!-- Mentor Screen -->
     <string name="empty_mentor_list">Không có mentor nào</string>

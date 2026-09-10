@@ -44,15 +44,34 @@
             android:padding="@dimen/_20sdp"
             app:layout_constraintTop_toBottomOf="@id/tv_title">
 
-            <ImageView
-                android:id="@+id/iv_avatar"
-                android:layout_width="@dimen/_64sdp"
-                android:layout_height="@dimen/_64sdp"
-                android:background="@drawable/bg_toast_normal"
-                android:contentDescription="@string/profile_title"
-                android:padding="@dimen/_14sdp"
-                android:src="@drawable/ic_profile"
-                app:tint="@color/white" />
+            <FrameLayout
+                android:id="@+id/layout_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{() -> f.onAvatarClick()}">
+
+                <ImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="@dimen/_64sdp"
+                    android:layout_height="@dimen/_64sdp"
+                    android:background="@drawable/bg_toast_normal"
+                    android:contentDescription="@string/profile_title"
+                    android:padding="@dimen/_14sdp"
+                    android:src="@drawable/ic_profile"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/bg_circle_camera"
+                    android:contentDescription="@string/choose_avatar_title"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/ic_camera"
+                    app:tint="@color/white" />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tv_username"

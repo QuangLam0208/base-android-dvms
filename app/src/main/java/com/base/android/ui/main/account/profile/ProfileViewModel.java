@@ -12,10 +12,21 @@ public class ProfileViewModel extends BaseFragmentViewModel {
         super(repository, application);
     }
 
+    public static final String KEY_USER_AVATAR_URI = "KEY_USER_AVATAR_URI";
+
+    public void saveAvatarUri(String uriString) {
+        repository.getSharedPreferences().setString(KEY_USER_AVATAR_URI, uriString);
+    }
+
+    public String getSavedAvatarUri() {
+        return repository.getSharedPreferences().getStringVal(KEY_USER_AVATAR_URI);
+    }
+
     public void logout() {
         this.token = null;
         repository.setToken(Constants.VALUE_BEARER_TOKEN_DEFAULT);
         repository.getSharedPreferences().removeKey(PreferencesService.KEY_BEARER_TOKEN);
         repository.getSharedPreferences().removeKey(PreferencesService.KEY_BEARER_REFRESH_TOKEN);
+        repository.getSharedPreferences().removeKey(KEY_USER_AVATAR_URI);
     }
 }
