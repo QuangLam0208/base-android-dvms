@@ -35,4 +35,10 @@
 
     <!-- Mentor Screen -->
     <string name="empty_mentor_list">Không có mentor nào</string>
+
+    <!-- Error Messages -->
+    <string name="error_load_courses">Không thể tải danh sách khoá học.</string>
+    <string name="error_load_reviews">Không thể tải danh sách đánh giá.</string>
+    <string name="error_load_mentors">Không thể tải danh sách mentor.</string>
+    <string name="error_load_companies">Không thể tải danh sách doanh nghiệp.</string>
 </resources>

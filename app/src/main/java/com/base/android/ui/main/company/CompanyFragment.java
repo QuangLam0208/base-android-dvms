@@ -75,13 +75,13 @@ public class CompanyFragment extends BaseFragment<FragmentCompanyBinding, Compan
             @Override
             public void doError(Throwable error) {
                 binding.swipeRefreshLayout.setRefreshing(false);
-                viewModel.showErrorMessage("Lỗi kết nối, vui lòng thử lại!");
+                viewModel.showErrorMessage(getString(R.string.newtwork_error));
             }
 
             @Override
             public void doFail() {
                 binding.swipeRefreshLayout.setRefreshing(false);
-                viewModel.showErrorMessage("Không thể tải danh sách doanh nghiệp.");
+                viewModel.showErrorMessage(getString(R.string.error_load_companies));
             }
         });
     }
