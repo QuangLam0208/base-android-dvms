@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Course Section Heading -->
+    <dimen name="course_heading_text_size">19.2sp</dimen>
+    <dimen name="course_heading_line_height">19.2sp</dimen>
+
     <!-- Card -->
     <dimen name="course_card_margin_horizontal">15.60dp</dimen>
     <dimen name="course_card_margin_vertical">10.40dp</dimen>

@@ -68,7 +68,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         public CourseViewHolder(@NonNull ItemCourseBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            this.binding.btnViewMore.setPaintFlags(this.binding.btnViewMore.getPaintFlags() | android.graphics.Paint.UNDERLINE_TEXT_FLAG);
+            this.binding.tvViewMore.setPaintFlags(this.binding.tvViewMore.getPaintFlags() | android.graphics.Paint.UNDERLINE_TEXT_FLAG);
         }
 
         public void bind(ClassRoomResponse classRoom) {

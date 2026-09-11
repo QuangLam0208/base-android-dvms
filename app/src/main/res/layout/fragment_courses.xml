@@ -20,14 +20,34 @@
         android:layout_height="match_parent"
         android:background="@color/main_background">
 
+        <TextView
+            android:id="@+id/tv_heading_ongoing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:text="@string/heading_ongoing"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/course_heading_text_size"
+            android:letterSpacing="0"
+            android:includeFontPadding="false"
+            app:lineHeight="@dimen/course_heading_line_height"
+            app:fontFamily="@font/sf_pro_rounded_bold"
+            android:fontFamily="@font/sf_pro_rounded_bold"
+            android:textStyle="bold"
+            android:textFontWeight="700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_12sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/tv_heading_ongoing">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_courses"
@@ -54,16 +74,20 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:contentDescription="Empty"
-                android:src="@android:drawable/ic_menu_search" />
+                android:src="@android:drawable/ic_menu_search"
+                app:tint="@color/login_input_hint" />
 
             <TextView
                 android:id="@+id/tv_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="Không có khoá học nào"
-                android:textColor="#AAAAAA"
-                android:textSize="14sp" />
+                app:fontFamily="@font/sf_pro_display_regular"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:textFontWeight="400"
+                android:textColor="@color/course_short_description"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
