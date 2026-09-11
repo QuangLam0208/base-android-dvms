@@ -8,8 +8,9 @@
     <dimen name="course_card_padding">16.90dp</dimen>
 
     <!-- Course Image -->
-    <dimen name="course_image_height">195.00dp</dimen>
-    <dimen name="course_image_corner_radius">11.70dp</dimen>
+    <dimen name="course_image_width">362.92dp</dimen>
+    <dimen name="course_image_height">203.125dp</dimen>
+    <dimen name="course_image_corner_radius">9.48dp</dimen>
 
     <!-- Course Name -->
     <dimen name="course_name_margin_top">19dp</dimen>
@@ -22,7 +23,8 @@
     <!-- Course Description -->
     <dimen name="course_description_margin_top">8dp</dimen>
     <dimen name="course_description_line_spacing">3dp</dimen>
-    <dimen name="course_description_text_size">14sp</dimen>
+    <dimen name="course_description_text_size">16sp</dimen>
+    <dimen name="course_description_line_height">28sp</dimen>
 
     <!-- View More Button -->
     <dimen name="course_button_width">150dp</dimen>
@@ -30,7 +32,7 @@
     <dimen name="course_button_margin_top">12dp</dimen>
     <dimen name="course_button_padding_horizontal">14dp</dimen>
     <dimen name="course_button_padding_vertical">8dp</dimen>
-    <dimen name="course_button_corner_radius">11.70dp</dimen>
+    <dimen name="course_button_corner_radius">10dp</dimen>
     <dimen name="course_button_text_size">16sp</dimen>
     <dimen name="course_button_icon_padding">4dp</dimen>
 

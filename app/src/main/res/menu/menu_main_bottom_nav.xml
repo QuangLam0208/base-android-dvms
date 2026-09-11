@@ -24,7 +24,7 @@
 
     <item
         android:id="@+id/tab_profile"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/ic_nav_profile"
         android:title="@string/tab_profile" />
 
 </menu>

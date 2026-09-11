@@ -5,7 +5,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.base.android.BR;
 
@@ -46,7 +46,7 @@ public class CompanyFragment extends BaseFragment<FragmentCompanyBinding, Compan
             @Override
             public void onItemDelete(int position) {}
         });
-        binding.rvCompanies.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        binding.rvCompanies.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvCompanies.setAdapter(companyAdapter);
     }
 

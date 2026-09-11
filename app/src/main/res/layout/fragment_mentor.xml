@@ -16,7 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1C1C1E">
+        android:background="@color/main_background">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
@@ -59,10 +59,13 @@
                 android:id="@+id/tv_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="@string/empty_mentor_list"
+                app:fontFamily="@font/sf_pro_display_regular"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:textFontWeight="400"
                 android:textColor="@color/course_short_description"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

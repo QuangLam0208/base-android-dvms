@@ -17,7 +17,8 @@ import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.utils.ImageUtils;
 import com.bumptech.glide.Glide;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -67,6 +68,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         public CourseViewHolder(@NonNull ItemCourseBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            this.binding.btnViewMore.setPaintFlags(this.binding.btnViewMore.getPaintFlags() | android.graphics.Paint.UNDERLINE_TEXT_FLAG);
         }
 
         public void bind(ClassRoomResponse classRoom) {
@@ -84,7 +86,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 price = course.getPrice();
             }
             if (price != null && price > 0) {
-                NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+                DecimalFormat formatter = new DecimalFormat("#,###", DecimalFormatSymbols.getInstance(Locale.US));
                 binding.tvCoursePrice.setText(formatter.format(price) + " đ");
             } else {
                 binding.tvCoursePrice.setText("Miễn phí");

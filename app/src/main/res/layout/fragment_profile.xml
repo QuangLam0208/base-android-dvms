@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/login_background">
+        android:background="@color/main_background">
 
         <!-- Header Bar -->
         <TextView
@@ -24,123 +24,147 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_24sdp"
             android:text="@string/profile_title"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_16ssp"
-            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:fontFamily="@font/sf_pro_display_semibold"
+            android:fontFamily="@font/sf_pro_display_semibold"
+            android:textFontWeight="600"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- User Info Container -->
-        <LinearLayout
-            android:id="@+id/layout_user_info"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_user_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_32sdp"
-            android:background="@drawable/bg_login_input"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            app:cardBackgroundColor="@color/course_card_background"
+            app:cardCornerRadius="@dimen/_13sdp"
+            app:cardElevation="0dp"
             app:layout_constraintTop_toBottomOf="@id/tv_title">
 
-            <FrameLayout
-                android:id="@+id/layout_avatar"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layout_user_info"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{() -> f.onAvatarClick()}">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_20sdp">
 
-                <ImageView
-                    android:id="@+id/iv_avatar"
-                    android:layout_width="@dimen/_64sdp"
-                    android:layout_height="@dimen/_64sdp"
-                    android:background="@drawable/bg_toast_normal"
-                    android:contentDescription="@string/profile_title"
-                    android:padding="@dimen/_14sdp"
-                    android:src="@drawable/ic_profile"
-                    app:tint="@color/white" />
+                <FrameLayout
+                    android:id="@+id/layout_avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{() -> f.onAvatarClick()}">
 
-                <ImageView
-                    android:layout_width="@dimen/_22sdp"
-                    android:layout_height="@dimen/_22sdp"
-                    android:layout_gravity="bottom|end"
-                    android:background="@drawable/bg_circle_camera"
-                    android:contentDescription="@string/choose_avatar_title"
-                    android:padding="@dimen/_4sdp"
-                    android:src="@drawable/ic_camera"
-                    app:tint="@color/white" />
-            </FrameLayout>
+                    <ImageView
+                        android:id="@+id/iv_avatar"
+                        android:layout_width="@dimen/_64sdp"
+                        android:layout_height="@dimen/_64sdp"
+                        android:contentDescription="@string/profile_title"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_profile" />
 
-            <TextView
-                android:id="@+id/tv_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:text="@string/login_label_username"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp"
-                android:textStyle="bold" />
+                    <ImageView
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:layout_gravity="bottom|end"
+                        android:background="@drawable/bg_circle_camera"
+                        android:contentDescription="@string/choose_avatar_title"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/ic_camera"
+                        app:tint="@color/white" />
+                </FrameLayout>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:text="@string/login_label_username"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/sf_pro_display_medium"
+                    android:fontFamily="@font/sf_pro_display_medium"
+                    android:textFontWeight="500" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Settings Container -->
-        <LinearLayout
-            android:id="@+id/layout_settings"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_16sdp"
-            android:background="@drawable/bg_login_input"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/layout_user_info">
+            app:cardBackgroundColor="@color/course_card_background"
+            app:cardCornerRadius="@dimen/_13sdp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toBottomOf="@id/card_user_info">
 
-            <!-- Language Row -->
             <LinearLayout
-                android:id="@+id/layout_language"
+                android:id="@+id/layout_settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:onClick="@{() -> f.onLanguageClick()}"
-                android:orientation="horizontal"
-                android:padding="@dimen/_14sdp">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:contentDescription="@string/language"
-                    android:src="@drawable/ic_language"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="0dp"
+                <!-- Language Row -->
+                <LinearLayout
+                    android:id="@+id/layout_language"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_weight="1"
-                    android:text="@string/language"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_13ssp" />
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="@{() -> f.onLanguageClick()}"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_17sdp">
 
-                <TextView
-                    android:id="@+id/tv_current_language"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_6sdp"
-                    android:textColor="@color/accent_color"
-                    android:textSize="@dimen/_12ssp" />
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:contentDescription="@string/language"
+                        android:src="@drawable/ic_language"
+                        app:tint="@color/white" />
 
-                <ImageView
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
-                    android:rotation="270"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_arrow_drop_down"
-                    app:tint="@color/login_icon_tint" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_weight="1"
+                        android:text="@string/language"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        app:fontFamily="@font/sf_pro_display_regular"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textFontWeight="400" />
+
+                    <TextView
+                        android:id="@+id/tv_current_language"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_6sdp"
+                        android:textColor="@color/accent_color"
+                        android:textSize="15sp"
+                        app:fontFamily="@font/sf_pro_display_medium"
+                        android:fontFamily="@font/sf_pro_display_medium"
+                        android:textFontWeight="500" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:rotation="270"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_drop_down"
+                        app:tint="@color/login_icon_tint" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Logout Button -->
         <com.google.android.material.button.MaterialButton
@@ -150,13 +174,21 @@
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_32sdp"
             android:backgroundTint="#E53935"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:gravity="center"
+            android:minHeight="0dp"
             android:onClick="@{() -> f.handleLogout()}"
             android:text="@string/logout"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/_13ssp"
-            android:textStyle="bold"
-            app:cornerRadius="@dimen/login_button_corner_radius"
+            android:textSize="16sp"
+            app:fontFamily="@font/sf_pro_display_semibold"
+            android:fontFamily="@font/sf_pro_display_semibold"
+            android:textFontWeight="600"
+            app:cornerRadius="10dp"
             app:icon="@drawable/ic_logout"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/_8sdp"
