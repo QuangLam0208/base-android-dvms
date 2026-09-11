@@ -4,18 +4,22 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.base.android.R;
-import com.base.android.data.model.api.response.classroom.ClassRoomResponse;
 import com.base.android.data.model.api.response.course.CourseResponse;
 import com.base.android.databinding.ItemCourseBinding;
 import com.base.android.ui.base.adapter.OnItemClickListener;
+import com.base.android.utils.HangingBulletSpan;
 import com.base.android.utils.ImageUtils;
 import com.bumptech.glide.Glide;
+
+import android.text.SpannableStringBuilder;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -25,7 +29,7 @@ import java.util.Locale;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
-    private final List<ClassRoomResponse> items = new ArrayList<>();
+    private final List<CourseResponse> items = new ArrayList<>();
     private final OnItemClickListener listener;
     private final Context context;
 
@@ -35,7 +39,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setData(List<ClassRoomResponse> newData) {
+    public void setData(List<CourseResponse> newData) {
         items.clear();
         if (newData != null) {
             items.addAll(newData);
@@ -71,20 +75,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             this.binding.tvViewMore.setPaintFlags(this.binding.tvViewMore.getPaintFlags() | android.graphics.Paint.UNDERLINE_TEXT_FLAG);
         }
 
-        public void bind(ClassRoomResponse classRoom) {
-            CourseResponse course = classRoom.getCourse();
-            
+        public void bind(CourseResponse course) {
+            if (course == null) return;
+
             // Tên khoá học
-            String courseName = (course != null && !TextUtils.isEmpty(course.getName()))
-                    ? course.getName()
-                    : "";
+            String courseName = !TextUtils.isEmpty(course.getName()) ? course.getName() : "";
             binding.tvCourseName.setText(courseName);
 
             // Giá
-            Double price = classRoom.getPrice();
-            if (price == null && course != null) {
-                price = course.getPrice();
-            }
+            Double price = course.getPrice();
             if (price != null && price > 0) {
                 DecimalFormat formatter = new DecimalFormat("#,###", DecimalFormatSymbols.getInstance(Locale.US));
                 binding.tvCoursePrice.setText(formatter.format(price) + " đ");
@@ -92,12 +91,33 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 binding.tvCoursePrice.setText("Miễn phí");
             }
 
-            // Mô tả
-            String description = (course != null && !TextUtils.isEmpty(course.getShortDescription())) ? course.getShortDescription() : "";
-            binding.tvCourseDescription.setText(description);
+            // Mô tả dạng bullet list có hiệu ứng hanging indent (Spannable + LeadingMarginSpan)
+            String description = course.getShortDescription();
+            if (!TextUtils.isEmpty(description)) {
+                int bulletRadius = context.getResources().getDimensionPixelSize(R.dimen.course_bullet_radius);
+                int bulletGap = context.getResources().getDimensionPixelSize(R.dimen.course_bullet_gap);
+                int bulletMarginStart = context.getResources().getDimensionPixelSize(R.dimen.course_bullet_margin_start);
+                int bulletColor = ContextCompat.getColor(context, R.color.course_short_description);
+
+                SpannableStringBuilder bulletSpannable = HangingBulletSpan.formatBulletList(
+                        description,
+                        bulletRadius,
+                        bulletGap,
+                        bulletMarginStart,
+                        bulletColor
+                );
+                binding.tvCourseDescription.setText(bulletSpannable);
+                binding.tvCourseDescription.setVisibility(View.VISIBLE);
+            } else {
+                binding.tvCourseDescription.setText("");
+                binding.tvCourseDescription.setVisibility(View.GONE);
+            }
 
             // Avatar
-            String avatar = (course != null) ? course.getAvatar() : null;
+            String avatar = course.getAvatar();
+            if (avatar != null && ("null".equalsIgnoreCase(avatar.trim()) || avatar.trim().isEmpty())) {
+                avatar = null;
+            }
             Glide.with(context)
                     .load(ImageUtils.getFullImageUrl(avatar))
                     .placeholder(R.drawable.ic_course_placeholder)

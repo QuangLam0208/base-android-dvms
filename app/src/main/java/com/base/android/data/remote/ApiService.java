@@ -7,6 +7,7 @@ import com.base.android.data.model.api.ResponseWrapper;
 import com.base.android.data.model.api.request.login.LoginRequest;
 import com.base.android.data.model.api.response.classroom.ClassRoomResponse;
 import com.base.android.data.model.api.response.company.CompanyResponse;
+import com.base.android.data.model.api.response.course.CourseResponse;
 import com.base.android.data.model.api.response.login.LoginResponse;
 import com.base.android.data.model.api.response.mentor.MentorResponse;
 import com.base.android.data.model.api.response.rating.RatingResponse;
@@ -27,6 +28,9 @@ public interface ApiService {
     @GET("/v1/class-room/public/list")
     @Headers({"IgnoreAuth: 1"})
     Observable<ResponseWrapper<ResponseListObj<ClassRoomResponse>>> getListClassRoom(@QueryMap Map<String, Object> query);
+
+    @GET("/v1/course/list")
+    Observable<ResponseWrapper<ResponseListObj<CourseResponse>>> getListCourse(@QueryMap Map<String, Object> query);
 
     @GET("/v1/mentor/public/list")
     @Headers({"IgnoreAuth: 1"})

@@ -2,7 +2,7 @@ package com.base.android.ui.main.courses;
 
 import com.base.android.MVVMApplication;
 import com.base.android.data.Repository;
-import com.base.android.data.model.api.response.classroom.ClassRoomResponse;
+import com.base.android.data.model.api.response.course.CourseResponse;
 import com.base.android.ui.base.fragment.BaseFragmentViewModel;
 import com.base.android.ui.main.MainCallback;
 
@@ -20,7 +20,7 @@ public class CoursesViewModel extends BaseFragmentViewModel {
         super(repository, application);
     }
 
-    public void getListCourse(MainCallback<List<ClassRoomResponse>> callback) {
+    public void getListCourse(MainCallback<List<CourseResponse>> callback) {
         Map<String, Object> query = new HashMap<>();
 
         query.put("pageable.page", 0);
@@ -29,7 +29,7 @@ public class CoursesViewModel extends BaseFragmentViewModel {
         showLoading();
         compositeDisposable.add(
                 repository.getApiService()
-                        .getListClassRoom(query)
+                        .getListCourse(query)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(

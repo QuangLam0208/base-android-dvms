@@ -29,6 +29,10 @@
     <dimen name="course_description_line_spacing">3dp</dimen>
     <dimen name="course_description_text_size">16sp</dimen>
     <dimen name="course_description_line_height">28sp</dimen>
+    <!-- Course Bullet Specs (Có thể tùy chỉnh kích thước bullet và khoảng cách tại đây) -->
+    <dimen name="course_bullet_radius">2.35dp</dimen>
+    <dimen name="course_bullet_gap">8dp</dimen>
+    <dimen name="course_bullet_margin_start">0dp</dimen>
 
     <!-- View More Button -->
     <dimen name="course_button_width">150dp</dimen>

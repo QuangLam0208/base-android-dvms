@@ -67,8 +67,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_13sdp"
-            android:ellipsize="end"
-            android:maxLines="2"
             android:textColor="@color/course_short_description"
             android:textSize="@dimen/course_description_text_size"
             android:letterSpacing="0"
@@ -77,7 +75,7 @@
             app:fontFamily="@font/sf_pro_display_regular"
             android:fontFamily="@font/sf_pro_display_regular"
             android:textFontWeight="400"
-            tools:text="Lazy loading · code splitting · Memoization trong ReactJS. Tìm hiểu GraphQL và so sánh với REST." />
+            tools:text="•  Lazy loading · code splitting · Memoization trong ReactJS\n•  Tìm hiểu GraphQL và so sánh với REST" />
 
         <LinearLayout
             android:id="@+id/btn_view_more"

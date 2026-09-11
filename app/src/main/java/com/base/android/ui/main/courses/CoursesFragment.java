@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.base.android.BR;
 import com.base.android.R;
-import com.base.android.data.model.api.response.classroom.ClassRoomResponse;
+import com.base.android.data.model.api.response.course.CourseResponse;
 import com.base.android.databinding.FragmentCoursesBinding;
 import com.base.android.di.component.FragmentComponent;
 import com.base.android.ui.base.adapter.OnItemClickListener;
@@ -58,9 +58,9 @@ public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, Course
     private void loadData() {
         binding.layoutEmpty.setVisibility(View.GONE);
 
-        viewModel.getListCourse(new MainCallback<List<ClassRoomResponse>>() {
+        viewModel.getListCourse(new MainCallback<List<CourseResponse>>() {
             @Override
-            public void doSuccess(List<ClassRoomResponse> list) {
+            public void doSuccess(List<CourseResponse> list) {
                 binding.swipeRefreshLayout.setRefreshing(false);
                 if (list != null && !list.isEmpty()) {
                     courseAdapter.setData(list);
