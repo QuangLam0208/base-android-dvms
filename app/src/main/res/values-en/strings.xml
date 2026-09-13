@@ -16,6 +16,8 @@
     <!-- Course Card -->
     <string name="heading_ongoing">Ongoing</string>
     <string name="button_more">See more</string>
+    <string name="syllabus_title">Syllabus</string>
+    <string name="empty_syllabus">No syllabus available</string>
 
     <string name="mgs_please_fill_in_all_the_required_information">Please fill in all the required information</string>
 
@@ -51,6 +53,7 @@
 
     <!-- Error Messages -->
     <string name="error_load_courses">Unable to load course list.</string>
+    <string name="error_load_syllabus">Unable to load syllabus list.</string>
     <string name="error_load_reviews">Unable to load review list.</string>
     <string name="error_load_mentors">Unable to load mentor list.</string>
     <string name="error_load_companies">Unable to load company list.</string>

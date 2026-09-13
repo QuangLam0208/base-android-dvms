@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.base.android.R;
 import com.base.android.data.model.api.response.course.CourseResponse;
+import com.base.android.data.model.api.response.course.SyllabusResponse;
 import com.base.android.databinding.ItemCourseBinding;
 import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.utils.HangingBulletSpan;
@@ -29,13 +31,22 @@ import java.util.Locale;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
+    public interface OnSeeMoreListener {
+        void onSeeMore(CourseResponse course, int position);
+    }
+
     private final List<CourseResponse> items = new ArrayList<>();
     private final OnItemClickListener listener;
+    private OnSeeMoreListener seeMoreListener;
     private final Context context;
 
     public CourseAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
         this.listener = listener;
+    }
+
+    public void setOnSeeMoreListener(OnSeeMoreListener seeMoreListener) {
+        this.seeMoreListener = seeMoreListener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -45,6 +56,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             items.addAll(newData);
         }
         notifyDataSetChanged();
+    }
+
+    public void setSyllabusData(int position, List<SyllabusResponse> syllabuses) {
+        if (position >= 0 && position < items.size()) {
+            CourseResponse course = items.get(position);
+            course.setLoadingSyllabus(false);
+            course.setSyllabuses(syllabuses);
+            course.setSyllabusExpanded(true);
+            notifyItemChanged(position);
+        }
+    }
+
+    public void setSyllabusError(int position) {
+        if (position >= 0 && position < items.size()) {
+            CourseResponse course = items.get(position);
+            course.setLoadingSyllabus(false);
+            course.setSyllabusExpanded(false);
+            notifyItemChanged(position);
+        }
     }
 
     @NonNull
@@ -68,6 +98,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public class CourseViewHolder extends RecyclerView.ViewHolder {
 
         private final ItemCourseBinding binding;
+        private SyllabusAdapter syllabusAdapter;
 
         public CourseViewHolder(@NonNull ItemCourseBinding binding) {
             super(binding.getRoot());
@@ -124,15 +155,69 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                     .error(R.drawable.ic_course_placeholder)
                     .into(binding.ivCourseAvatar);
 
-            binding.getRoot().setOnClickListener(v -> {
-                if (listener != null) listener.onItemClick(getAdapterPosition());
+            // Click vào thẻ khoá học -> xem chi tiết khoá học
+            binding.cardCourse.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onItemClick(pos);
+                }
             });
 
+            // Click vào nút "Xem thêm" -> toggle hiển thị Syllabus
             binding.btnViewMore.setOnClickListener(v -> {
-                if (listener != null) listener.onItemClick(getAdapterPosition());
+                int pos = getAdapterPosition();
+                if (pos == RecyclerView.NO_POSITION) return;
+
+                if (course.isSyllabusExpanded()) {
+                    course.setSyllabusExpanded(false);
+                    notifyItemChanged(pos);
+                } else {
+                    if (course.getSyllabuses() != null) {
+                        course.setSyllabusExpanded(true);
+                        notifyItemChanged(pos);
+                    } else {
+                        course.setSyllabusExpanded(true);
+                        course.setLoadingSyllabus(true);
+                        notifyItemChanged(pos);
+                        if (seeMoreListener != null) {
+                            seeMoreListener.onSeeMore(course, pos);
+                        }
+                    }
+                }
             });
+
+            // Quản lý hiển thị phần Giáo trình (Syllabus)
+            boolean isSyllabusExpanded = course.isSyllabusExpanded();
+            if (isSyllabusExpanded) {
+                binding.cardSyllabus.setVisibility(View.VISIBLE);
+                binding.ivArrowMore.setRotation(180f);
+
+                if (course.isLoadingSyllabus()) {
+                    binding.pbSyllabusLoading.setVisibility(View.VISIBLE);
+                    binding.rvSyllabuses.setVisibility(View.GONE);
+                    binding.tvSyllabusEmpty.setVisibility(View.GONE);
+                } else {
+                    binding.pbSyllabusLoading.setVisibility(View.GONE);
+                    List<SyllabusResponse> syllabuses = course.getSyllabuses();
+                    if (syllabuses != null && !syllabuses.isEmpty()) {
+                        binding.tvSyllabusEmpty.setVisibility(View.GONE);
+                        binding.rvSyllabuses.setVisibility(View.VISIBLE);
+
+                        if (syllabusAdapter == null) {
+                            syllabusAdapter = new SyllabusAdapter(context);
+                            binding.rvSyllabuses.setLayoutManager(new LinearLayoutManager(context));
+                            binding.rvSyllabuses.setAdapter(syllabusAdapter);
+                        }
+                        syllabusAdapter.setData(syllabuses);
+                    } else {
+                        binding.tvSyllabusEmpty.setVisibility(View.VISIBLE);
+                        binding.rvSyllabuses.setVisibility(View.GONE);
+                    }
+                }
+            } else {
+                binding.cardSyllabus.setVisibility(View.GONE);
+                binding.ivArrowMore.setRotation(0f);
+            }
         }
     }
 }
-
-

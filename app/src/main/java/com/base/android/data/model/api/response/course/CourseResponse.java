@@ -37,5 +37,24 @@ public class CourseResponse {
 
     @SerializedName("syllabuses")
     private List<SyllabusResponse> syllabuses;
+
+    private transient boolean syllabusExpanded = false;
+    private transient boolean loadingSyllabus = false;
+
+    public boolean isSyllabusExpanded() {
+        return syllabusExpanded;
+    }
+
+    public void setSyllabusExpanded(boolean syllabusExpanded) {
+        this.syllabusExpanded = syllabusExpanded;
+    }
+
+    public boolean isLoadingSyllabus() {
+        return loadingSyllabus;
+    }
+
+    public void setLoadingSyllabus(boolean loadingSyllabus) {
+        this.loadingSyllabus = loadingSyllabus;
+    }
 }
 

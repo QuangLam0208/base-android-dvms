@@ -23,6 +23,8 @@
     <!-- Card Course -->
     <color name="course_card_background">#090C0F</color>
     <color name="course_short_description">#AEAEAE</color>
+    <color name="syllabus_item_background">#202428</color>
+    <color name="syllabus_description_text">#F1F2F2</color>
 
     <!-- Toast -->
     <color name="bg_toast_normal">#444A68</color>

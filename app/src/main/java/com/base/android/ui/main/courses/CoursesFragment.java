@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.base.android.BR;
 import com.base.android.R;
 import com.base.android.data.model.api.response.course.CourseResponse;
+import com.base.android.data.model.api.response.course.SyllabusResponse;
 import com.base.android.databinding.FragmentCoursesBinding;
 import com.base.android.di.component.FragmentComponent;
 import com.base.android.ui.base.adapter.OnItemClickListener;
@@ -47,8 +48,37 @@ public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, Course
                 // not used
             }
         });
+        courseAdapter.setOnSeeMoreListener((course, position) -> {
+            if (course != null && course.getId() != null) {
+                loadSyllabus(course.getId(), position);
+            }
+        });
         binding.rvCourses.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvCourses.setAdapter(courseAdapter);
+    }
+
+    private void loadSyllabus(Long courseId, int position) {
+        viewModel.getListSyllabus(courseId, new MainCallback<List<SyllabusResponse>>() {
+            @Override
+            public void doSuccess(List<SyllabusResponse> syllabuses) {
+                courseAdapter.setSyllabusData(position, syllabuses);
+            }
+
+            @Override
+            public void doSuccess() {}
+
+            @Override
+            public void doError(Throwable error) {
+                courseAdapter.setSyllabusError(position);
+                viewModel.showErrorMessage(getString(R.string.error_load_syllabus));
+            }
+
+            @Override
+            public void doFail() {
+                courseAdapter.setSyllabusError(position);
+                viewModel.showErrorMessage(getString(R.string.error_load_syllabus));
+            }
+        });
     }
 
     private void initSwipeRefresh() {

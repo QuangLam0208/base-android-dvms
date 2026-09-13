@@ -19,7 +19,7 @@ public class SyllabusResponse {
     private String createdDate;
 
     @SerializedName("course")
-    private String course;
+    private CourseResponse course;
 
     @SerializedName("kind")
     private Integer kind;
@@ -38,4 +38,14 @@ public class SyllabusResponse {
 
     @SerializedName("timeline")
     private Integer timeline;
+
+    private transient boolean expanded = false;
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
 }

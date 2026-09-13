@@ -16,6 +16,8 @@
     <!-- Course Card -->
     <string name="heading_ongoing">Đang diễn ra</string>
     <string name="button_more">Xem thêm</string>
+    <string name="syllabus_title">Giáo trình</string>
+    <string name="empty_syllabus">Không có giáo trình</string>
 
     <string name="mgs_please_fill_in_all_the_required_information">Please fill in all the required information</string>
 
@@ -51,6 +53,7 @@
 
     <!-- Error Messages -->
     <string name="error_load_courses">Không thể tải danh sách khoá học.</string>
+    <string name="error_load_syllabus">Không thể tải danh sách giáo trình.</string>
     <string name="error_load_reviews">Không thể tải danh sách đánh giá.</string>
     <string name="error_load_mentors">Không thể tải danh sách mentor.</string>
     <string name="error_load_companies">Không thể tải danh sách doanh nghiệp.</string>

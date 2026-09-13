@@ -3,6 +3,7 @@ package com.base.android.ui.main.courses;
 import com.base.android.MVVMApplication;
 import com.base.android.data.Repository;
 import com.base.android.data.model.api.response.course.CourseResponse;
+import com.base.android.data.model.api.response.course.SyllabusResponse;
 import com.base.android.ui.base.fragment.BaseFragmentViewModel;
 import com.base.android.ui.main.MainCallback;
 
@@ -44,6 +45,33 @@ public class CoursesViewModel extends BaseFragmentViewModel {
                                 throwable -> {
                                     Timber.e(throwable);
                                     hideLoading();
+                                    callback.doError(throwable);
+                                }
+                        )
+        );
+    }
+
+    public void getListSyllabus(Long courseId, MainCallback<List<SyllabusResponse>> callback) {
+        Map<String, Object> query = new HashMap<>();
+        query.put("courseId", courseId);
+        query.put("page", 0);
+        query.put("size", 20);
+
+        compositeDisposable.add(
+                repository.getApiService()
+                        .getListSyllabus(query)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> {
+                                    if (response.isResult() && response.getData() != null) {
+                                        callback.doSuccess(response.getData().getContent());
+                                    } else {
+                                        callback.doFail();
+                                    }
+                                },
+                                throwable -> {
+                                    Timber.e(throwable);
                                     callback.doError(throwable);
                                 }
                         )
