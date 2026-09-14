@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.base.android.BR;
+import com.base.android.MVVMApplication;
 import com.base.android.R;
 import com.base.android.databinding.ActivityMainBinding;
 import com.base.android.di.component.ActivityComponent;
@@ -44,6 +45,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         viewBinding.setVm(viewModel);
 
         setupInitialFragment(savedInstanceState);
+
+        // Setup Push Subscription Observer for verification dialog
+        ((MVVMApplication) getApplication()).getAppComponent()
+                .getOneSignalManager()
+                .setupPushSubscriptionObserver(this);
     }
 
     private void setupInitialFragment (@Nullable Bundle savedInstanceState) {

@@ -14,6 +14,7 @@ public class Constants {
     public static final String INSTAGRAM_URL = "https://www.instagram.com/";
 
     public static final String MEDIA_URL = BuildConfig.MEDIA_URL;
+    public static final String ONESIGNAL_APP_ID = BuildConfig.ONESIGNAL_APP_ID;
     public static final String IMAGE_DOWNLOAD_PATH = "v1/file/download";
 
     public static String TOKEN_GUEST;

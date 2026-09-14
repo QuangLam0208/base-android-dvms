@@ -25,6 +25,8 @@
     <color name="course_short_description">#AEAEAE</color>
     <color name="syllabus_item_background">#202428</color>
     <color name="syllabus_description_text">#F1F2F2</color>
+    <color name="shimmer_placeholder_base">#222831</color>
+    <color name="shimmer_placeholder_highlight">#353E4D</color>
 
     <!-- Toast -->
     <color name="bg_toast_normal">#444A68</color>

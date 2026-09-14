@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.base.android.MVVMApplication;
 import com.base.android.data.Repository;
+import com.base.android.data.notification.OneSignalManager;
 import com.base.android.di.module.AppModule;
 
 import javax.inject.Singleton;
@@ -22,6 +23,8 @@ public interface AppComponent {
     Repository getRepository();
 
     Context getContext();
+
+    OneSignalManager getOneSignalManager();
 
     @Component.Builder
     interface Builder {

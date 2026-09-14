@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 34
     buildToolsVersion "30.0.3"
 
     defaultConfig {
@@ -127,7 +127,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata:2.3.1'
 
     // Room
-    def room_version = "2.4.0-alpha03"
+    def room_version = "2.5.0"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // optional - RxJava2 support for Room
@@ -179,4 +179,10 @@ dependencies {
 
     // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // OneSignal Push Notification SDK
+    implementation 'com.onesignal:OneSignal:5.9.2'
+
+    // Facebook Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 }
