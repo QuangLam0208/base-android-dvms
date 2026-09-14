@@ -31,6 +31,7 @@ import com.base.android.di.component.ActivityComponent;
 import com.base.android.di.component.DaggerActivityComponent;
 import com.base.android.di.module.ActivityModule;
 import com.base.android.helper.LocaleHelper;
+import com.base.android.helper.ThemeHelper;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
@@ -42,7 +43,8 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
     protected void attachBaseContext(Context newBase) {
         PreferencesService prefs = new AppPreferencesService(newBase, Constants.PREF_NAME, new Gson());
         String langCode = prefs.getAppLanguage();
-        Context context = LocaleHelper.setLocale(newBase, langCode);
+        String themeMode = prefs.getAppTheme();
+        Context context = LocaleHelper.setLocale(newBase, langCode, themeMode);
         super.attachBaseContext(context);
     }
 
@@ -69,6 +71,8 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        PreferencesService prefs = new AppPreferencesService(this, Constants.PREF_NAME, new Gson());
+        ThemeHelper.applyTheme(prefs.getAppTheme());
         performDependencyInjection(getBuildComponent());
         super.onCreate(savedInstanceState);
         performDataBinding();

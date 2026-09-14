@@ -136,4 +136,18 @@ public class AppPreferencesService implements PreferencesService {
         }
         return lang;
     }
+
+    @Override
+    public void setAppTheme(String themeMode) {
+        setString(KEY_THEME_MODE, themeMode);
+    }
+
+    @Override
+    public String getAppTheme() {
+        String theme = getStringVal(KEY_THEME_MODE);
+        if (theme == null || theme.isEmpty()) {
+            return THEME_MODE_DARK;
+        }
+        return theme;
+    }
 }

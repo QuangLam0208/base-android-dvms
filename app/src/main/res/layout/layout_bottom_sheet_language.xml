@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet_dark"
+    android:backgroundTint="?attr/colorBottomSheetBackground"
     android:orientation="vertical"
     android:paddingBottom="@dimen/_24sdp">
 
@@ -21,7 +22,7 @@
         android:layout_marginTop="@dimen/_14sdp"
         android:layout_marginBottom="@dimen/_16sdp"
         android:text="@string/choose_language_title"
-        android:textColor="#FFFFFF"
+        android:textColor="?attr/colorTextPrimary"
         android:textSize="18sp"
         app:fontFamily="@font/sf_pro_display_semibold"
         android:fontFamily="@font/sf_pro_display_semibold"
@@ -45,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/language_vi"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorTextPrimary"
             android:textSize="16sp"
             app:fontFamily="@font/sf_pro_display_medium"
             android:fontFamily="@font/sf_pro_display_medium"
@@ -62,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/_20sdp"
-        android:background="#2E3542" />
+        android:background="?attr/colorBottomSheetDivider" />
 
     <!-- Option: English -->
     <LinearLayout
@@ -82,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/language_en"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorTextPrimary"
             android:textSize="16sp"
             app:fontFamily="@font/sf_pro_display_medium"
             android:fontFamily="@font/sf_pro_display_medium"
@@ -99,7 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/_20sdp"
-        android:background="#2E3542" />
+        android:background="?attr/colorBottomSheetDivider" />
 
     <!-- Option: Cancel -->
     <LinearLayout
@@ -118,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
-            android:textColor="#9CA3AF"
+            android:textColor="?attr/colorTextCancel"
             android:textSize="16sp"
             app:fontFamily="@font/sf_pro_display_medium"
             android:fontFamily="@font/sf_pro_display_medium"

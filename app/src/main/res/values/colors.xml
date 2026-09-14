@@ -20,13 +20,13 @@
     <color name="bottom_nav_item_selected">#15CCA3</color>
     <color name="bottom_nav_item_unselected">#718096</color>
 
-    <!-- Card Course -->
-    <color name="course_card_background">#090C0F</color>
-    <color name="course_short_description">#AEAEAE</color>
-    <color name="syllabus_item_background">#202428</color>
-    <color name="syllabus_description_text">#F1F2F2</color>
-    <color name="shimmer_placeholder_base">#222831</color>
-    <color name="shimmer_placeholder_highlight">#353E4D</color>
+    <!-- Card Course (Light Mode defaults) -->
+    <color name="course_card_background">#FFFFFF</color>
+    <color name="course_short_description">#6B7280</color>
+    <color name="syllabus_item_background">#F3F4F6</color>
+    <color name="syllabus_description_text">#374151</color>
+    <color name="shimmer_placeholder_base">#E2E8F0</color>
+    <color name="shimmer_placeholder_highlight">#F8FAFC</color>
 
     <!-- Toast -->
     <color name="bg_toast_normal">#444A68</color>
@@ -44,7 +44,7 @@
     <color name="toast_stroke_normal">#3D4654</color>
     <color name="toast_icon_normal">#4AA3BA</color>
 
-    <!-- Login Screen -->
+    <!-- Login Screen (always dark – not theme-aware) -->
     <color name="login_background">#1B1C1F</color>
     <color name="login_header_bg">#292B2E</color>
     <color name="login_input_bg">#27292D</color>
@@ -57,4 +57,57 @@
     <color name="login_btn_text">#FFFFFF</color>
     <color name="login_icon_tint">#A6ABB4</color>
     <color name="login_forgot_password">#4AA3BA</color>
+
+    <!-- Special -->
+    <color name="color_logout_button">#E53935</color>
+    <color name="color_chart_metric_peak">#F6AD55</color>
+    <color name="color_rating_star">#FFC107</color>
+
+    <!-- ============================================================ -->
+    <!--  THEME-AWARE COLOR TOKENS (LIGHT MODE DEFAULTS)              -->
+    <!--  Overridden by values-night/colors.xml in Dark mode          -->
+    <!-- ============================================================ -->
+    <color name="color_screen_background">#F0F2F5</color>
+    <color name="color_card_background">#FFFFFF</color>
+    <color name="color_nav_background">#FFFFFF</color>
+    <color name="color_bottom_sheet_background">#FFFFFF</color>
+    <color name="color_text_primary">#111827</color>
+    <color name="color_text_secondary">#6B7280</color>
+    <color name="color_text_muted">#718096</color>
+    <color name="color_text_muted_light">#A0AEC0</color>
+    <color name="color_text_cancel">#6B7280</color>
+    <color name="color_divider">#E5E7EB</color>
+    <color name="color_bottom_sheet_divider">#E5E7EB</color>
+    <color name="color_chart_card_stroke">#E5E7EB</color>
+    <color name="color_scrim_overlay">#80000000</color>
+    <color name="color_pill_unselected_bg">#E2E8F0</color>
+    <color name="color_pill_unselected_stroke">#CBD5E0</color>
+
+    <!-- Legacy alias compatibility -->
+    <color name="color_screen_background_dark">#182029</color>
+    <color name="color_card_background_dark">#090C0F</color>
+    <color name="color_nav_background_dark">#000000</color>
+    <color name="color_bottom_sheet_background_dark">#1F232B</color>
+    <color name="color_text_primary_dark">#FFFFFF</color>
+    <color name="color_text_secondary_dark">#AEAEAE</color>
+    <color name="color_text_muted_dark">#718096</color>
+    <color name="color_text_muted_light_dark">#A0AEC0</color>
+    <color name="color_text_cancel_dark">#9CA3AF</color>
+    <color name="color_divider_dark">#232D37</color>
+    <color name="color_bottom_sheet_divider_dark">#2E3542</color>
+    <color name="color_chart_card_stroke_dark">#2A3540</color>
+    <color name="color_scrim_overlay_dark">#80000000</color>
+    <color name="color_screen_background_light">#F0F2F5</color>
+    <color name="color_card_background_light">#FFFFFF</color>
+    <color name="color_nav_background_light">#FFFFFF</color>
+    <color name="color_bottom_sheet_background_light">#FFFFFF</color>
+    <color name="color_text_primary_light">#111827</color>
+    <color name="color_text_secondary_light">#6B7280</color>
+    <color name="color_text_muted_light_value">#9CA3AF</color>
+    <color name="color_text_muted_light_lighter">#CBD5E0</color>
+    <color name="color_text_cancel_light">#6B7280</color>
+    <color name="color_divider_light">#E5E7EB</color>
+    <color name="color_bottom_sheet_divider_light">#E5E7EB</color>
+    <color name="color_chart_card_stroke_light">#D1D5DB</color>
+    <color name="color_scrim_overlay_light">#80000000</color>
 </resources>

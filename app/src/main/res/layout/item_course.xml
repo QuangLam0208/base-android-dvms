@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_9sdp"
         android:layout_marginTop="@dimen/_9sdp"
-        app:cardBackgroundColor="@color/course_card_background"
+        app:cardBackgroundColor="?attr/colorCardBackground"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardElevation="0dp">
 
@@ -25,7 +25,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/course_image_height"
-                app:cardBackgroundColor="@color/course_card_background"
+                app:cardBackgroundColor="?attr/colorCardBackground"
                 app:cardCornerRadius="@dimen/course_image_corner_radius"
                 app:cardElevation="0dp">
 
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_14sdp"
-                android:textColor="#FFFFFF"
+                android:textColor="?attr/colorTextPrimary"
                 android:textSize="@dimen/course_name_text_size"
                 android:letterSpacing="0"
                 android:includeFontPadding="false"
@@ -131,7 +131,7 @@
         android:layout_marginHorizontal="@dimen/_9sdp"
         android:layout_marginTop="@dimen/_9sdp"
         android:visibility="gone"
-        app:cardBackgroundColor="@color/course_card_background"
+        app:cardBackgroundColor="?attr/colorCardBackground"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardElevation="0dp"
         tools:visibility="visible">
@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:text="@string/syllabus_title"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorTextPrimary"
                 android:textSize="20sp"
                 android:letterSpacing="0"
                 android:includeFontPadding="false"

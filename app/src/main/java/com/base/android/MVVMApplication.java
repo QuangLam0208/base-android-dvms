@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 import com.base.android.di.component.AppComponent;
 import com.base.android.di.component.DaggerAppComponent;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.others.MyTimberDebugTree;
 import com.base.android.others.MyTimberReleaseTree;
 import android.content.Context;
@@ -39,7 +40,8 @@ public class MVVMApplication extends Application implements LifecycleObserver {
     protected void attachBaseContext(Context base) {
         PreferencesService prefs = new AppPreferencesService(base, Constants.PREF_NAME, new Gson());
         String langCode = prefs.getAppLanguage();
-        super.attachBaseContext(LocaleHelper.setLocale(base, langCode));
+        String themeMode = prefs.getAppTheme();
+        super.attachBaseContext(LocaleHelper.setLocale(base, langCode, themeMode));
     }
 
     @Override
@@ -56,6 +58,10 @@ public class MVVMApplication extends Application implements LifecycleObserver {
                 .application(this)
                 .build();
         appComponent.inject(this);
+
+        // Apply saved theme
+        PreferencesService prefs = new AppPreferencesService(this, Constants.PREF_NAME, new Gson());
+        ThemeHelper.applyTheme(prefs.getAppTheme());
 
         // Initialize OneSignal
         appComponent.getOneSignalManager().initialize(this, Constants.ONESIGNAL_APP_ID);

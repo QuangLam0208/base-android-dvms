@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main_background">
+        android:background="?attr/colorScreenBackground">
 
         <!-- Header Bar -->
         <TextView
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_24sdp"
             android:text="@string/profile_title"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorTextPrimary"
             android:textSize="20sp"
             app:fontFamily="@font/sf_pro_display_semibold"
             android:fontFamily="@font/sf_pro_display_semibold"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_24sdp"
-            app:cardBackgroundColor="@color/course_card_background"
+            app:cardBackgroundColor="?attr/colorCardBackground"
             app:cardCornerRadius="@dimen/_13sdp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:text="@string/login_label_username"
-                    android:textColor="#FFFFFF"
+                    android:textColor="?attr/colorTextPrimary"
                     android:textSize="18sp"
                     app:fontFamily="@font/sf_pro_display_medium"
                     android:fontFamily="@font/sf_pro_display_medium"
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_16sdp"
-            app:cardBackgroundColor="@color/course_card_background"
+            app:cardBackgroundColor="?attr/colorCardBackground"
             app:cardCornerRadius="@dimen/_13sdp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -134,7 +134,7 @@
                         android:layout_height="@dimen/_20sdp"
                         android:contentDescription="@string/language"
                         android:src="@drawable/ic_language"
-                        app:tint="@color/white" />
+                        app:tint="?attr/colorTextPrimary" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -142,7 +142,7 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_weight="1"
                         android:text="@string/language"
-                        android:textColor="#FFFFFF"
+                        android:textColor="?attr/colorTextPrimary"
                         android:textSize="16sp"
                         app:fontFamily="@font/sf_pro_display_regular"
                         android:fontFamily="@font/sf_pro_display_regular"
@@ -167,6 +167,64 @@
                         android:src="@drawable/ic_arrow_drop_down"
                         app:tint="@color/login_icon_tint" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="@dimen/_16sdp"
+                    android:background="?attr/colorDivider" />
+
+                <!-- Theme Row -->
+                <LinearLayout
+                    android:id="@+id/layout_theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="@{() -> f.onThemeClick()}"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_17sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:contentDescription="@string/theme"
+                        android:src="@drawable/ic_theme"
+                        app:tint="?attr/colorTextPrimary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_weight="1"
+                        android:text="@string/theme"
+                        android:textColor="?attr/colorTextPrimary"
+                        android:textSize="16sp"
+                        app:fontFamily="@font/sf_pro_display_regular"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textFontWeight="400" />
+
+                    <TextView
+                        android:id="@+id/tv_current_theme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_6sdp"
+                        android:textColor="@color/accent_color"
+                        android:textSize="15sp"
+                        app:fontFamily="@font/sf_pro_display_medium"
+                        android:fontFamily="@font/sf_pro_display_medium"
+                        android:textFontWeight="500" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:rotation="270"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_drop_down"
+                        app:tint="@color/login_icon_tint" />
+                </LinearLayout>
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -177,7 +235,7 @@
             android:layout_height="@dimen/login_button_height"
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_32sdp"
-            android:backgroundTint="#E53935"
+            android:backgroundTint="@color/color_logout_button"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:paddingTop="0dp"

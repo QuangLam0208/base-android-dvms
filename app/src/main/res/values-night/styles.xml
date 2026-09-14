@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.Bridge">
+        <item name="fontFamily">@font/application_font</item>
+        <item name="android:fontFamily">@font/application_font</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorControlNormal">@color/color_text_primary</item>
+        <item name="windowNoTitle">true</item>
+        <!-- Dynamic DayNight attr mappings (swap automatically via values & values-night) -->
+        <item name="colorScreenBackground">@color/color_screen_background</item>
+        <item name="colorCardBackground">@color/color_card_background</item>
+        <item name="colorNavBackground">@color/color_nav_background</item>
+        <item name="colorBottomSheetBackground">@color/color_bottom_sheet_background</item>
+        <item name="colorTextPrimary">@color/color_text_primary</item>
+        <item name="colorTextSecondary">@color/color_text_secondary</item>
+        <item name="colorTextMuted">@color/color_text_muted</item>
+        <item name="colorTextMutedLight">@color/color_text_muted_light</item>
+        <item name="colorTextCancel">@color/color_text_cancel</item>
+        <item name="colorDivider">@color/color_divider</item>
+        <item name="colorBottomSheetDivider">@color/color_bottom_sheet_divider</item>
+        <item name="colorChartCardStroke">@color/color_chart_card_stroke</item>
+        <item name="colorLogoutButton">@color/color_logout_button</item>
+        <item name="colorScrimOverlay">@color/color_scrim_overlay</item>
+        <item name="android:windowBackground">@color/color_screen_background</item>
+        <item name="android:statusBarColor">@color/color_screen_background</item>
+        <item name="android:navigationBarColor">@color/color_nav_background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+    </style>
+</resources>

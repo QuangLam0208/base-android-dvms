@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Course Card Dark -->
+    <color name="course_short_description">#AEAEAE</color>
+    <color name="syllabus_item_background">#202428</color>
+    <color name="syllabus_description_text">#F1F2F2</color>
+    <color name="shimmer_placeholder_base">#222831</color>
+    <color name="shimmer_placeholder_highlight">#353E4D</color>
+
+    <!-- ============================================================ -->
+    <!--  THEME-AWARE TOKENS (DARK MODE)                              -->
+    <!-- ============================================================ -->
+    <color name="main_background">#182029</color>
+    <color name="course_card_background">#090C0F</color>
+    <color name="color_screen_background">#182029</color>
+    <color name="color_card_background">#090C0F</color>
+    <color name="color_nav_background">#000000</color>
+    <color name="color_bottom_sheet_background">#1F232B</color>
+    <color name="color_text_primary">#FFFFFF</color>
+    <color name="color_text_secondary">#AEAEAE</color>
+    <color name="color_text_muted">#718096</color>
+    <color name="color_text_muted_light">#A0AEC0</color>
+    <color name="color_text_cancel">#9CA3AF</color>
+    <color name="color_divider">#232D37</color>
+    <color name="color_bottom_sheet_divider">#2E3542</color>
+    <color name="color_chart_card_stroke">#2A3540</color>
+    <color name="color_scrim_overlay">#80000000</color>
+    <color name="color_pill_unselected_bg">#202A34</color>
+    <color name="color_pill_unselected_stroke">#364352</color>
+</resources>

@@ -59,6 +59,14 @@ public class BaseFragmentViewModel extends ViewModel {
         return repository.getSharedPreferences().getAppLanguage();
     }
 
+    public void setTheme(String mode) {
+        repository.getSharedPreferences().setAppTheme(mode);
+    }
+
+    public String getTheme() {
+        return repository.getSharedPreferences().getAppTheme();
+    }
+
     @Override
     protected void onCleared() {
         compositeDisposable.dispose();

@@ -16,7 +16,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main_background"
+        android:background="?attr/colorScreenBackground"
         android:fillViewport="true">
 
         <LinearLayout
@@ -34,7 +34,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/sf_pro_display_semibold"
                 android:text="@string/tab_charts"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorTextPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -78,7 +78,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/start_date"
-                            android:textColor="#718096"
+                            android:textColor="?attr/colorTextMuted"
                             android:textSize="10sp" />
 
                         <TextView
@@ -88,7 +88,7 @@
                             android:layout_marginTop="2dp"
                             android:fontFamily="@font/sf_pro_display_semibold"
                             android:text="@{vm.startDateText}"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/colorTextPrimary"
                             android:textSize="13sp"
                             tools:text="07/09/2026" />
                     </LinearLayout>
@@ -102,7 +102,7 @@
                     android:contentDescription="@null"
                     android:rotation="-90"
                     android:src="@drawable/ic_arrow_drop_down"
-                    app:tint="#718096" />
+                    app:tint="?attr/colorTextMuted" />
 
                 <!-- End Date Box -->
                 <LinearLayout
@@ -135,7 +135,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/end_date"
-                            android:textColor="#718096"
+                            android:textColor="?attr/colorTextMuted"
                             android:textSize="10sp" />
 
                         <TextView
@@ -145,7 +145,7 @@
                             android:layout_marginTop="2dp"
                             android:fontFamily="@font/sf_pro_display_semibold"
                             android:text="@{vm.endDateText}"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/colorTextPrimary"
                             android:textSize="13sp"
                             tools:text="14/09/2026" />
                     </LinearLayout>
@@ -188,7 +188,7 @@
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="@dimen/_6sdp"
                         android:text="@string/chart_type_horizontal_bar"
-                        android:textColor="#A0AEC0"
+                        android:textColor="?attr/colorTextMutedLight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -201,7 +201,7 @@
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="@dimen/_6sdp"
                         android:text="@string/chart_type_line"
-                        android:textColor="#A0AEC0"
+                        android:textColor="?attr/colorTextMutedLight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -214,7 +214,7 @@
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="@dimen/_6sdp"
                         android:text="@string/chart_type_pie"
-                        android:textColor="#A0AEC0"
+                        android:textColor="?attr/colorTextMutedLight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -227,7 +227,7 @@
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="@dimen/_6sdp"
                         android:text="@string/chart_type_scatter"
-                        android:textColor="#A0AEC0"
+                        android:textColor="?attr/colorTextMutedLight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -240,7 +240,7 @@
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="@dimen/_6sdp"
                         android:text="@string/chart_type_radar"
-                        android:textColor="#A0AEC0"
+                        android:textColor="?attr/colorTextMutedLight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -253,7 +253,7 @@
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="@dimen/_6sdp"
                         android:text="@string/chart_type_bubble"
-                        android:textColor="#A0AEC0"
+                        android:textColor="?attr/colorTextMutedLight"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -327,7 +327,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sf_pro_display_semibold"
                     android:text="@{vm.chartSummary.title}"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorTextPrimary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     tools:text="Lượng học viên đăng ký theo môn" />
@@ -338,7 +338,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="@{vm.chartSummary.description}"
-                    android:textColor="#A0AEC0"
+                    android:textColor="?attr/colorTextMutedLight"
                     android:textSize="12sp"
                     tools:text="So sánh lượng học viên tham gia giữa 6 nhóm môn học chính." />
 
@@ -346,7 +346,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:background="#232D37" />
+                    android:background="?attr/colorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -366,7 +366,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tổng số"
-                            android:textColor="#718096"
+                            android:textColor="?attr/colorTextMuted"
                             android:textSize="10sp" />
 
                         <TextView
@@ -376,7 +376,7 @@
                             android:layout_marginTop="2dp"
                             android:fontFamily="@font/sf_pro_display_semibold"
                             android:text="@{vm.chartSummary.totalMetric}"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/colorTextPrimary"
                             android:textSize="12sp"
                             tools:text="620 HV" />
                     </LinearLayout>
@@ -395,7 +395,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Trung bình"
-                            android:textColor="#718096"
+                            android:textColor="?attr/colorTextMuted"
                             android:textSize="10sp" />
 
                         <TextView
@@ -424,7 +424,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Cao nhất"
-                            android:textColor="#718096"
+                            android:textColor="?attr/colorTextMuted"
                             android:textSize="10sp" />
 
                         <TextView
@@ -436,7 +436,7 @@
                             android:fontFamily="@font/sf_pro_display_semibold"
                             android:maxLines="1"
                             android:text="@{vm.chartSummary.maxMetric}"
-                            android:textColor="#F6AD55"
+                            android:textColor="@color/color_chart_metric_peak"
                             android:textSize="12sp"
                             tools:text="AI &amp; ML" />
                     </LinearLayout>

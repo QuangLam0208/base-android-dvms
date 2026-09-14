@@ -70,6 +70,11 @@
     <string name="language_vi">Tiếng Việt</string>
     <string name="language_en">English</string>
     <string name="choose_language_title">Select Language</string>
+    <string name="theme">Theme</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_system">System Default</string>
+    <string name="choose_theme_title">Select Theme</string>
     <string name="permission_camera_required">Camera permission is required to take photos</string>
     <string name="permission_storage_required">Storage permission is required to select photos</string>
     <string name="error_open_camera">Unable to open camera</string>

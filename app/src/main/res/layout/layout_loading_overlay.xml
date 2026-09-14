@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
-    android:background="#80000000"
+    android:background="?attr/colorScrimOverlay"
     android:visibility="gone">
 
     <include

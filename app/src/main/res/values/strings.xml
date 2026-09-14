@@ -70,6 +70,11 @@
     <string name="language_vi">Tiếng Việt</string>
     <string name="language_en">English</string>
     <string name="choose_language_title">Chọn ngôn ngữ</string>
+    <string name="theme">Giao diện</string>
+    <string name="theme_dark">Tối</string>
+    <string name="theme_light">Sáng</string>
+    <string name="theme_system">Theo hệ thống</string>
+    <string name="choose_theme_title">Chọn giao diện</string>
     <string name="permission_camera_required">Cần cấp quyền Camera để chụp ảnh</string>
     <string name="permission_storage_required">Cần cấp quyền bộ nhớ để chọn ảnh</string>
     <string name="error_open_camera">Không thể mở máy ảnh</string>

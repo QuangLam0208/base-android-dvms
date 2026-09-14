@@ -16,15 +16,22 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.base.android.BR;
 import com.base.android.R;
+import com.base.android.data.local.prefs.PreferencesService;
 import com.base.android.databinding.FragmentProfileBinding;
 import com.base.android.di.component.FragmentComponent;
 import com.base.android.helper.LocaleHelper;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.fragment.BaseFragment;
 import com.base.android.ui.main.MainActivity;
 import com.base.android.ui.main.account.login.LoginActivity;
 import com.base.android.utils.ImagePickerUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import timber.log.Timber;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding, ProfileViewModel> {
 
@@ -48,10 +55,10 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     private String saveAvatarToInternalStorage(Uri uri) {
         if (getContext() == null || uri == null) return null;
         try {
-            java.io.InputStream is = requireContext().getContentResolver().openInputStream(uri);
+            InputStream is = requireContext().getContentResolver().openInputStream(uri);
             if (is == null) return null;
-            java.io.File dest = new java.io.File(requireContext().getFilesDir(), "user_avatar.jpg");
-            java.io.OutputStream os = new java.io.FileOutputStream(dest);
+            File dest = new File(requireContext().getFilesDir(), "user_avatar.jpg");
+            OutputStream os = new FileOutputStream(dest);
             byte[] buffer = new byte[4096];
             int bytesRead;
             while ((bytesRead = is.read(buffer)) != -1) {
@@ -61,7 +68,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
             os.close();
             return dest.getAbsolutePath();
         } catch (Exception e) {
-            timber.log.Timber.e(e, "Error saving avatar to internal storage");
+            Timber.e(e, "Error saving avatar to internal storage");
             return null;
         }
     }
@@ -75,6 +82,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         super.onViewCreated(view, savedInstanceState);
         loadSavedAvatar();
         updateLanguageDisplay();
+        updateThemeDisplay();
     }
 
     private void loadSavedAvatar() {
@@ -184,6 +192,69 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         }
     }
 
+    public void onThemeClick() {
+        String currentTheme = viewModel.getTheme();
+
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme);
+        View sheetView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.layout_bottom_sheet_theme, null);
+        dialog.setContentView(sheetView);
+
+        ImageView ivCheckDark = sheetView.findViewById(R.id.iv_check_dark);
+        ImageView ivCheckLight = sheetView.findViewById(R.id.iv_check_light);
+        ImageView ivCheckSystem = sheetView.findViewById(R.id.iv_check_system);
+
+        ivCheckDark.setImageResource(PreferencesService.THEME_MODE_DARK.equals(currentTheme) ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
+        ivCheckLight.setImageResource(PreferencesService.THEME_MODE_LIGHT.equals(currentTheme) ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
+        ivCheckSystem.setImageResource(PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme) ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
+
+        sheetView.findViewById(R.id.btn_theme_dark).setOnClickListener(v -> {
+            dialog.dismiss();
+            if (!PreferencesService.THEME_MODE_DARK.equals(currentTheme)) {
+                changeTheme(PreferencesService.THEME_MODE_DARK);
+            }
+        });
+
+        sheetView.findViewById(R.id.btn_theme_light).setOnClickListener(v -> {
+            dialog.dismiss();
+            if (!PreferencesService.THEME_MODE_LIGHT.equals(currentTheme)) {
+                changeTheme(PreferencesService.THEME_MODE_LIGHT);
+            }
+        });
+
+        sheetView.findViewById(R.id.btn_theme_system).setOnClickListener(v -> {
+            dialog.dismiss();
+            if (!PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme)) {
+                changeTheme(PreferencesService.THEME_MODE_SYSTEM);
+            }
+        });
+
+        sheetView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
+
+    private void changeTheme(String themeMode) {
+        viewModel.setTheme(themeMode);
+        ThemeHelper.applyTheme(themeMode);
+
+        Intent intent = new Intent(requireActivity(), MainActivity.class);
+        intent.putExtra(MainActivity.KEY_CURRENT_TAG, MainActivity.TAG_PROFILE);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void updateThemeDisplay() {
+        String currentTheme = viewModel.getTheme();
+        if (PreferencesService.THEME_MODE_LIGHT.equals(currentTheme)) {
+            binding.tvCurrentTheme.setText(R.string.theme_light);
+        } else if (PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme)) {
+            binding.tvCurrentTheme.setText(R.string.theme_system);
+        } else {
+            binding.tvCurrentTheme.setText(R.string.theme_dark);
+        }
+    }
+
     public void handleLogout() {
         viewModel.logout();
         viewModel.showSuccessMessage(getString(R.string.logout_success));
@@ -198,6 +269,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         if (!hidden) {
             loadSavedAvatar();
             updateLanguageDisplay();
+            updateThemeDisplay();
         }
     }
 }

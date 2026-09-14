@@ -37,4 +37,12 @@ public interface PreferencesService {
     String KEY_LANGUAGE_CODE = "KEY_LANGUAGE_CODE";
     void setAppLanguage(String langCode);
     String getAppLanguage();
+
+    String KEY_THEME_MODE = "KEY_THEME_MODE";
+    String THEME_MODE_DARK = "DARK";
+    String THEME_MODE_LIGHT = "LIGHT";
+    String THEME_MODE_SYSTEM = "SYSTEM";
+
+    void setAppTheme(String themeMode);
+    String getAppTheme();
 }

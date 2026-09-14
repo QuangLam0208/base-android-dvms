@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Screen & container backgrounds -->
+    <attr name="colorScreenBackground" format="color"/>
+    <attr name="colorCardBackground" format="color"/>
+    <attr name="colorNavBackground" format="color"/>
+    <attr name="colorBottomSheetBackground" format="color"/>
+
+    <!-- Text colors -->
+    <attr name="colorTextPrimary" format="color"/>
+    <attr name="colorTextSecondary" format="color"/>
+    <attr name="colorTextMuted" format="color"/>
+    <attr name="colorTextMutedLight" format="color"/>
+    <attr name="colorTextCancel" format="color"/>
+
+    <!-- Dividers & borders -->
+    <attr name="colorDivider" format="color"/>
+    <attr name="colorBottomSheetDivider" format="color"/>
+    <attr name="colorChartCardStroke" format="color"/>
+
+    <!-- Semantic / special -->
+    <attr name="colorLogoutButton" format="color"/>
+    <attr name="colorScrimOverlay" format="color"/>
+</resources>

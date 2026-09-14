@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_9sdp"
         android:layout_marginTop="@dimen/_9sdp"
-        app:cardBackgroundColor="@color/course_card_background"
+        app:cardBackgroundColor="?attr/colorCardBackground"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardElevation="0dp">
 

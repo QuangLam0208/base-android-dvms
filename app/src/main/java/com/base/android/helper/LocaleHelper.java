@@ -13,6 +13,10 @@ public class LocaleHelper {
     public static final String LANGUAGE_EN = "en";
 
     public static Context setLocale(Context context, String languageCode) {
+        return setLocale(context, languageCode, null);
+    }
+
+    public static Context setLocale(Context context, String languageCode, String themeMode) {
         if (languageCode == null || languageCode.isEmpty()) {
             languageCode = LANGUAGE_VI;
         }
@@ -22,6 +26,10 @@ public class LocaleHelper {
 
         Resources resources = context.getResources();
         Configuration config = new Configuration(resources.getConfiguration());
+
+        if (themeMode != null) {
+            ThemeHelper.applyThemeToConfiguration(config, themeMode);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             config.setLocale(locale);

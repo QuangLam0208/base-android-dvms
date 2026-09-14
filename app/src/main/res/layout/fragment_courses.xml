@@ -18,7 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main_background">
+        android:background="?attr/colorScreenBackground">
 
         <TextView
             android:id="@+id/tv_heading_ongoing"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14sdp"
             android:text="@string/heading_ongoing"
-            android:textColor="#FFFFFF"
+            android:textColor="?attr/colorTextPrimary"
             android:textSize="@dimen/course_heading_text_size"
             android:letterSpacing="0"
             android:includeFontPadding="false"
