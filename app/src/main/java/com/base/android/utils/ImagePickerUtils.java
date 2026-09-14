@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import com.base.android.R;
 
 import java.io.File;
@@ -135,13 +137,9 @@ public class ImagePickerUtils {
     }
 
     public void checkStoragePermissionAndOpen() {
-        Context ctx = getContext();
-        if (ctx == null) return;
-        if (hasStoragePermission(ctx)) {
-            openGallery();
-        } else {
-            storagePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
+        // ActivityResultContracts.GetContent("image/*") uses the system photo/document picker
+        // and does NOT require runtime storage permissions (which are also deprecated on Android 13+)
+        openGallery();
     }
 
     public void openCamera() {
@@ -194,24 +192,27 @@ public class ImagePickerUtils {
         return true;
     }
 
-    public static AlertDialog showImagePickerDialog(@NonNull Context context,
-                                                    @NonNull Runnable onCameraSelected,
-                                                    @NonNull Runnable onGallerySelected) {
-        String[] options = new String[]{
-                context.getString(R.string.choose_from_camera),
-                context.getString(R.string.choose_from_gallery)
-        };
+    public static BottomSheetDialog showImagePickerDialog(@NonNull Context context,
+                                                           @NonNull Runnable onCameraSelected,
+                                                           @NonNull Runnable onGallerySelected) {
+        BottomSheetDialog dialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
+        android.view.View sheetView = android.view.LayoutInflater.from(context)
+                .inflate(R.layout.layout_bottom_sheet_avatar, null);
+        dialog.setContentView(sheetView);
 
-        return new AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.choose_avatar_title))
-                .setItems(options, (dialog, which) -> {
-                    if (which == 0) {
-                        onCameraSelected.run();
-                    } else if (which == 1) {
-                        onGallerySelected.run();
-                    }
-                })
-                .setNegativeButton(context.getString(R.string.cancel), null)
-                .show();
+        sheetView.findViewById(R.id.btn_camera).setOnClickListener(v -> {
+            dialog.dismiss();
+            onCameraSelected.run();
+        });
+
+        sheetView.findViewById(R.id.btn_gallery).setOnClickListener(v -> {
+            dialog.dismiss();
+            onGallerySelected.run();
+        });
+
+        sheetView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+        return dialog;
     }
 }

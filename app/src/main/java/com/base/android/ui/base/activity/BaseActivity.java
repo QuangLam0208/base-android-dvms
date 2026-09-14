@@ -167,6 +167,17 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
      */
     public void showProgressbar(String msg){
         loadingOverlay.setVisibility(View.VISIBLE);
+        android.widget.ImageView spinner = loadingOverlay.findViewById(R.id.iv_loading_spinner);
+        if (spinner != null) {
+            android.view.animation.RotateAnimation rotate = new android.view.animation.RotateAnimation(
+                    0f, 360f,
+                    android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f,
+                    android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f);
+            rotate.setDuration(900);
+            rotate.setRepeatCount(android.view.animation.Animation.INFINITE);
+            rotate.setInterpolator(new android.view.animation.LinearInterpolator());
+            spinner.startAnimation(rotate);
+        }
     }
 
     /**
@@ -179,6 +190,10 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
 
     public void hideProgress() {
         loadingOverlay.setVisibility(View.GONE);
+        android.widget.ImageView spinner = loadingOverlay.findViewById(R.id.iv_loading_spinner);
+        if (spinner != null) {
+            spinner.clearAnimation();
+        }
     }
 
 

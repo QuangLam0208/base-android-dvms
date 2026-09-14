@@ -43,6 +43,8 @@
             app:cardBackgroundColor="@color/course_card_background"
             app:cardCornerRadius="@dimen/_13sdp"
             app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title">
 
             <LinearLayout
@@ -105,6 +107,8 @@
             app:cardBackgroundColor="@color/course_card_background"
             app:cardCornerRadius="@dimen/_13sdp"
             app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/card_user_info">
 
             <LinearLayout

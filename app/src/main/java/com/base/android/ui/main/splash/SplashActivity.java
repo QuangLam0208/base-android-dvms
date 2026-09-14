@@ -1,17 +1,11 @@
 package com.base.android.ui.main.splash;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.base.android.BR;
 import com.base.android.R;
@@ -29,26 +23,23 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setupEdgeToEdge();
         super.onCreate(savedInstanceState);
         viewBinding.setA(this);
         viewBinding.setVm(viewModel);
 
         startSplashCheck();
+        startSpinnerAnimation();
     }
 
-    private void setupEdgeToEdge() {
-        Window window = getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        );
-        window.setStatusBarColor(Color.TRANSPARENT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            window.setNavigationBarColor(ContextCompat.getColor(this, R.color.login_background));
-        }
+    private void startSpinnerAnimation() {
+        android.view.animation.RotateAnimation rotate = new android.view.animation.RotateAnimation(
+                0f, 360f,
+                android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f,
+                android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f);
+        rotate.setDuration(900);
+        rotate.setRepeatCount(android.view.animation.Animation.INFINITE);
+        rotate.setInterpolator(new android.view.animation.LinearInterpolator());
+        viewBinding.ivSplashSpinner.startAnimation(rotate);
     }
 
     private void startSplashCheck() {
@@ -94,14 +85,12 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
 
     private void navigateToMain() {
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
     private void navigateToLogin() {
         Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

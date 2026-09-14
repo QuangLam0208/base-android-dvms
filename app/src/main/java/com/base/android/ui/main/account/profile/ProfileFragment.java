@@ -5,12 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import android.view.LayoutInflater;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import androidx.appcompat.app.AlertDialog;
-
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.base.android.BR;
 import com.base.android.R;
 import com.base.android.databinding.FragmentProfileBinding;
@@ -21,14 +24,19 @@ import com.base.android.ui.main.MainActivity;
 import com.base.android.ui.main.account.login.LoginActivity;
 import com.base.android.utils.ImagePickerUtils;
 
+import java.io.File;
+
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding, ProfileViewModel> {
 
     private final ImagePickerUtils imagePickerUtils = new ImagePickerUtils(this, new ImagePickerUtils.ImagePickerCallback() {
         @Override
         public void onImagePicked(Uri uri) {
             if (uri == null) return;
-            viewModel.saveAvatarUri(uri.toString());
-            displayAvatar(uri);
+            String savedPath = saveAvatarToInternalStorage(uri);
+            if (savedPath == null) return;
+            viewModel.saveAvatarUri(savedPath);
+            // pass File object so Glide loads correctly and bypasses stale cache
+            displayAvatar(new File(savedPath));
         }
 
         @Override
@@ -36,6 +44,27 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
             viewModel.showErrorMessage(errorMessage);
         }
     });
+
+    private String saveAvatarToInternalStorage(Uri uri) {
+        if (getContext() == null || uri == null) return null;
+        try {
+            java.io.InputStream is = requireContext().getContentResolver().openInputStream(uri);
+            if (is == null) return null;
+            java.io.File dest = new java.io.File(requireContext().getFilesDir(), "user_avatar.jpg");
+            java.io.OutputStream os = new java.io.FileOutputStream(dest);
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            is.close();
+            os.close();
+            return dest.getAbsolutePath();
+        } catch (Exception e) {
+            timber.log.Timber.e(e, "Error saving avatar to internal storage");
+            return null;
+        }
+    }
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -51,7 +80,12 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     private void loadSavedAvatar() {
         String savedAvatar = viewModel.getSavedAvatarUri();
         if (savedAvatar != null && !savedAvatar.trim().isEmpty()) {
-            displayAvatar(Uri.parse(savedAvatar));
+            // use File object instead of Uri.parse() which produced a scheme-less
+            // URI that Glide couldn't resolve, causing the avatar to always appear as default.
+            File avatarFile = new File(savedAvatar);
+            if (avatarFile.exists()) {
+                displayAvatar(avatarFile);
+            }
         }
     }
 
@@ -80,12 +114,17 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         imagePickerUtils.showImagePickerDialog();
     }
 
-    private void displayAvatar(Object source) {
-        if (source == null || getContext() == null) return;
+    private void displayAvatar(File file) {
+        if (file == null || !file.exists() || getContext() == null) return;
         binding.ivAvatar.setPadding(0, 0, 0, 0);
         binding.ivAvatar.setImageTintList(null);
+        // disable Glide disk+memory cache so overwritten user_avatar.jpg is
+        // always read fresh — without this, Glide serves the old cached version even after
+        // the file has been replaced with the new gallery/camera image.
         Glide.with(this)
-                .load(source)
+                .load(file)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.ic_profile)
                 .error(R.drawable.ic_profile)
                 .circleCrop()
@@ -94,28 +133,36 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
 
     public void onLanguageClick() {
         String currentLang = viewModel.getLanguage();
-        int checkedItem = LocaleHelper.LANGUAGE_EN.equals(currentLang) ? 1 : 0;
+        boolean isEn = LocaleHelper.LANGUAGE_EN.equals(currentLang);
 
-        String[] options = new String[]{
-                getString(R.string.language_vi),
-                getString(R.string.language_en)
-        };
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme);
+        View sheetView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.layout_bottom_sheet_language, null);
+        dialog.setContentView(sheetView);
 
-        final int[] selectedIndex = {checkedItem};
+        ImageView ivCheckVi = sheetView.findViewById(R.id.iv_check_vi);
+        ImageView ivCheckEn = sheetView.findViewById(R.id.iv_check_en);
 
-        new AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.choose_language_title))
-                .setSingleChoiceItems(options, checkedItem, (dialog, which) -> {
-                    selectedIndex[0] = which;
-                })
-                .setPositiveButton(getString(R.string.confirm), (dialog, which) -> {
-                    String newLang = (selectedIndex[0] == 1) ? LocaleHelper.LANGUAGE_EN : LocaleHelper.LANGUAGE_VI;
-                    if (!newLang.equals(currentLang)) {
-                        changeLanguage(newLang);
-                    }
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
+        ivCheckVi.setImageResource(isEn ? R.drawable.ic_circle_outline : R.drawable.ic_check_circle);
+        ivCheckEn.setImageResource(isEn ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
+
+        sheetView.findViewById(R.id.btn_lang_vi).setOnClickListener(v -> {
+            dialog.dismiss();
+            if (isEn) {
+                changeLanguage(LocaleHelper.LANGUAGE_VI);
+            }
+        });
+
+        sheetView.findViewById(R.id.btn_lang_en).setOnClickListener(v -> {
+            dialog.dismiss();
+            if (!isEn) {
+                changeLanguage(LocaleHelper.LANGUAGE_EN);
+            }
+        });
+
+        sheetView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     private void changeLanguage(String langCode) {
@@ -124,9 +171,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
 
         Intent intent = new Intent(requireActivity(), MainActivity.class);
         intent.putExtra(MainActivity.KEY_CURRENT_TAG, MainActivity.TAG_PROFILE);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        requireActivity().finish();
     }
 
     private void updateLanguageDisplay() {
@@ -142,9 +188,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         viewModel.logout();
         viewModel.showSuccessMessage(getString(R.string.logout_success));
         Intent intent = new Intent(requireActivity(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        requireActivity().finish();
+        requireActivity().finishAffinity();
     }
 
     @Override
