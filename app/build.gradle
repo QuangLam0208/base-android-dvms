@@ -182,4 +182,7 @@ dependencies {
 
     // OneSignal Push Notification SDK
     implementation 'com.onesignal:OneSignal:5.9.2'
+
+    // Facebook Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 }

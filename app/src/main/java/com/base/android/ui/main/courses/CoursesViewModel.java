@@ -27,7 +27,6 @@ public class CoursesViewModel extends BaseFragmentViewModel {
         query.put("pageable.page", 0);
         query.put("pageable.size", 20);
 
-        showLoading();
         compositeDisposable.add(
                 repository.getApiService()
                         .getListCourse(query)
@@ -35,7 +34,6 @@ public class CoursesViewModel extends BaseFragmentViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 response -> {
-                                    hideLoading();
                                     if (response.isResult() && response.getData() != null) {
                                         callback.doSuccess(response.getData().getContent());
                                     } else {
@@ -44,7 +42,6 @@ public class CoursesViewModel extends BaseFragmentViewModel {
                                 },
                                 throwable -> {
                                     Timber.e(throwable);
-                                    hideLoading();
                                     callback.doError(throwable);
                                 }
                         )

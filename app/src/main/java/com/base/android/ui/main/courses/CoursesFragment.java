@@ -85,18 +85,44 @@ public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, Course
         binding.swipeRefreshLayout.setOnRefreshListener(this::loadData);
     }
 
+    private void showShimmer() {
+        if (binding != null && binding.shimmerViewContainer != null) {
+            binding.shimmerViewContainer.setVisibility(View.VISIBLE);
+            binding.shimmerViewContainer.startShimmer();
+        }
+        if (binding != null) {
+            binding.rvCourses.setVisibility(View.GONE);
+            binding.layoutEmpty.setVisibility(View.GONE);
+        }
+    }
+
+    private void hideShimmer() {
+        if (binding != null && binding.shimmerViewContainer != null) {
+            binding.shimmerViewContainer.stopShimmer();
+            binding.shimmerViewContainer.setVisibility(View.GONE);
+        }
+    }
+
     private void loadData() {
-        binding.layoutEmpty.setVisibility(View.GONE);
+        boolean isPullToRefresh = binding.swipeRefreshLayout.isRefreshing();
+        if (!isPullToRefresh) {
+            showShimmer();
+        } else {
+            binding.layoutEmpty.setVisibility(View.GONE);
+        }
 
         viewModel.getListCourse(new MainCallback<List<CourseResponse>>() {
             @Override
             public void doSuccess(List<CourseResponse> list) {
+                hideShimmer();
                 binding.swipeRefreshLayout.setRefreshing(false);
                 if (list != null && !list.isEmpty()) {
                     courseAdapter.setData(list);
+                    binding.rvCourses.setVisibility(View.VISIBLE);
                     binding.layoutEmpty.setVisibility(View.GONE);
                 } else {
                     courseAdapter.setData(null);
+                    binding.rvCourses.setVisibility(View.GONE);
                     binding.layoutEmpty.setVisibility(View.VISIBLE);
                 }
             }
@@ -106,13 +132,17 @@ public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, Course
 
             @Override
             public void doError(Throwable error) {
+                hideShimmer();
                 binding.swipeRefreshLayout.setRefreshing(false);
+                binding.rvCourses.setVisibility(View.VISIBLE);
                 viewModel.showErrorMessage(getString(R.string.newtwork_error));
             }
 
             @Override
             public void doFail() {
+                hideShimmer();
                 binding.swipeRefreshLayout.setRefreshing(false);
+                binding.rvCourses.setVisibility(View.VISIBLE);
                 viewModel.showErrorMessage(getString(R.string.error_load_courses));
             }
         });
@@ -145,5 +175,13 @@ public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, Course
         if (!hidden) {
             // Có thể refresh dữ liệu khi tab được hiển thị lại
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (binding != null && binding.shimmerViewContainer != null) {
+            binding.shimmerViewContainer.stopShimmer();
+        }
+        super.onDestroyView();
     }
 }
