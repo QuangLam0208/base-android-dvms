@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "121957928951",
+    "project_id": "fir-push-noti-8e6a8",
+    "storage_bucket": "fir-push-noti-8e6a8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121957928951:android:8a383f9a0d26cc758fe8f2",
+        "android_client_info": {
+          "package_name": "com.stream_hub.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAWEogvL_EAD40M_J3NKIUrE5WgK8gZS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

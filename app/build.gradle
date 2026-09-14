@@ -177,4 +177,6 @@ dependencies {
     implementation "com.github.arkon.FlexibleAdapter:flexible-adapter:$flexible_adapter_version"
     implementation "com.github.arkon.FlexibleAdapter:flexible-adapter-ui:$flexible_adapter_version"
 
+    // MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

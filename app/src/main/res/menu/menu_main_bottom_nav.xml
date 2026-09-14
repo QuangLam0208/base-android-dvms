@@ -8,9 +8,9 @@
         android:title="@string/tab_courses" />
 
     <item
-        android:id="@+id/tab_reviews"
-        android:icon="@drawable/ic_reviews"
-        android:title="@string/tab_reviews" />
+        android:id="@+id/tab_charts"
+        android:icon="@drawable/ic_chart"
+        android:title="@string/tab_charts" />
 
     <item
         android:id="@+id/tab_mentor"

@@ -9,9 +9,35 @@
 
     <string name="tab_courses">Courses</string>
     <string name="tab_reviews">Reviews</string>
+    <string name="tab_charts">Charts</string>
     <string name="tab_mentor">Mentor</string>
     <string name="tab_company">Company</string>
     <string name="tab_profile">Profile</string>
+
+    <!-- Charts and Filters -->
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="error_end_date_before_start">End date cannot be earlier than start date</string>
+    <string name="error_start_date_after_end">Start date cannot be later than end date</string>
+    <string name="filter_select_date">Select Date</string>
+    <string name="chart_type_bar">Bar</string>
+    <string name="chart_type_horizontal_bar">Horizontal Bar</string>
+    <string name="chart_type_line">Line</string>
+    <string name="chart_type_pie">Pie</string>
+    <string name="chart_type_scatter">Scatter</string>
+    <string name="chart_type_radar">Radar</string>
+    <string name="chart_type_bubble">Bubble</string>
+    <string name="chart_title_bar">Course Enrollments by Subject</string>
+    <string name="chart_title_horizontal_bar">Mentor Average Rating</string>
+    <string name="chart_title_line">Learning Hours Trend</string>
+    <string name="chart_title_pie">Student Major Distribution</string>
+    <string name="chart_title_scatter">Correlation: Study Hours &amp; Test Score</string>
+    <string name="chart_title_radar">6 Competency Skills Assessment</string>
+    <string name="chart_title_bubble">Analysis: Hours - Rating - Students</string>
+    <string name="chart_summary_title">Summary Metrics</string>
+    <string name="chart_metric_total">Total: %s</string>
+    <string name="chart_metric_avg">Average: %s</string>
+    <string name="chart_metric_max">Peak: %s</string>
 
     <!-- Course Card -->
     <string name="heading_ongoing">Ongoing</string>

@@ -11,6 +11,7 @@ import com.base.android.data.Repository;
 import com.base.android.di.scope.FragmentScope;
 import com.base.android.ui.base.fragment.BaseFragment;
 import com.base.android.ui.main.account.profile.ProfileViewModel;
+import com.base.android.ui.main.chart.ChartViewModel;
 import com.base.android.ui.main.company.CompanyViewModel;
 import com.base.android.ui.main.courses.CoursesViewModel;
 import com.base.android.ui.main.mentor.MentorViewModel;
@@ -52,6 +53,14 @@ public class FragmentModule {
         Supplier<ReviewsViewModel> supplier = () -> new ReviewsViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<ReviewsViewModel> factory = new ViewModelProviderFactory<>(ReviewsViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(ReviewsViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    ChartViewModel provideChartViewModel(Repository repository, Context application) {
+        Supplier<ChartViewModel> supplier = () -> new ChartViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<ChartViewModel> factory = new ViewModelProviderFactory<>(ChartViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(ChartViewModel.class);
     }
 
     @Provides

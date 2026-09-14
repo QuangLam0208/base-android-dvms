@@ -16,6 +16,7 @@ import com.base.android.databinding.ActivityMainBinding;
 import com.base.android.di.component.ActivityComponent;
 import com.base.android.ui.base.activity.BaseActivity;
 import com.base.android.ui.main.account.profile.ProfileFragment;
+import com.base.android.ui.main.chart.ChartFragment;
 import com.base.android.ui.main.company.CompanyFragment;
 import com.base.android.ui.main.courses.CoursesFragment;
 import com.base.android.ui.main.mentor.MentorFragment;
@@ -26,6 +27,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     public static final String TAG_COURSES = "TAG_COURSES";
     public static final String TAG_REVIEWS = "TAG_REVIEWS";
+    public static final String TAG_CHARTS = "TAG_CHARTS";
     public static final String TAG_MENTOR = "TAG_MENTOR";
     public static final String TAG_COMPANY = "TAG_COMPANY";
     public static final String TAG_PROFILE = "TAG_PROFILE";
@@ -76,8 +78,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     private int getBottomNavItemIdByTag(String tag) {
         switch (tag) {
-            case TAG_REVIEWS:
-                return R.id.tab_reviews;
+            case TAG_CHARTS:
+                return R.id.tab_charts;
             case TAG_MENTOR:
                 return R.id.tab_mentor;
             case TAG_COMPANY:
@@ -95,8 +97,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         if (itemId == R.id.tab_courses) {
             switchTab(TAG_COURSES);
             return true;
-        } else if (itemId == R.id.tab_reviews) {
-            switchTab(TAG_REVIEWS);
+        } else if (itemId == R.id.tab_charts) {
+            switchTab(TAG_CHARTS);
             return true;
         } else if (itemId == R.id.tab_mentor) {
             switchTab(TAG_MENTOR);
@@ -139,6 +141,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     private Fragment createFragmentByTag(String tag) {
         switch (tag) {
+            case TAG_CHARTS:
+                return ChartFragment.newInstance();
             case TAG_REVIEWS:
                 return ReviewsFragment.newInstance();
             case TAG_MENTOR:

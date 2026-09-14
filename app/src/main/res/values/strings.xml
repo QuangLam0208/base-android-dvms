@@ -9,9 +9,35 @@
 
     <string name="tab_courses">Courses</string>
     <string name="tab_reviews">Reviews</string>
+    <string name="tab_charts">Biểu đồ</string>
     <string name="tab_mentor">Mentor</string>
     <string name="tab_company">Company</string>
     <string name="tab_profile">Profile</string>
+
+    <!-- Charts and Filters -->
+    <string name="start_date">Từ ngày</string>
+    <string name="end_date">Đến ngày</string>
+    <string name="error_end_date_before_start">Ngày kết thúc không được nhỏ hơn ngày bắt đầu</string>
+    <string name="error_start_date_after_end">Ngày bắt đầu không được lớn hơn ngày kết thúc</string>
+    <string name="filter_select_date">Chọn ngày</string>
+    <string name="chart_type_bar">Cột đứng</string>
+    <string name="chart_type_horizontal_bar">Cột ngang</string>
+    <string name="chart_type_line">Đường</string>
+    <string name="chart_type_pie">Tròn</string>
+    <string name="chart_type_scatter">Phân tán</string>
+    <string name="chart_type_radar">Radar</string>
+    <string name="chart_type_bubble">Bong bóng</string>
+    <string name="chart_title_bar">Lượng học viên đăng ký theo môn</string>
+    <string name="chart_title_horizontal_bar">Đánh giá trung bình của Giảng viên</string>
+    <string name="chart_title_line">Xu hướng thời lượng học tập</string>
+    <string name="chart_title_pie">Cơ cấu học viên theo chuyên ngành</string>
+    <string name="chart_title_scatter">Tương quan: Giờ tự học &amp; Điểm thi</string>
+    <string name="chart_title_radar">Đánh giá 6 nhóm kỹ năng</string>
+    <string name="chart_title_bubble">Phân tích: Thời lượng - Điểm đánh giá - Số học viên</string>
+    <string name="chart_summary_title">Tóm tắt thông số</string>
+    <string name="chart_metric_total">Tổng số: %s</string>
+    <string name="chart_metric_avg">Trung bình: %s</string>
+    <string name="chart_metric_max">Cao nhất: %s</string>
 
     <!-- Course Card -->
     <string name="heading_ongoing">Đang diễn ra</string>
