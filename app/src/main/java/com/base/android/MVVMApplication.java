@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import timber.log.Timber;
 
 public class MVVMApplication extends Application implements LifecycleObserver {
+    @Getter
     @Setter
     private AppCompatActivity currentActivity;
 
@@ -55,6 +56,9 @@ public class MVVMApplication extends Application implements LifecycleObserver {
                 .application(this)
                 .build();
         appComponent.inject(this);
+
+        // Initialize OneSignal
+        appComponent.getOneSignalManager().initialize(this, Constants.ONESIGNAL_APP_ID);
 
         // Init Toasty
         Toasty.Config.getInstance()
