@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -17,6 +18,9 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
@@ -28,6 +32,8 @@ import com.base.android.di.component.ActivityComponent;
 import com.base.android.ui.base.activity.BaseActivity;
 import com.base.android.ui.main.MainActivity;
 import com.base.android.ui.main.MainCallback;
+import com.base.android.ui.main.qrscan.QRScanActivity;
+import com.google.gson.Gson;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
 
@@ -35,6 +41,11 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     private ViewTreeObserver.OnGlobalLayoutListener keyboardLayoutListener;
     private boolean isButtonShifted = false;
     private int lastKnownKeypadHeight = 0;
+
+    // Activity Result API launcher for QR login scanner
+    private final ActivityResultLauncher<Intent> qrLoginLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    this::handleQrLoginResult);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +123,43 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     }
 
     public void onQrCodeClick() {
-        viewModel.showNormalMessage("Tính năng đăng nhập bằng mã QR đang được phát triển");
+        Intent intent = new Intent(this, QRScanActivity.class);
+        intent.putExtra(QRScanActivity.EXTRA_MODE, QRScanActivity.MODE_QR_LOGIN);
+        qrLoginLauncher.launch(intent);
+    }
+
+    /** Callback for ActivityResultLauncher — receives the scanned QR text. */
+    private void handleQrLoginResult(ActivityResult result) {
+        if (result.getResultCode() != RESULT_OK || result.getData() == null) return;
+        String qrData = result.getData().getStringExtra(QRScanActivity.EXTRA_QR_RESULT);
+        fillFromQr(qrData);
+    }
+
+    /**
+     * Parses JSON from QR code and fills username/password fields.
+     * Expected format: {"username":"admin","password":"admin123654"}
+     * Does NOT trigger login — the user still has to press the Login button.
+     */
+    private void fillFromQr(String qrData) {
+        try {
+            QrLoginPayload payload = new Gson().fromJson(qrData, QrLoginPayload.class);
+            if (payload == null
+                    || TextUtils.isEmpty(payload.username)
+                    || TextUtils.isEmpty(payload.password)) {
+                viewModel.showErrorMessage(getString(R.string.qr_login_invalid_format));
+                return;
+            }
+            viewModel.username.set(payload.username);
+            viewModel.password.set(payload.password);
+        } catch (Exception e) {
+            viewModel.showErrorMessage(getString(R.string.qr_login_invalid_format));
+        }
+    }
+
+    /** Simple POJO for Gson — matches {"username":"...","password":"..."} */
+    private static class QrLoginPayload {
+        String username;
+        String password;
     }
 
     public void onForgotPasswordClick() {

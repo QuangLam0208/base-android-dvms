@@ -24,6 +24,7 @@ import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.fragment.BaseFragment;
 import com.base.android.ui.main.MainActivity;
 import com.base.android.ui.main.account.login.LoginActivity;
+import com.base.android.ui.main.qrscan.QRScanActivity;
 import com.base.android.utils.ImagePickerUtils;
 
 import java.io.File;
@@ -120,6 +121,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
 
     public void onAvatarClick() {
         imagePickerUtils.showImagePickerDialog();
+    }
+
+    public void onQRScanClick() {
+        Intent intent = new Intent(requireActivity(), QRScanActivity.class);
+        startActivity(intent);
     }
 
     private void displayAvatar(File file) {
