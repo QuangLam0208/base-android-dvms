@@ -140,9 +140,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
             public void doSuccess(UserLoginResponse response) {
                 viewModel.showSuccessMessage("Đăng nhập thành công!");
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+                finishAffinity();
             }
 
             @Override

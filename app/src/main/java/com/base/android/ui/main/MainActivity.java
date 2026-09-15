@@ -186,9 +186,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     public void doExpireSession() {
         Intent intent = new Intent(this, com.base.android.ui.main.account.login.LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 
     @Override

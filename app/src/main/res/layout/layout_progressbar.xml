@@ -8,9 +8,11 @@
     android:background="@drawable/bg_loading_overlay"
     android:padding="@dimen/_12sdp">
 
-    <ProgressBar
+    <ImageView
+        android:id="@+id/iv_loading_spinner"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/accent_color" />
+        android:contentDescription="@null"
+        android:src="@drawable/ic_loading_spinner" />
 </FrameLayout>

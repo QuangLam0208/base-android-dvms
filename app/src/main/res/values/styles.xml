@@ -9,6 +9,32 @@
         <!-- navigation icon color -->
         <item name="colorControlNormal">@color/white</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/login_background</item>
+        <item name="android:statusBarColor">@color/login_background</item>
+        <item name="android:navigationBarColor">@color/login_background</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppBottomSheetStyle</item>
+    </style>
+
+    <style name="AppBottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <!-- Splash Theme to eliminate cold-launch white flash -->
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/login_background</item>
+        <item name="android:statusBarColor">@color/login_background</item>
+        <item name="android:navigationBarColor">@color/login_background</item>
+    </style>
+
+    <!-- Login Theme to eliminate cold/transition white flash and black screen -->
+    <style name="LoginTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/login_background</item>
+        <item name="android:statusBarColor">@color/login_background</item>
+        <item name="android:navigationBarColor">@color/login_background</item>
     </style>
     <style name="roundImg">
         <item name="cornerFamily">rounded</item>

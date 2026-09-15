@@ -45,13 +45,13 @@
                 android:textSize="@dimen/_20ssp"
                 android:textStyle="bold" />
 
-            <ProgressBar
-                android:id="@+id/loading_progress"
-                style="?android:attr/progressBarStyle"
+            <ImageView
+                android:id="@+id/iv_splash_spinner"
                 android:layout_width="@dimen/_28sdp"
                 android:layout_height="@dimen/_28sdp"
                 android:layout_marginTop="@dimen/_24sdp"
-                android:indeterminateTint="@color/accent_color" />
+                android:contentDescription="@null"
+                android:src="@drawable/ic_loading_spinner" />
 
         </LinearLayout>
 
