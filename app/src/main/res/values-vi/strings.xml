@@ -74,6 +74,15 @@
     <string name="permission_storage_required">Cần cấp quyền bộ nhớ để chọn ảnh</string>
     <string name="error_open_camera">Không thể mở máy ảnh</string>
 
+    <!-- QR Scan Screen -->
+    <string name="qr_scan_title">Quét QR</string>
+    <string name="qr_scan_result_label">Kết quả:</string>
+    <string name="qr_scan_again">Quét lại</string>
+    <string name="qr_scan_pick_image">Chọn ảnh từ thư viện</string>
+    <string name="qr_scan_no_result">Không tìm thấy mã QR trong ảnh</string>
+    <string name="qr_scan_error_read_image">Không thể đọc ảnh, vui lòng thử lại</string>
+    <string name="qr_login_invalid_format">Mã QR không hợp lệ. Định dạng cần là JSON có trường username và password</string>
+
     <!-- Mentor Screen -->
     <string name="empty_mentor_list">Không có mentor nào</string>
 

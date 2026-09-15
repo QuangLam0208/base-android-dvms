@@ -167,6 +167,53 @@
                         android:src="@drawable/ic_arrow_drop_down"
                         app:tint="@color/login_icon_tint" />
                 </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginHorizontal="@dimen/_17sdp"
+                    android:background="#33FFFFFF" />
+
+                <!-- QR Scan Row -->
+                <LinearLayout
+                    android:id="@+id/layout_qr_scan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="@{() -> f.onQRScanClick()}"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_17sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:contentDescription="@string/qr_scan_title"
+                        android:src="@drawable/ic_qr_code"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_weight="1"
+                        android:text="@string/qr_scan_title"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        app:fontFamily="@font/sf_pro_display_regular"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textFontWeight="400" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:rotation="270"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_drop_down"
+                        app:tint="@color/login_icon_tint" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

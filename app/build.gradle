@@ -185,4 +185,8 @@ dependencies {
 
     // Facebook Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // QR Scanner
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+    implementation 'com.google.zxing:core:3.5.1'
 }

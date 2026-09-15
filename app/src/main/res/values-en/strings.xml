@@ -74,6 +74,15 @@
     <string name="permission_storage_required">Storage permission is required to select photos</string>
     <string name="error_open_camera">Unable to open camera</string>
 
+    <!-- QR Scan Screen -->
+    <string name="qr_scan_title">QR Scanner</string>
+    <string name="qr_scan_result_label">Result:</string>
+    <string name="qr_scan_again">Scan again</string>
+    <string name="qr_scan_pick_image">Pick image from gallery</string>
+    <string name="qr_scan_no_result">No QR code found in this image</string>
+    <string name="qr_scan_error_read_image">Unable to read image, please try again</string>
+    <string name="qr_login_invalid_format">Invalid QR code. Expected JSON format with username and password fields</string>
+
     <!-- Mentor Screen -->
     <string name="empty_mentor_list">No mentors available</string>
 

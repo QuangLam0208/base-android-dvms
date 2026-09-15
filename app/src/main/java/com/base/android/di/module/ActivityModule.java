@@ -12,6 +12,7 @@ import com.base.android.di.scope.ActivityScope;
 import com.base.android.ui.base.activity.BaseActivity;
 import com.base.android.ui.main.MainViewModel;
 import com.base.android.ui.main.account.login.LoginViewModel;
+import com.base.android.ui.main.qrscan.QRScanViewModel;
 import com.base.android.ui.main.splash.SplashViewModel;
 import com.base.android.utils.GetInfo;
 
@@ -66,5 +67,13 @@ public class ActivityModule {
         Supplier<SplashViewModel> supplier = () -> new SplashViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<SplashViewModel> factory = new ViewModelProviderFactory<>(SplashViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(SplashViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    QRScanViewModel provideQRScanViewModel(Repository repository, Context application) {
+        Supplier<QRScanViewModel> supplier = () -> new QRScanViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<QRScanViewModel> factory = new ViewModelProviderFactory<>(QRScanViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(QRScanViewModel.class);
     }
 }
