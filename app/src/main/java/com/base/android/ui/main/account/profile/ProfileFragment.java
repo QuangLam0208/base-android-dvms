@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -36,20 +37,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import timber.log.Timber;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding, ProfileViewModel> {
 
+    private final ExecutorService imageExecutor = Executors.newSingleThreadExecutor();
+
     private final ImagePickerUtils imagePickerUtils = new ImagePickerUtils(this, new ImagePickerUtils.ImagePickerCallback() {
         @Override
         public void onImagePicked(Uri uri) {
             if (uri == null) return;
-            String savedPath = saveAvatarToInternalStorage(uri);
-            if (savedPath == null) return;
-            viewModel.saveAvatarUri(savedPath);
-            // pass File object so Glide loads correctly and bypasses stale cache
-            displayAvatar(new File(savedPath));
+            processAndSaveAvatarWithGlide(uri);
         }
 
         @Override
@@ -58,57 +59,63 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         }
     });
 
-    /**
-     * Áp dụng inSampleSize khi lưu Avatar
-    **/
-    private String saveAvatarToInternalStorage(Uri uri) {
-        if (getContext() == null || uri == null) return null;
-        try {
-            Context context = requireContext();
+    private void processAndSaveAvatarWithGlide(Uri uri) {
+        if (getContext() == null || uri == null) return;
 
-            // BƯỚC 1: Đọc thông số kích thước ảnh (không tải ảnh vào RAM)
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true; // Chỉ lấy width/height
-            InputStream isBounds = context.getContentResolver().openInputStream(uri);
-            BitmapFactory.decodeStream(isBounds, null, options);
-            if (isBounds != null) isBounds.close();
+        Context appContext = requireContext().getApplicationContext();
 
-            int originalWidth = options.outWidth;
-            int originalHeight = options.outHeight;
+        imageExecutor.execute(() -> {
+            com.bumptech.glide.request.FutureTarget<Bitmap> futureTarget = null;
+            // Dùng file tạm để ghi dữ liệu trước
+            File tempFile = new File(appContext.getFilesDir(), "temp_avatar.jpg");
+            File destFile = new File(appContext.getFilesDir(), "user_avatar.jpg");
 
-            // BƯỚC 2: Tính toán inSampleSize (Ví dụ chuẩn hóa về tối đa 512x512)
-            final int TARGET_SIZE = 512;
-            options.inSampleSize = ImageUtils.calculateInSampleSize(options, TARGET_SIZE, TARGET_SIZE);
-            options.inJustDecodeBounds = false; // Tắt cờ để giải mã thực sự
+            try {
+                futureTarget = Glide.with(appContext)
+                        .asBitmap()
+                        .load(uri)
+                        .centerCrop()
+                        .submit(512, 512);
 
-            // BƯỚC 3: Decode bitmap
-            InputStream isBitmap = context.getContentResolver().openInputStream(uri);
-            Bitmap sampledBitmap = BitmapFactory.decodeStream(isBitmap, null, options);
-            if (isBitmap != null) isBitmap.close();
+                Bitmap bitmap = futureTarget.get();
 
-            if (sampledBitmap == null) return null;
+                if (bitmap != null && !bitmap.isRecycled()) {
+                    // Ghi vào file tạm
+                    FileOutputStream os = new FileOutputStream(tempFile);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
+                    os.flush();
+                    os.close();
 
-            // BƯỚC 4: Nén và ghi ra file đích (Dung lượng file lúc này chỉ còn khoảng 50KB - 150KB)
-            File dest = new File(context.getFilesDir(), "user_avatar.jpg");
-            OutputStream os = new FileOutputStream(dest);
-            sampledBitmap.compress(Bitmap.CompressFormat.JPEG, 85, os); // Chất lượng 85%
-            os.flush();
-            os.close();
+                    // Đảm bảo file tạm có dữ liệu (> 0 byte) thì mới đổi tên đè lên file chính
+                    if (tempFile.exists() && tempFile.length() > 0) {
+                        if (destFile.exists()) {
+                            destFile.delete();
+                        }
+                        tempFile.renameTo(destFile);
 
-            // LOG ĐỂ KIỂM TRA:
-            Timber.d("=== KIỂM TRA TỐI ƯU AVATAR ===");
-            Timber.d("Ảnh gốc: %d x %d px", originalWidth, originalHeight);
-            Timber.d("Hệ số inSampleSize: %d", options.inSampleSize);
-            Timber.d("Bitmap giải nén trong RAM: %d x %d px", sampledBitmap.getWidth(), sampledBitmap.getHeight());
-            Timber.d("Dung lượng file lưu trên đĩa: %d KB", dest.length() / 1024);
-            Timber.d("================================");
+                        Timber.d("=== LƯU AVATAR THÀNH CÔNG ===");
+                        Timber.d("Dung lượng file lưu: %d KB", destFile.length() / 1024);
 
-            sampledBitmap.recycle(); // Giải phóng Bitmap khỏi RAM
-            return dest.getAbsolutePath();
-        } catch (Exception e) {
-            Timber.e(e, "Error saving avatar to internal storage");
-            return null;
-        }
+                        // Cập nhật giao diện trên Main Thread
+                        if (getActivity() != null) {
+                            requireActivity().runOnUiThread(() -> {
+                                viewModel.saveAvatarUri(destFile.getAbsolutePath());
+                                displayAvatar(destFile);
+                            });
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Timber.e(e, "Lỗi khi xử lý lưu avatar bằng Glide");
+                if (tempFile.exists()) {
+                    tempFile.delete();
+                }
+            } finally {
+                if (futureTarget != null) {
+                    Glide.with(appContext).clear(futureTarget);
+                }
+            }
+        });
     }
 
     public static ProfileFragment newInstance() {
@@ -129,28 +136,41 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         loadSavedAvatar();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (imageExecutor != null && !imageExecutor.isShutdown()) {
+            imageExecutor.shutdown();
+        }
+    }
+
     private void loadSavedAvatar() {
         String savedAvatar = viewModel.getSavedAvatarUri();
         File avatarFile = null;
+
         if (savedAvatar != null && !savedAvatar.trim().isEmpty()) {
-            // use File object instead of Uri.parse() which produced a scheme-less
-            // URI that Glide couldn't resolve, causing the avatar to always appear as default.
             File file = new File(savedAvatar);
             if (file.exists()) {
-                avatarFile = file;
+                if (file.length() > 0) { // Chỉ nhận file có dữ liệu
+                    avatarFile = file;
+                } else {
+                    file.delete(); // Xóa file rỗng nếu bị lỗi
+                }
             }
         }
 
-        // Fallback: check if user_avatar.jpg exists in internal files directory
         if (avatarFile == null && getContext() != null) {
             File fallbackFile = new File(requireContext().getFilesDir(), "user_avatar.jpg");
             if (fallbackFile.exists()) {
-                avatarFile = fallbackFile;
-                viewModel.saveAvatarUri(fallbackFile.getAbsolutePath());
+                if (fallbackFile.length() > 0) {
+                    avatarFile = fallbackFile;
+                    viewModel.saveAvatarUri(fallbackFile.getAbsolutePath());
+                } else {
+                    fallbackFile.delete(); // Xóa file rỗng
+                }
             }
         }
-
-        if (avatarFile != null && avatarFile.exists()) {
+        if (avatarFile != null && avatarFile.exists() && avatarFile.length() > 0) {
             displayAvatar(avatarFile);
         }
     }
@@ -187,13 +207,13 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
 
     private void displayAvatar(File file) {
         if (file == null || !file.exists() || getContext() == null) return;
+
         binding.ivAvatar.setPadding(0, 0, 0, 0);
         binding.ivAvatar.setImageTintList(null);
-        // disable Glide disk+memory cache so overwritten user_avatar.jpg is
-        // always read fresh — without this, Glide serves the old cached version even after
-        // the file has been replaced with the new gallery/camera image.
+
         Glide.with(this)
                 .load(file)
+                .signature(new ObjectKey(file.lastModified()))
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .placeholder(R.drawable.ic_profile)
