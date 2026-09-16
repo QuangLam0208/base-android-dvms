@@ -1,6 +1,11 @@
 package com.base.android.ui.main.account.profile;
 
+import com.base.android.utils.ImageUtils;
+
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -53,20 +58,52 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         }
     });
 
+    /**
+     * Áp dụng inSampleSize khi lưu Avatar
+    **/
     private String saveAvatarToInternalStorage(Uri uri) {
         if (getContext() == null || uri == null) return null;
         try {
-            InputStream is = requireContext().getContentResolver().openInputStream(uri);
-            if (is == null) return null;
-            File dest = new File(requireContext().getFilesDir(), "user_avatar.jpg");
+            Context context = requireContext();
+
+            // BƯỚC 1: Đọc thông số kích thước ảnh (không tải ảnh vào RAM)
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true; // Chỉ lấy width/height
+            InputStream isBounds = context.getContentResolver().openInputStream(uri);
+            BitmapFactory.decodeStream(isBounds, null, options);
+            if (isBounds != null) isBounds.close();
+
+            int originalWidth = options.outWidth;
+            int originalHeight = options.outHeight;
+
+            // BƯỚC 2: Tính toán inSampleSize (Ví dụ chuẩn hóa về tối đa 512x512)
+            final int TARGET_SIZE = 512;
+            options.inSampleSize = ImageUtils.calculateInSampleSize(options, TARGET_SIZE, TARGET_SIZE);
+            options.inJustDecodeBounds = false; // Tắt cờ để giải mã thực sự
+
+            // BƯỚC 3: Decode bitmap
+            InputStream isBitmap = context.getContentResolver().openInputStream(uri);
+            Bitmap sampledBitmap = BitmapFactory.decodeStream(isBitmap, null, options);
+            if (isBitmap != null) isBitmap.close();
+
+            if (sampledBitmap == null) return null;
+
+            // BƯỚC 4: Nén và ghi ra file đích (Dung lượng file lúc này chỉ còn khoảng 50KB - 150KB)
+            File dest = new File(context.getFilesDir(), "user_avatar.jpg");
             OutputStream os = new FileOutputStream(dest);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = is.read(buffer)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            is.close();
+            sampledBitmap.compress(Bitmap.CompressFormat.JPEG, 85, os); // Chất lượng 85%
+            os.flush();
             os.close();
+
+            // LOG ĐỂ KIỂM TRA:
+            Timber.d("=== KIỂM TRA TỐI ƯU AVATAR ===");
+            Timber.d("Ảnh gốc: %d x %d px", originalWidth, originalHeight);
+            Timber.d("Hệ số inSampleSize: %d", options.inSampleSize);
+            Timber.d("Bitmap giải nén trong RAM: %d x %d px", sampledBitmap.getWidth(), sampledBitmap.getHeight());
+            Timber.d("Dung lượng file lưu trên đĩa: %d KB", dest.length() / 1024);
+            Timber.d("================================");
+
+            sampledBitmap.recycle(); // Giải phóng Bitmap khỏi RAM
             return dest.getAbsolutePath();
         } catch (Exception e) {
             Timber.e(e, "Error saving avatar to internal storage");

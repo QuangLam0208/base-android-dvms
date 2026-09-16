@@ -1471,9 +1471,9 @@ public final class ImageUtils {
      * @param maxHeight The maximum height.
      * @return the sample size
      */
-    private static int calculateInSampleSize(final BitmapFactory.Options options,
-                                             final int maxWidth,
-                                             final int maxHeight) {
+    public static int calculateInSampleSize(final BitmapFactory.Options options,
+                                            final int maxWidth,
+                                            final int maxHeight) {
         int height = options.outHeight;
         int width = options.outWidth;
         int inSampleSize = 1;
