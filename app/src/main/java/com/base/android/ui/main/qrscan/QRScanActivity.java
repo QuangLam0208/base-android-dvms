@@ -11,11 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.base.android.BR;
 import com.base.android.R;
@@ -23,6 +20,7 @@ import com.base.android.databinding.ActivityQrScanBinding;
 import com.base.android.di.component.ActivityComponent;
 import com.base.android.ui.base.activity.BaseActivity;
 import com.base.android.utils.ImagePickerUtils;
+import com.base.android.utils.PermissionUtils;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -36,7 +34,6 @@ import com.google.zxing.common.GlobalHistogramBinarizer;
 import com.google.zxing.common.HybridBinarizer;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
-import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -99,7 +96,9 @@ public class QRScanActivity extends BaseActivity<ActivityQrScanBinding, QRScanVi
     @Override
     protected void onResume() {
         super.onResume();
-        if (isCameraActive) {
+        if (!isCameraActive && PermissionUtils.hasCameraPermission(this)) {
+            startCameraScanning();
+        } else if (isCameraActive) {
             viewBinding.barcodeScanner.resume();
         }
     }
@@ -112,11 +111,14 @@ public class QRScanActivity extends BaseActivity<ActivityQrScanBinding, QRScanVi
 
     // Camera permission & start
     private void requestCameraIfNeeded() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
+        if (PermissionUtils.hasCameraPermission(this)) {
             startCameraScanning();
         } else {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+            if (PermissionUtils.isPermanentlyDenied(this, Manifest.permission.CAMERA)) {
+                PermissionUtils.showPermissionSettingsDialog(this, getString(R.string.permission_camera_rationale));
+            } else {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+            }
         }
     }
 
@@ -139,7 +141,7 @@ public class QRScanActivity extends BaseActivity<ActivityQrScanBinding, QRScanVi
     }
 
     public void onPickImageClick() {
-        imagePickerUtils.openGallery();
+        imagePickerUtils.checkStoragePermissionAndOpen();
     }
 
     // Decode QR from gallery image
@@ -267,8 +269,12 @@ public class QRScanActivity extends BaseActivity<ActivityQrScanBinding, QRScanVi
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCameraScanning();
             } else {
-                viewModel.showErrorMessage(getString(R.string.permission_camera_required));
-                finish();
+                if (PermissionUtils.isPermanentlyDenied(this, Manifest.permission.CAMERA)) {
+                    PermissionUtils.showPermissionSettingsDialog(this, getString(R.string.permission_camera_rationale));
+                } else {
+                    viewModel.showErrorMessage(getString(R.string.permission_camera_required));
+                    finish();
+                }
             }
         }
     }

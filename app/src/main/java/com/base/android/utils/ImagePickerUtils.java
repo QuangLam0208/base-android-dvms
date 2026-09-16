@@ -13,7 +13,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -83,10 +82,15 @@ public class ImagePickerUtils {
                         openCamera();
                     } else {
                         Context ctx = getContext();
-                        String msg = (ctx != null)
-                                ? ctx.getString(R.string.permission_camera_required)
-                                : "Camera permission required";
-                        callback.onError(msg);
+                        Activity act = getActivity();
+                        if (act != null && PermissionUtils.isPermanentlyDenied(act, Manifest.permission.CAMERA)) {
+                            PermissionUtils.showPermissionSettingsDialog(act, ctx != null ? ctx.getString(R.string.permission_camera_rationale) : null);
+                        } else {
+                            String msg = (ctx != null)
+                                    ? ctx.getString(R.string.permission_camera_required)
+                                    : "Camera permission required";
+                            callback.onError(msg);
+                        }
                     }
                 }
         );
@@ -98,10 +102,16 @@ public class ImagePickerUtils {
                         openGallery();
                     } else {
                         Context ctx = getContext();
-                        String msg = (ctx != null)
-                                ? ctx.getString(R.string.permission_storage_required)
-                                : "Storage permission required";
-                        callback.onError(msg);
+                        Activity act = getActivity();
+                        String storagePerm = PermissionUtils.getStoragePermissionName();
+                        if (act != null && PermissionUtils.isPermanentlyDenied(act, storagePerm)) {
+                            PermissionUtils.showPermissionSettingsDialog(act, ctx != null ? ctx.getString(R.string.permission_storage_rationale) : null);
+                        } else {
+                            String msg = (ctx != null)
+                                    ? ctx.getString(R.string.permission_storage_required)
+                                    : "Storage permission required";
+                            callback.onError(msg);
+                        }
                     }
                 }
         );
@@ -210,6 +220,14 @@ public class ImagePickerUtils {
         return activity;
     }
 
+    @Nullable
+    public Activity getActivity() {
+        if (fragment != null) {
+            return fragment.getActivity();
+        }
+        return activity;
+    }
+
     public void showImagePickerDialog() {
         Context ctx = getContext();
         if (ctx == null) return;
@@ -222,14 +240,29 @@ public class ImagePickerUtils {
         if (hasCameraPermission(ctx)) {
             openCamera();
         } else {
-            cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+            Activity act = getActivity();
+            if (act != null && PermissionUtils.isPermanentlyDenied(act, Manifest.permission.CAMERA)) {
+                PermissionUtils.showPermissionSettingsDialog(act, ctx.getString(R.string.permission_camera_rationale));
+            } else {
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+            }
         }
     }
 
     public void checkStoragePermissionAndOpen() {
-        // ActivityResultContracts.GetContent("image/*") uses the system photo/document picker
-        // and does NOT require runtime storage permissions (which are also deprecated on Android 13+)
-        openGallery();
+        Context ctx = getContext();
+        if (ctx == null) return;
+        if (PermissionUtils.hasStoragePermission(ctx)) {
+            openGallery();
+        } else {
+            Activity act = getActivity();
+            String storagePerm = PermissionUtils.getStoragePermissionName();
+            if (act != null && PermissionUtils.isPermanentlyDenied(act, storagePerm)) {
+                PermissionUtils.showPermissionSettingsDialog(act, ctx.getString(R.string.permission_storage_rationale));
+            } else {
+                storagePermissionLauncher.launch(storagePerm);
+            }
+        }
     }
 
     public void openCamera() {

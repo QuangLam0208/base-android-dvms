@@ -97,4 +97,11 @@
     <string name="error_load_reviews">Không thể tải danh sách đánh giá.</string>
     <string name="error_load_mentors">Không thể tải danh sách mentor.</string>
     <string name="error_load_companies">Không thể tải danh sách doanh nghiệp.</string>
+
+    <!-- Permissions -->
+    <string name="permission_dialog_title">Yêu cầu quyền truy cập</string>
+    <string name="permission_settings_message">Ứng dụng cần quyền này để hoạt động bình thường. Bạn đã từ chối quyền trước đó, vui lòng vào Cài đặt để cấp quyền cho ứng dụng.</string>
+    <string name="permission_go_to_settings">Đi tới Cài đặt</string>
+    <string name="permission_camera_rationale">Ứng dụng cần quyền Máy ảnh để chụp ảnh đại diện và quét mã QR.</string>
+    <string name="permission_storage_rationale">Ứng dụng cần quyền truy cập Hình ảnh để chọn ảnh đại diện và đọc mã QR từ thư viện.</string>
 </resources>

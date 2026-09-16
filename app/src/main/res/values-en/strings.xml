@@ -97,4 +97,11 @@
     <string name="error_load_reviews">Unable to load review list.</string>
     <string name="error_load_mentors">Unable to load mentor list.</string>
     <string name="error_load_companies">Unable to load company list.</string>
+
+    <!-- Permissions -->
+    <string name="permission_dialog_title">Permission Required</string>
+    <string name="permission_settings_message">This permission is required for the app to function properly. You have previously denied this permission, please go to Settings to enable it.</string>
+    <string name="permission_go_to_settings">Go to Settings</string>
+    <string name="permission_camera_rationale">Camera permission is required to take profile photos and scan QR codes.</string>
+    <string name="permission_storage_rationale">Photo access permission is required to pick images from the gallery.</string>
 </resources>
