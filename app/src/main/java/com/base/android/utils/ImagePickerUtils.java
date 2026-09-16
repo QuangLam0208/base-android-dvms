@@ -28,6 +28,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import android.app.Activity;
+import android.content.Intent;
+import com.yalantis.ucrop.UCrop;
+
 import timber.log.Timber;
 
 public class ImagePickerUtils {
@@ -46,6 +50,15 @@ public class ImagePickerUtils {
     private final ActivityResultLauncher<String> storagePermissionLauncher;
     private final ActivityResultLauncher<Uri> takePictureLauncher;
     private final ActivityResultLauncher<String> galleryLauncher;
+    private final ActivityResultLauncher<Intent> cropLauncher;
+
+    // Crop configurations (mặc định tắt crop)
+    private boolean cropEnabled = false;
+    private boolean cropCircle = false;
+    private float aspectRatioX = 1f;
+    private float aspectRatioY = 1f;
+    private int maxResultWidth = 512;
+    private int maxResultHeight = 512;
 
     public ImagePickerUtils(@NonNull Fragment fragment, @NonNull ImagePickerCallback callback) {
         this(fragment, null, fragment, callback);
@@ -97,7 +110,7 @@ public class ImagePickerUtils {
                 new ActivityResultContracts.TakePicture(),
                 isSuccess -> {
                     if (Boolean.TRUE.equals(isSuccess) && cameraPhotoUri != null) {
-                        callback.onImagePicked(cameraPhotoUri);
+                        handleImagePicked(cameraPhotoUri);
                     }
                 }
         );
@@ -106,10 +119,87 @@ public class ImagePickerUtils {
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri != null) {
-                        callback.onImagePicked(uri);
+                        handleImagePicked(uri);
                     }
                 }
         );
+
+        this.cropLauncher = caller.registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Uri croppedUri = UCrop.getOutput(result.getData());
+                        if (croppedUri != null) {
+                            callback.onImagePicked(croppedUri);
+                        }
+                    } else if (result.getResultCode() == UCrop.RESULT_ERROR && result.getData() != null) {
+                        Throwable cropError = UCrop.getError(result.getData());
+                        if (cropError != null) {
+                            Timber.e(cropError, "Error in uCrop");
+                            callback.onError(cropError.getMessage());
+                        }
+                    }
+                }
+        );
+    }
+
+    public ImagePickerUtils setCropEnabled(boolean enabled) {
+        this.cropEnabled = enabled;
+        return this;
+    }
+
+    public ImagePickerUtils setCropCircle(boolean circle) {
+        this.cropCircle = circle;
+        if (circle) this.cropEnabled = true;
+        return this;
+    }
+
+    public ImagePickerUtils setAspectRatio(float x, float y) {
+        this.aspectRatioX = x;
+        this.aspectRatioY = y;
+        this.cropEnabled = true;
+        return this;
+    }
+
+    public ImagePickerUtils setMaxResultSize(int width, int height) {
+        this.maxResultWidth = width;
+        this.maxResultHeight = height;
+        return this;
+    }
+
+    private void handleImagePicked(Uri uri) {
+        if (uri == null) return;
+        if (cropEnabled) {
+            startCrop(uri);
+        } else {
+            callback.onImagePicked(uri);
+        }
+    }
+
+    private void startCrop(Uri sourceUri) {
+        Context ctx = getContext();
+        if (ctx == null) return;
+
+        File cropDestination = new File(ctx.getCacheDir(), "crop_" + System.currentTimeMillis() + ".jpg");
+        Uri destinationUri = Uri.fromFile(cropDestination);
+
+        UCrop.Options options = new UCrop.Options();
+        options.setCircleDimmedLayer(cropCircle);
+        options.setShowCropGrid(!cropCircle);
+        options.setCropFrameColor(ContextCompat.getColor(ctx, R.color.accent_color));
+        options.setToolbarColor(ContextCompat.getColor(ctx, R.color.main_background));
+        options.setStatusBarColor(ContextCompat.getColor(ctx, R.color.main_background));
+        options.setToolbarWidgetColor(ContextCompat.getColor(ctx, R.color.white));
+        options.setActiveControlsWidgetColor(ContextCompat.getColor(ctx, R.color.accent_color));
+        options.setCompressionQuality(85);
+        options.setHideBottomControls(false);
+
+        UCrop uCrop = UCrop.of(sourceUri, destinationUri)
+                .withAspectRatio(aspectRatioX, aspectRatioY)
+                .withMaxResultSize(maxResultWidth, maxResultHeight)
+                .withOptions(options);
+
+        cropLauncher.launch(uCrop.getIntent(ctx));
     }
 
     @Nullable

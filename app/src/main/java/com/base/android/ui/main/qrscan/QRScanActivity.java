@@ -22,6 +22,7 @@ import com.base.android.R;
 import com.base.android.databinding.ActivityQrScanBinding;
 import com.base.android.di.component.ActivityComponent;
 import com.base.android.ui.base.activity.BaseActivity;
+import com.base.android.utils.ImagePickerUtils;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -53,18 +54,23 @@ public class QRScanActivity extends BaseActivity<ActivityQrScanBinding, QRScanVi
     public static final String EXTRA_QR_RESULT = "EXTRA_QR_RESULT";
 
     private static final int REQUEST_CAMERA_PERMISSION  = 1001;
-    private static final int REQUEST_STORAGE_PERMISSION = 1002;
 
     private boolean isCameraActive = false;
 
-    // Launcher for gallery image picker
-    private final ActivityResultLauncher<Intent> imagePickerLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    Uri imageUri = result.getData().getData();
-                    decodeQrFromGallery(imageUri);
-                }
-            });
+    // Image picker utility (mặc định không crop ảnh)
+    private final ImagePickerUtils imagePickerUtils = new ImagePickerUtils(this, new ImagePickerUtils.ImagePickerCallback() {
+        @Override
+        public void onImagePicked(Uri uri) {
+            if (uri != null) {
+                decodeQrFromGallery(uri);
+            }
+        }
+
+        @Override
+        public void onError(String errorMessage) {
+            viewModel.showErrorMessage(errorMessage);
+        }
+    });
 
     // Camera continuous scan callback
     private final BarcodeCallback barcodeCallback = new BarcodeCallback() {
@@ -133,29 +139,7 @@ public class QRScanActivity extends BaseActivity<ActivityQrScanBinding, QRScanVi
     }
 
     public void onPickImageClick() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // API 33+: READ_MEDIA_IMAGES
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES},
-                        REQUEST_STORAGE_PERMISSION);
-                return;
-            }
-        } else {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_STORAGE_PERMISSION);
-                return;
-            }
-        }
-        openGallery();
-    }
-
-    private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        imagePickerLauncher.launch(intent);
+        imagePickerUtils.openGallery();
     }
 
     // Decode QR from gallery image
@@ -285,12 +269,6 @@ public class QRScanActivity extends BaseActivity<ActivityQrScanBinding, QRScanVi
             } else {
                 viewModel.showErrorMessage(getString(R.string.permission_camera_required));
                 finish();
-            }
-        } else if (requestCode == REQUEST_STORAGE_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openGallery();
-            } else {
-                viewModel.showErrorMessage(getString(R.string.permission_storage_required));
             }
         }
     }

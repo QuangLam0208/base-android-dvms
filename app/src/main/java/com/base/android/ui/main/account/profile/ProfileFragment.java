@@ -1,11 +1,6 @@
 package com.base.android.ui.main.account.profile;
 
-import com.base.android.utils.ImageUtils;
-
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -32,91 +27,36 @@ import com.base.android.ui.main.MainActivity;
 import com.base.android.ui.main.account.login.LoginActivity;
 import com.base.android.ui.main.qrscan.QRScanActivity;
 import com.base.android.utils.ImagePickerUtils;
+import com.base.android.utils.ImageStorageUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import timber.log.Timber;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding, ProfileViewModel> {
-
-    private final ExecutorService imageExecutor = Executors.newSingleThreadExecutor();
 
     private final ImagePickerUtils imagePickerUtils = new ImagePickerUtils(this, new ImagePickerUtils.ImagePickerCallback() {
         @Override
         public void onImagePicked(Uri uri) {
-            if (uri == null) return;
-            processAndSaveAvatarWithGlide(uri);
+            if (uri == null || getContext() == null) return;
+            File destFile = new File(requireContext().getFilesDir(), "user_avatar.jpg");
+            ImageStorageUtils.saveImageAsync(requireContext(), uri, destFile, 512, new ImageStorageUtils.SaveCallback() {
+                @Override
+                public void onSuccess(File savedFile) {
+                    viewModel.saveAvatarUri(savedFile.getAbsolutePath());
+                    displayAvatar(savedFile);
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    viewModel.showErrorMessage(throwable.getMessage());
+                }
+            });
         }
 
         @Override
         public void onError(String errorMessage) {
             viewModel.showErrorMessage(errorMessage);
         }
-    });
-
-    private void processAndSaveAvatarWithGlide(Uri uri) {
-        if (getContext() == null || uri == null) return;
-
-        Context appContext = requireContext().getApplicationContext();
-
-        imageExecutor.execute(() -> {
-            com.bumptech.glide.request.FutureTarget<Bitmap> futureTarget = null;
-            // Dùng file tạm để ghi dữ liệu trước
-            File tempFile = new File(appContext.getFilesDir(), "temp_avatar.jpg");
-            File destFile = new File(appContext.getFilesDir(), "user_avatar.jpg");
-
-            try {
-                futureTarget = Glide.with(appContext)
-                        .asBitmap()
-                        .load(uri)
-                        .centerCrop()
-                        .submit(512, 512);
-
-                Bitmap bitmap = futureTarget.get();
-
-                if (bitmap != null && !bitmap.isRecycled()) {
-                    // Ghi vào file tạm
-                    FileOutputStream os = new FileOutputStream(tempFile);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
-                    os.flush();
-                    os.close();
-
-                    // Đảm bảo file tạm có dữ liệu (> 0 byte) thì mới đổi tên đè lên file chính
-                    if (tempFile.exists() && tempFile.length() > 0) {
-                        if (destFile.exists()) {
-                            destFile.delete();
-                        }
-                        tempFile.renameTo(destFile);
-
-                        Timber.d("=== LƯU AVATAR THÀNH CÔNG ===");
-                        Timber.d("Dung lượng file lưu: %d KB", destFile.length() / 1024);
-
-                        // Cập nhật giao diện trên Main Thread
-                        if (getActivity() != null) {
-                            requireActivity().runOnUiThread(() -> {
-                                viewModel.saveAvatarUri(destFile.getAbsolutePath());
-                                displayAvatar(destFile);
-                            });
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Timber.e(e, "Lỗi khi xử lý lưu avatar bằng Glide");
-                if (tempFile.exists()) {
-                    tempFile.delete();
-                }
-            } finally {
-                if (futureTarget != null) {
-                    Glide.with(appContext).clear(futureTarget);
-                }
-            }
-        });
-    }
+    }).setCropCircle(true); // Bật crop hình tròn cho Avatar
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -134,14 +74,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     public void onResume() {
         super.onResume();
         loadSavedAvatar();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (imageExecutor != null && !imageExecutor.isShutdown()) {
-            imageExecutor.shutdown();
-        }
     }
 
     private void loadSavedAvatar() {
