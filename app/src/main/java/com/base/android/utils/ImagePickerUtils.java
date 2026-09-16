@@ -22,7 +22,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.base.android.R;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -45,6 +48,7 @@ public class ImagePickerUtils {
     private final ImagePickerCallback callback;
 
     private Uri cameraPhotoUri;
+    private Uri currentTempSourceUri;
     private final ActivityResultLauncher<String> cameraPermissionLauncher;
     private final ActivityResultLauncher<String> storagePermissionLauncher;
     private final ActivityResultLauncher<Uri> takePictureLauncher;
@@ -137,6 +141,7 @@ public class ImagePickerUtils {
         this.cropLauncher = caller.registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
+                    cleanupTempSource();
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Uri croppedUri = UCrop.getOutput(result.getData());
                         if (croppedUri != null) {
@@ -191,6 +196,11 @@ public class ImagePickerUtils {
     private void startCrop(Uri sourceUri) {
         Context ctx = getContext();
         if (ctx == null) return;
+
+        // Copy sang file tạm trong cache của app để tránh lỗi mất quyền đọc ContentProvider (EFAULT: Bad address)
+        Uri safeSourceUri = copyUriToTempFile(ctx, sourceUri);
+        this.currentTempSourceUri = safeSourceUri;
+
         // Tạo file tạm để lưu ảnh sau khi crop
         File cropDestination = new File(ctx.getCacheDir(), "crop_" + System.currentTimeMillis() + ".jpg");
         Uri destinationUri = Uri.fromFile(cropDestination);
@@ -206,12 +216,53 @@ public class ImagePickerUtils {
         options.setCompressionQuality(85);
         options.setHideBottomControls(false);
 
-        UCrop uCrop = UCrop.of(sourceUri, destinationUri)
+        UCrop uCrop = UCrop.of(safeSourceUri, destinationUri)
                 .withAspectRatio(aspectRatioX, aspectRatioY) // Giới hạn tỉ lệ crop 1:1
                 .withMaxResultSize(maxResultWidth, maxResultHeight)
                 .withOptions(options);
 
-        cropLauncher.launch(uCrop.getIntent(ctx)); // Mở uCrop đã đăng ký ở trên: this.cropLauncher
+        Intent intent = uCrop.getIntent(ctx);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        cropLauncher.launch(intent); // Mở uCrop đã đăng ký ở trên: this.cropLauncher
+    }
+
+    private Uri copyUriToTempFile(Context ctx, Uri sourceUri) {
+        if (sourceUri == null) return null;
+        if ("file".equalsIgnoreCase(sourceUri.getScheme())) {
+            return sourceUri;
+        }
+        try {
+            File tempFile = new File(ctx.getCacheDir(), "raw_input_" + System.currentTimeMillis() + ".jpg");
+            try (InputStream in = ctx.getContentResolver().openInputStream(sourceUri);
+                 OutputStream out = new FileOutputStream(tempFile)) {
+                if (in == null) return sourceUri;
+                byte[] buffer = new byte[8192];
+                int len;
+                while ((len = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, len);
+                }
+                out.flush();
+            }
+            return Uri.fromFile(tempFile);
+        } catch (Exception e) {
+            Timber.e(e, "copyUriToTempFile failed, falling back to sourceUri");
+            return sourceUri;
+        }
+    }
+
+    private void cleanupTempSource() {
+        if (currentTempSourceUri != null && "file".equalsIgnoreCase(currentTempSourceUri.getScheme())) {
+            try {
+                String path = currentTempSourceUri.getPath();
+                if (path != null) {
+                    File file = new File(path);
+                    if (file.exists() && file.getName().startsWith("raw_input_")) {
+                        file.delete();
+                    }
+                }
+            } catch (Exception ignored) {}
+            currentTempSourceUri = null;
+        }
     }
 
     @Nullable
