@@ -86,15 +86,35 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         updateThemeDisplay();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadSavedAvatar();
+    }
+
     private void loadSavedAvatar() {
         String savedAvatar = viewModel.getSavedAvatarUri();
+        File avatarFile = null;
         if (savedAvatar != null && !savedAvatar.trim().isEmpty()) {
             // use File object instead of Uri.parse() which produced a scheme-less
             // URI that Glide couldn't resolve, causing the avatar to always appear as default.
-            File avatarFile = new File(savedAvatar);
-            if (avatarFile.exists()) {
-                displayAvatar(avatarFile);
+            File file = new File(savedAvatar);
+            if (file.exists()) {
+                avatarFile = file;
             }
+        }
+
+        // Fallback: check if user_avatar.jpg exists in internal files directory
+        if (avatarFile == null && getContext() != null) {
+            File fallbackFile = new File(requireContext().getFilesDir(), "user_avatar.jpg");
+            if (fallbackFile.exists()) {
+                avatarFile = fallbackFile;
+                viewModel.saveAvatarUri(fallbackFile.getAbsolutePath());
+            }
+        }
+
+        if (avatarFile != null && avatarFile.exists()) {
+            displayAvatar(avatarFile);
         }
     }
 

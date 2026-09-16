@@ -27,6 +27,5 @@ public class ProfileViewModel extends BaseFragmentViewModel {
         repository.setToken(Constants.VALUE_BEARER_TOKEN_DEFAULT);
         repository.getSharedPreferences().removeKey(PreferencesService.KEY_BEARER_TOKEN);
         repository.getSharedPreferences().removeKey(PreferencesService.KEY_BEARER_REFRESH_TOKEN);
-        repository.getSharedPreferences().removeKey(KEY_USER_AVATAR_URI);
     }
 }
