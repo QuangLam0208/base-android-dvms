@@ -140,7 +140,7 @@ public class ImagePickerUtils {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Uri croppedUri = UCrop.getOutput(result.getData());
                         if (croppedUri != null) {
-                            callback.onImagePicked(croppedUri);
+                            callback.onImagePicked(croppedUri); // callback sau khi crop xong
                         }
                     } else if (result.getResultCode() == UCrop.RESULT_ERROR && result.getData() != null) {
                         Throwable cropError = UCrop.getError(result.getData());
@@ -180,8 +180,10 @@ public class ImagePickerUtils {
     private void handleImagePicked(Uri uri) {
         if (uri == null) return;
         if (cropEnabled) {
+            // avt nên thực hiện crop (cropCircle = true)
             startCrop(uri);
         } else {
+            // không crop
             callback.onImagePicked(uri);
         }
     }
@@ -189,7 +191,7 @@ public class ImagePickerUtils {
     private void startCrop(Uri sourceUri) {
         Context ctx = getContext();
         if (ctx == null) return;
-
+        // Tạo file tạm để lưu ảnh sau khi crop
         File cropDestination = new File(ctx.getCacheDir(), "crop_" + System.currentTimeMillis() + ".jpg");
         Uri destinationUri = Uri.fromFile(cropDestination);
 
@@ -205,11 +207,11 @@ public class ImagePickerUtils {
         options.setHideBottomControls(false);
 
         UCrop uCrop = UCrop.of(sourceUri, destinationUri)
-                .withAspectRatio(aspectRatioX, aspectRatioY)
+                .withAspectRatio(aspectRatioX, aspectRatioY) // Giới hạn tỉ lệ crop 1:1
                 .withMaxResultSize(maxResultWidth, maxResultHeight)
                 .withOptions(options);
 
-        cropLauncher.launch(uCrop.getIntent(ctx));
+        cropLauncher.launch(uCrop.getIntent(ctx)); // Mở uCrop đã đăng ký ở trên: this.cropLauncher
     }
 
     @Nullable
@@ -228,6 +230,7 @@ public class ImagePickerUtils {
         return activity;
     }
 
+    // 1. Hiện BottomSheet chọn Camera/Gallery
     public void showImagePickerDialog() {
         Context ctx = getContext();
         if (ctx == null) return;
@@ -237,7 +240,7 @@ public class ImagePickerUtils {
     public void checkCameraPermissionAndOpen() {
         Context ctx = getContext();
         if (ctx == null) return;
-        if (hasCameraPermission(ctx)) {
+        if (PermissionUtils.hasCameraPermission(ctx)) {
             openCamera();
         } else {
             Activity act = getActivity();
@@ -271,7 +274,7 @@ public class ImagePickerUtils {
         try {
             File photoFile = createTempImageFile(ctx);
             cameraPhotoUri = getUriForFile(ctx, photoFile);
-            takePictureLauncher.launch(cameraPhotoUri);
+            takePictureLauncher.launch(cameraPhotoUri); // Mở camera đã đăng ký ở trên: this.takePictureLauncher
         } catch (Exception e) {
             Timber.e(e, "Error opening camera");
             callback.onError(ctx.getString(R.string.error_open_camera));
@@ -284,6 +287,7 @@ public class ImagePickerUtils {
 
     // ==================== Static Helper Methods ====================
 
+    // Tạo file tạm và lưu vào thư mục riêng của app
     public static File createTempImageFile(@NonNull Context context) throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "AVATAR_" + timeStamp + "_";
@@ -294,6 +298,7 @@ public class ImagePickerUtils {
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
+    // Lấy Uri cho file tạm
     public static Uri getUriForFile(@NonNull Context context, @NonNull File file) {
         return FileProvider.getUriForFile(
                 context,
@@ -302,19 +307,7 @@ public class ImagePickerUtils {
         );
     }
 
-    public static boolean hasCameraPermission(@NonNull Context context) {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public static boolean hasStoragePermission(@NonNull Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED;
-        }
-        return true;
-    }
-
+    // 2. BottomSheet, gọi checkCameraPermissionAndOpen hoặc checkStoragePermissionAndOpen
     public static BottomSheetDialog showImagePickerDialog(@NonNull Context context,
                                                            @NonNull Runnable onCameraSelected,
                                                            @NonNull Runnable onGallerySelected) {

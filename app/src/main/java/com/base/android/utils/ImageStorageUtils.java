@@ -54,6 +54,7 @@ public final class ImageStorageUtils {
 
         executor.execute(() -> {
             FutureTarget<Bitmap> futureTarget = null;
+            // Tạo file tạm để lưu ảnh sau khi crop
             File tempFile = new File(appContext.getFilesDir(), "temp_" + System.currentTimeMillis() + ".jpg");
 
             try {
@@ -67,11 +68,11 @@ public final class ImageStorageUtils {
                         .centerCrop()
                         .submit(maxSize, maxSize);
 
-                Bitmap bitmap = futureTarget.get();
+                Bitmap bitmap = futureTarget.get(); // chờ đợi kết quả và lấy Bitmap
 
                 if (bitmap != null && !bitmap.isRecycled()) {
                     FileOutputStream os = new FileOutputStream(tempFile);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os); // compress ảnh
                     os.flush();
                     os.close();
 
@@ -79,12 +80,12 @@ public final class ImageStorageUtils {
                         if (destFile.exists()) {
                             destFile.delete();
                         }
-                        tempFile.renameTo(destFile);
+                        tempFile.renameTo(destFile); // lưu vào file đích
 
                         Timber.d("Lưu ảnh thành công vào: %s (%d KB)", destFile.getAbsolutePath(), destFile.length() / 1024);
 
                         if (callback != null) {
-                            mainHandler.post(() -> callback.onSuccess(destFile));
+                            mainHandler.post(() -> callback.onSuccess(destFile)); // thông báo kết quả trên Main Thread
                         }
                     } else {
                         throw new IllegalStateException("Lỗi ghi file tạm, file rỗng.");
