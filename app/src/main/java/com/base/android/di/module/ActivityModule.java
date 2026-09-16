@@ -14,6 +14,7 @@ import com.base.android.ui.main.MainViewModel;
 import com.base.android.ui.main.account.login.LoginViewModel;
 import com.base.android.ui.main.qrscan.QRScanViewModel;
 import com.base.android.ui.main.splash.SplashViewModel;
+import com.base.android.ui.main.webview.WebViewViewModel;
 import com.base.android.utils.GetInfo;
 
 import javax.inject.Named;
@@ -75,5 +76,13 @@ public class ActivityModule {
         Supplier<QRScanViewModel> supplier = () -> new QRScanViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<QRScanViewModel> factory = new ViewModelProviderFactory<>(QRScanViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(QRScanViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    WebViewViewModel provideWebViewViewModel(Repository repository, Context application) {
+        Supplier<WebViewViewModel> supplier = () -> new WebViewViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<WebViewViewModel> factory = new ViewModelProviderFactory<>(WebViewViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(WebViewViewModel.class);
     }
 }

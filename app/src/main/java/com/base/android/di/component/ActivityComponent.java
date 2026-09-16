@@ -6,6 +6,7 @@ import com.base.android.ui.main.MainActivity;
 import com.base.android.ui.main.account.login.LoginActivity;
 import com.base.android.ui.main.qrscan.QRScanActivity;
 import com.base.android.ui.main.splash.SplashActivity;
+import com.base.android.ui.main.webview.WebViewActivity;
 
 import dagger.Component;
 
@@ -16,4 +17,5 @@ public interface ActivityComponent {
     void inject(LoginActivity activity);
     void inject(SplashActivity activity);
     void inject(QRScanActivity activity);
+    void inject(WebViewActivity activity);
 }

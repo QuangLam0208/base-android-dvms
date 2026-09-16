@@ -3,14 +3,18 @@ package com.base.android.ui.main.account.profile;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 
 import android.view.LayoutInflater;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.base.android.utils.WebViewUtils;
 import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.bumptech.glide.Glide;
@@ -28,6 +32,7 @@ import com.base.android.ui.main.account.login.LoginActivity;
 import com.base.android.ui.main.qrscan.QRScanActivity;
 import com.base.android.utils.ImagePickerUtils;
 import com.base.android.utils.ImageStorageUtils;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 
@@ -37,7 +42,9 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         @Override
         public void onImagePicked(Uri uri) {
             if (uri == null || getContext() == null) return;
+            // tạo file tạm để lưu ảnh sau khi crop
             File destFile = new File(requireContext().getFilesDir(), "user_avatar.jpg");
+            // lưu ảnh vào file tạm
             ImageStorageUtils.saveImageAsync(requireContext(), uri, destFile, 512, new ImageStorageUtils.SaveCallback() {
                 @Override
                 public void onSuccess(File savedFile) {
@@ -268,6 +275,69 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         } else {
             binding.tvCurrentTheme.setText(R.string.theme_dark);
         }
+    }
+
+    public void onWebViewDemoClick() {
+        if (getContext() == null) return;
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme);
+        View sheetView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.layout_bottom_sheet_webview_demo, null);
+        dialog.setContentView(sheetView);
+
+        // Báo Tuổi Trẻ
+        sheetView.findViewById(R.id.btn_demo_tuoitre).setOnClickListener(v -> {
+            dialog.dismiss();
+            WebViewUtils.openTuoitre(requireContext());
+        });
+
+        // Facebook
+        sheetView.findViewById(R.id.btn_demo_facebook).setOnClickListener(v -> {
+            dialog.dismiss();
+            WebViewUtils.openFacebook(requireContext());
+        });
+
+        // Nhập URL bất kỳ
+        sheetView.findViewById(R.id.btn_demo_custom_url).setOnClickListener(v -> {
+            dialog.dismiss();
+            showCustomUrlDialog();
+        });
+
+        // Hủy
+        sheetView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
+
+    private void showCustomUrlDialog() {
+        if (getContext() == null) return;
+        EditText input = new EditText(requireContext());
+        input.setHint(R.string.webview_input_url_hint);
+        input.setText("https://");
+        input.setSelection(input.getText().length());
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
+
+        FrameLayout container = new FrameLayout(requireContext());
+        int paddingHorizontal = getResources().getDimensionPixelSize(R.dimen._20sdp);
+        int paddingTop = getResources().getDimensionPixelSize(R.dimen._10sdp);
+        container.setPadding(paddingHorizontal, paddingTop, paddingHorizontal, 0);
+        container.addView(input);
+
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.webview_input_url_title)
+                .setView(container)
+                .setPositiveButton("Mở", (d, which) -> {
+                    String url = input.getText().toString().trim();
+                    if (!url.isEmpty() && !url.equalsIgnoreCase("https://")) {
+                        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                            url = "https://" + url;
+                        }
+                        WebViewUtils.openUrl(requireContext(), url);
+                    } else {
+                        viewModel.showErrorMessage(getString(R.string.webview_input_url_empty));
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     public void handleLogout() {

@@ -104,4 +104,24 @@
     <string name="permission_go_to_settings">Đi tới Cài đặt</string>
     <string name="permission_camera_rationale">Ứng dụng cần quyền Máy ảnh để chụp ảnh đại diện và quét mã QR.</string>
     <string name="permission_storage_rationale">Ứng dụng cần quyền truy cập Hình ảnh để chọn ảnh đại diện và đọc mã QR từ thư viện.</string>
+
+    <!-- WebView & Web Demo -->
+    <string name="webview_title">Trình duyệt</string>
+    <string name="webview_menu_reload">Tải lại trang</string>
+    <string name="webview_menu_open_browser">Mở bằng trình duyệt ngoài</string>
+    <string name="webview_error_title">Không thể tải trang</string>
+    <string name="webview_error_desc">Vui lòng kiểm tra kết nối mạng và thử lại.</string>
+    <string name="webview_error_retry">Thử lại</string>
+    <string name="webview_demo_title">WebView</string>
+    <string name="webview_demo_subtitle">Nhúng web, Báo Tuổi Trẻ, Facebook</string>
+    <string name="webview_demo_tuoitre">Báo Tuổi Trẻ</string>
+    <string name="webview_demo_facebook">Facebook</string>
+    <string name="webview_demo_custom_url">Nhập URL bất kỳ để duyệt...</string>
+    <string name="webview_input_url_title">Nhập địa chỉ Web</string>
+    <string name="webview_input_url_hint">https://example.com</string>
+    <string name="webview_input_url_empty">Vui lòng nhập địa chỉ URL</string>
+    <string name="webview_ssl_error_title">Cảnh báo chứng chỉ SSL</string>
+    <string name="webview_ssl_error_message">Chứng chỉ bảo mật của trang web này không an toàn hoặc không hợp lệ. Bạn có muốn tiếp tục truy cập không?</string>
+    <string name="webview_ssl_continue">Tiếp tục</string>
+    <string name="webview_ssl_cancel">Quay lại an toàn</string>
 </resources>

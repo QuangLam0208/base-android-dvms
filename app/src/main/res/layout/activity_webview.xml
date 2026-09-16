@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="a"
+            type="com.base.android.ui.main.webview.WebViewActivity" />
+
+        <variable
+            name="vm"
+            type="com.base.android.ui.main.webview.WebViewViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorScreenBackground">
+
+        <!-- Custom Toolbar -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorCardBackground"
+            android:elevation="2dp"
+            android:visibility="@{vm.showToolbar ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_marginStart="@dimen/_6sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
+                android:onClick="@{() -> a.onBackClick()}"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorTextPrimary" />
+
+            <ImageView
+                android:id="@+id/btn_close"
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Close"
+                android:onClick="@{() -> a.onCloseClick()}"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_close"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_back"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorTextPrimary" />
+
+            <LinearLayout
+                android:id="@+id/layout_title_group"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_reload"
+                app:layout_constraintStart_toEndOf="@id/btn_close"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{vm.title}"
+                    android:textColor="?attr/colorTextPrimary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="Báo Tuổi Trẻ Online" />
+
+                <TextView
+                    android:id="@+id/tv_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{vm.subtitle}"
+                    android:textColor="@color/accent_color"
+                    android:textSize="11sp"
+                    android:visibility="@{vm.subtitle != null &amp;&amp; !vm.subtitle.empty ? View.VISIBLE : View.GONE}"
+                    tools:text="https://tuoitre.vn" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btn_reload"
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/webview_menu_reload"
+                android:onClick="@{() -> a.onReloadClick()}"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_refresh"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_open_browser"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorTextPrimary" />
+
+            <ImageView
+                android:id="@+id/btn_open_browser"
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_marginEnd="@dimen/_6sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/webview_menu_open_browser"
+                android:onClick="@{() -> a.onOpenInBrowserClick()}"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_open_in_browser"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorTextPrimary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Horizontal Loading Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="@{vm.progress}"
+            android:progressDrawable="@drawable/bg_pill_selected"
+            android:visibility="@{vm.progress &lt; 100 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            tools:progress="45"
+            tools:visibility="visible" />
+
+        <!-- WebView Container -->
+        <FrameLayout
+            android:id="@+id/webview_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_bar">
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+        <!-- Error Layout State -->
+        <LinearLayout
+            android:id="@+id/layout_error"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?attr/colorScreenBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/_24sdp"
+            android:visibility="@{vm.hasError ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            tools:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/_64sdp"
+                android:layout_height="@dimen/_64sdp"
+                android:src="@drawable/ic_warning"
+                app:tint="@color/login_icon_tint" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/webview_error_title"
+                android:textColor="?attr/colorTextPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:gravity="center"
+                android:text="@{vm.errorMessage != null ? vm.errorMessage : @string/webview_error_desc}"
+                android:textColor="@color/login_icon_tint"
+                android:textSize="14sp"
+                tools:text="@string/webview_error_desc" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:backgroundTint="@color/primary_color"
+                android:onClick="@{() -> a.onRetryClick()}"
+                android:paddingHorizontal="@dimen/_24sdp"
+                android:text="@string/webview_error_retry"
+                android:textColor="@color/white"
+                app:cornerRadius="@dimen/_12sdp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
