@@ -18,11 +18,11 @@ import com.base.android.R;
 import com.base.android.di.component.DaggerFragmentComponent;
 import com.base.android.di.component.FragmentComponent;
 import com.base.android.di.module.FragmentModule;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.activity.BaseActivity;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
 
 public abstract class BaseFragment <B extends ViewDataBinding,V extends BaseFragmentViewModel> extends Fragment {
 
@@ -60,6 +60,49 @@ public abstract class BaseFragment <B extends ViewDataBinding,V extends BaseFrag
         });
         return binding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getContext() != null && viewModel != null) {
+            boolean isDark = ThemeHelper.isDarkMode(getContext());
+            viewModel.setNightMode(isDark);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkAndSyncNightMode(); // check khi fragment hiện
+    }
+
+    /**
+     * Kích hoạt khi chuyển tab khác.
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            checkAndSyncNightMode();
+        }
+    }
+
+    /**
+     * Check và sync theme với chế độ hiện tại
+     */
+    public void checkAndSyncNightMode() {
+        if (getContext() == null || viewModel == null) return;
+        boolean isDark = ThemeHelper.isDarkMode(getContext());
+        if (viewModel.isNightMode.get() != isDark) {
+            viewModel.setNightMode(isDark);
+            onThemeChanged(isDark);
+        }
+    }
+
+    /**
+     * Hook cho Fragment con khi theme thay đổi (ví dụ: cập nhật adapter hoặc re-render custom view).
+     */
+    protected void onThemeChanged(boolean isDark) {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

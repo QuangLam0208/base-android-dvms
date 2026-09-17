@@ -5,6 +5,7 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="com.base.android.R" />
 
         <variable
             name="f"
@@ -18,7 +19,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorScreenBackground">
+        android:background="?attr/colorScreenBackground"
+        app:bgColorResByMode="@{R.color.color_screen_background}"
+        app:isNightMode="@{vm.isNightMode}">
 
         <TextView
             android:id="@+id/tv_heading_ongoing"
@@ -27,6 +30,8 @@
             android:layout_marginTop="@dimen/_14sdp"
             android:text="@string/heading_ongoing"
             android:textColor="?attr/colorTextPrimary"
+            app:textColorResByMode="@{R.color.color_text_primary}"
+            app:isNightMode="@{vm.isNightMode}"
             android:textSize="@dimen/course_heading_text_size"
             android:letterSpacing="0"
             android:includeFontPadding="false"
@@ -65,9 +70,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <include layout="@layout/item_course_skeleton" />
+                    <include
+                        layout="@layout/item_course_skeleton"
+                        app:isNightMode="@{vm.isNightMode}" />
 
-                    <include layout="@layout/item_course_skeleton" />
+                    <include
+                        layout="@layout/item_course_skeleton"
+                        app:isNightMode="@{vm.isNightMode}" />
 
                 </LinearLayout>
 

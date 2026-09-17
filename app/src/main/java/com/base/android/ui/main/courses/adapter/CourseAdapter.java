@@ -16,6 +16,7 @@ import com.base.android.R;
 import com.base.android.data.model.api.response.course.CourseResponse;
 import com.base.android.data.model.api.response.course.SyllabusResponse;
 import com.base.android.databinding.ItemCourseBinding;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.utils.HangingBulletSpan;
 import com.base.android.utils.ImageUtils;
@@ -39,10 +40,18 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private final OnItemClickListener listener;
     private OnSeeMoreListener seeMoreListener;
     private final Context context;
+    private boolean isNightMode;
 
     public CourseAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
         this.listener = listener;
+        this.isNightMode = ThemeHelper.isDarkMode(context);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setNightMode(boolean isNightMode) {
+        this.isNightMode = isNightMode;
+        notifyDataSetChanged();
     }
 
     public void setOnSeeMoreListener(OnSeeMoreListener seeMoreListener) {
@@ -87,7 +96,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
+        holder.binding.setIsNightMode(isNightMode);
         holder.bind(items.get(position));
+        holder.binding.executePendingBindings();
     }
 
     @Override
@@ -208,6 +219,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                             binding.rvSyllabuses.setLayoutManager(new LinearLayoutManager(context));
                             binding.rvSyllabuses.setAdapter(syllabusAdapter);
                         }
+                        syllabusAdapter.setNightMode(isNightMode);
                         syllabusAdapter.setData(syllabuses);
                     } else {
                         binding.tvSyllabusEmpty.setVisibility(View.VISIBLE);

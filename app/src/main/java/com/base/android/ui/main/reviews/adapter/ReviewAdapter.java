@@ -13,6 +13,7 @@ import com.base.android.R;
 import com.base.android.data.model.api.response.course.CourseResponse;
 import com.base.android.data.model.api.response.rating.RatingResponse;
 import com.base.android.databinding.ItemReviewBinding;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.utils.ImageUtils;
 import com.bumptech.glide.Glide;
@@ -25,10 +26,18 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     private final List<RatingResponse> items = new ArrayList<>();
     private final OnItemClickListener listener;
     private final Context context;
+    private boolean isNightMode;
 
     public ReviewAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
         this.listener = listener;
+        this.isNightMode = ThemeHelper.isDarkMode(context);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setNightMode(boolean isNightMode) {
+        this.isNightMode = isNightMode;
+        notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -50,7 +59,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
+        holder.binding.setIsNightMode(isNightMode);
         holder.bind(items.get(position));
+        holder.binding.executePendingBindings();
     }
 
     @Override

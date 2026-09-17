@@ -21,8 +21,7 @@ import com.base.android.ui.main.reviews.adapter.ReviewAdapter;
 
 import java.util.List;
 
-public class ReviewsFragment extends BaseFragment<FragmentReviewsBinding, ReviewsViewModel>
-        implements ThemeHelper.ThemeRefreshable {
+public class ReviewsFragment extends BaseFragment<FragmentReviewsBinding, ReviewsViewModel> {
 
     private ReviewAdapter reviewAdapter;
 
@@ -120,12 +119,9 @@ public class ReviewsFragment extends BaseFragment<FragmentReviewsBinding, Review
     }
 
     @Override
-    public void refreshTheme(boolean isDark) {
-        if (binding != null && getContext() != null) {
-            binding.getRoot().setBackgroundColor(ThemeHelper.getScreenBackgroundColor(isDark));
-            if (binding.rvReviews != null && reviewAdapter != null) {
-                binding.rvReviews.setAdapter(reviewAdapter);
-            }
+    protected void onThemeChanged(boolean isDark) {
+        if (reviewAdapter != null) {
+            reviewAdapter.setNightMode(isDark);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.base.android.ui.main.account.profile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,10 @@ import com.base.android.BR;
 import com.base.android.R;
 import com.base.android.data.local.prefs.PreferencesService;
 import com.base.android.databinding.FragmentProfileBinding;
+import com.base.android.databinding.LayoutBottomSheetLanguageBinding;
+import com.base.android.databinding.LayoutBottomSheetThemeBinding;
+import com.base.android.databinding.LayoutBottomSheetWebviewDemoBinding;
+import com.base.android.databinding.LayoutDialogInputUrlBinding;
 import com.base.android.di.component.FragmentComponent;
 import com.base.android.helper.LocaleHelper;
 import com.base.android.helper.ThemeHelper;
@@ -76,10 +82,10 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadSavedAvatar();
-        updateLanguageDisplay();
-        updateThemeDisplay();
+        viewModel.updateLanguageDisplay();
+        viewModel.updateThemeDisplay();
         boolean isDark = ThemeHelper.isDarkMode(requireContext(), viewModel.getTheme());
-        applyProfileThemeColors(isDark);
+        viewModel.setNightMode(isDark);
     }
 
     @Override
@@ -167,35 +173,36 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     }
 
     public void onLanguageClick() {
+        if (getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) return;
         String currentLang = viewModel.getLanguage();
         boolean isEn = LocaleHelper.LANGUAGE_EN.equals(currentLang);
 
         BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme);
-        View sheetView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.layout_bottom_sheet_language, null);
-        dialog.setContentView(sheetView);
+        LayoutBottomSheetLanguageBinding sheetBinding = LayoutBottomSheetLanguageBinding.inflate(
+                LayoutInflater.from(requireContext()), null, false);
+        sheetBinding.setVm(viewModel);
+        sheetBinding.setLifecycleOwner(getViewLifecycleOwner());
+        sheetBinding.executePendingBindings();
+        dialog.setContentView(sheetBinding.getRoot());
 
-        ImageView ivCheckVi = sheetView.findViewById(R.id.iv_check_vi);
-        ImageView ivCheckEn = sheetView.findViewById(R.id.iv_check_en);
+        sheetBinding.ivCheckVi.setImageResource(isEn ? R.drawable.ic_circle_outline : R.drawable.ic_check_circle);
+        sheetBinding.ivCheckEn.setImageResource(isEn ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
 
-        ivCheckVi.setImageResource(isEn ? R.drawable.ic_circle_outline : R.drawable.ic_check_circle);
-        ivCheckEn.setImageResource(isEn ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
-
-        sheetView.findViewById(R.id.btn_lang_vi).setOnClickListener(v -> {
+        sheetBinding.btnLangVi.setOnClickListener(v -> {
             dialog.dismiss();
             if (isEn) {
                 changeLanguage(LocaleHelper.LANGUAGE_VI);
             }
         });
 
-        sheetView.findViewById(R.id.btn_lang_en).setOnClickListener(v -> {
+        sheetBinding.btnLangEn.setOnClickListener(v -> {
             dialog.dismiss();
             if (!isEn) {
                 changeLanguage(LocaleHelper.LANGUAGE_EN);
             }
         });
 
-        sheetView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+        sheetBinding.btnCancel.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
@@ -211,57 +218,50 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     }
 
     private void updateLanguageDisplay() {
-        String currentLang = viewModel.getLanguage();
-        if (LocaleHelper.LANGUAGE_EN.equals(currentLang)) {
-            binding.tvCurrentLanguage.setText(R.string.language_en);
-        } else {
-            binding.tvCurrentLanguage.setText(R.string.language_vi);
-        }
+        viewModel.updateLanguageDisplay();
     }
 
     public void onThemeClick() {
+        if (getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) return;
         String currentTheme = viewModel.getTheme();
 
-        BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme);
-        View sheetView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.layout_bottom_sheet_theme, null);
-        dialog.setContentView(sheetView);
+        boolean isCurrentDark = ThemeHelper.isDarkMode(requireContext(), currentTheme);
+        viewModel.setNightMode(isCurrentDark);
 
-        ImageView ivCheckDark = sheetView.findViewById(R.id.iv_check_dark);
-        ImageView ivCheckLight = sheetView.findViewById(R.id.iv_check_light);
-        ImageView ivCheckSystem = sheetView.findViewById(R.id.iv_check_system);
+        // Khởi tạo BottomSheetDialog với requireContext() để có Window Token hợp lệ (tránh BadTokenException)
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme);
+
+        LayoutBottomSheetThemeBinding sheetBinding = LayoutBottomSheetThemeBinding.inflate(
+                LayoutInflater.from(requireContext()), null, false);
+        sheetBinding.setVm(viewModel);
+        sheetBinding.setLifecycleOwner(getViewLifecycleOwner());
+        dialog.setContentView(sheetBinding.getRoot());
 
         // Hiển thị trạng thái checkmark hiện tại
-        updateCheckIcons(currentTheme, ivCheckDark, ivCheckLight, ivCheckSystem);
+        updateCheckIcons(currentTheme, sheetBinding.ivCheckDark, sheetBinding.ivCheckLight, sheetBinding.ivCheckSystem);
 
-        // Hiển thị màu sắc Bottom Sheet theo theme hiện tại
-        boolean isCurrentDark = ThemeHelper.isDarkMode(requireContext(), currentTheme);
-        updateBottomSheetColors(sheetView, isCurrentDark);
+        sheetBinding.executePendingBindings();
 
         // Khi người dùng click vào các lựa chọn: KHÔNG đóng dialog, đổi theme tức thì!
-        sheetView.findViewById(R.id.btn_theme_dark).setOnClickListener(v ->
-                applySelectedTheme(PreferencesService.THEME_MODE_DARK, sheetView, ivCheckDark, ivCheckLight, ivCheckSystem)
+        sheetBinding.btnThemeDark.setOnClickListener(v ->
+                applySelectedTheme(PreferencesService.THEME_MODE_DARK, sheetBinding)
         );
-
-        sheetView.findViewById(R.id.btn_theme_light).setOnClickListener(v ->
-                applySelectedTheme(PreferencesService.THEME_MODE_LIGHT, sheetView, ivCheckDark, ivCheckLight, ivCheckSystem)
+        sheetBinding.btnThemeLight.setOnClickListener(v ->
+                applySelectedTheme(PreferencesService.THEME_MODE_LIGHT, sheetBinding)
         );
-
-        sheetView.findViewById(R.id.btn_theme_system).setOnClickListener(v ->
-                applySelectedTheme(PreferencesService.THEME_MODE_SYSTEM, sheetView, ivCheckDark, ivCheckLight, ivCheckSystem)
+        sheetBinding.btnThemeSystem.setOnClickListener(v ->
+                applySelectedTheme(PreferencesService.THEME_MODE_SYSTEM, sheetBinding)
         );
-
-        sheetView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+        sheetBinding.btnCancel.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
 
-    private void applySelectedTheme(String selectedThemeMode, View sheetView,
-                                    ImageView ivDark, ImageView ivLight, ImageView ivSystem) {
+    private void applySelectedTheme(String selectedThemeMode, LayoutBottomSheetThemeBinding sheetBinding) {
         if (getContext() == null || getActivity() == null) return;
 
         // 1. Checkmark đổi
-        updateCheckIcons(selectedThemeMode, ivDark, ivLight, ivSystem);
+        updateCheckIcons(selectedThemeMode, sheetBinding.ivCheckDark, sheetBinding.ivCheckLight, sheetBinding.ivCheckSystem);
 
         // 2. Save Preferences
         viewModel.setTheme(selectedThemeMode);
@@ -272,18 +272,17 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         // 4. Xác định isDark thực tế
         boolean isDark = ThemeHelper.isDarkMode(requireContext(), selectedThemeMode);
 
-        // 5. BottomSheet đổi màu
-        updateBottomSheetColors(sheetView, isDark);
+        // 5. Cập nhật ViewModel -> DataBinding lập tức đổi màu ProfileFragment VÀ BottomSheet đang mở
+        viewModel.setNightMode(isDark);
+        sheetBinding.executePendingBindings();
 
-        // 6. Profile đổi màu
-        applyProfileThemeColors(isDark);
-        updateThemeDisplay();
+        // 6. Cập nhật text hiển thị ngôn ngữ/theme qua DataBinding
+        viewModel.updateThemeDisplay();
 
-        // 7. MainActivity đổi system UI
+        // 7. Gọi MainActivity đổi màu Status Bar và Navigation Bar
         if (getActivity() instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.applyThemeColors(isDark);
-            mainActivity.notifyThemeChanged();
         }
     }
 
@@ -296,150 +295,59 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
                 ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
     }
 
-    private void updateBottomSheetColors(View sheetView, boolean isDark) {
-        if (sheetView == null) return;
-
-        int sheetBg = ThemeHelper.getBottomSheetBackgroundColor(isDark);
-        int textPrimary = ThemeHelper.getTextPrimaryColor(isDark);
-        int dividerColor = ThemeHelper.getBottomSheetDividerColor(isDark);
-        int textCancel = ThemeHelper.getTextCancelColor(isDark);
-
-        sheetView.setBackgroundTintList(ColorStateList.valueOf(sheetBg));
-
-        TextView tvTitle = sheetView.findViewById(R.id.tv_bottom_sheet_theme_title);
-        if (tvTitle != null) tvTitle.setTextColor(textPrimary);
-
-        TextView tvDark = sheetView.findViewById(R.id.tv_theme_dark_label);
-        if (tvDark != null) tvDark.setTextColor(textPrimary);
-
-        TextView tvLight = sheetView.findViewById(R.id.tv_theme_light_label);
-        if (tvLight != null) tvLight.setTextColor(textPrimary);
-
-        TextView tvSystem = sheetView.findViewById(R.id.tv_theme_system_label);
-        if (tvSystem != null) tvSystem.setTextColor(textPrimary);
-
-        TextView tvCancel = sheetView.findViewById(R.id.tv_cancel_label);
-        if (tvCancel != null) tvCancel.setTextColor(textCancel);
-
-        View dDark = sheetView.findViewById(R.id.divider_dark);
-        if (dDark != null) dDark.setBackgroundColor(dividerColor);
-
-        View dLight = sheetView.findViewById(R.id.divider_light);
-        if (dLight != null) dLight.setBackgroundColor(dividerColor);
-
-        View dSystem = sheetView.findViewById(R.id.divider_system);
-        if (dSystem != null) dSystem.setBackgroundColor(dividerColor);
-    }
-
-    public void applyProfileThemeColors(boolean isDark) {
-        if (binding == null || getContext() == null) return;
-
-        int screenBg = ThemeHelper.getScreenBackgroundColor(isDark);
-        int cardBg = ThemeHelper.getCardBackgroundColor(isDark);
-        int textPrimary = ThemeHelper.getTextPrimaryColor(isDark);
-        int dividerColor = ThemeHelper.getDividerColor(isDark);
-
-        // Root background
-        binding.getRoot().setBackgroundColor(screenBg);
-
-        // Header Title
-        binding.tvTitle.setTextColor(textPrimary);
-
-        // Cards background
-        binding.cardUserInfo.setCardBackgroundColor(cardBg);
-        binding.cardSettings.setCardBackgroundColor(cardBg);
-
-        // Username text
-        binding.tvUsername.setTextColor(textPrimary);
-
-        // Settings items: Row icons and labels
-        updateRowTheme(binding.layoutLanguage, textPrimary);
-        updateRowTheme(binding.layoutQrScan, textPrimary);
-        updateRowTheme(binding.layoutTheme, textPrimary);
-        updateRowTheme(binding.layoutWebviewDemo, textPrimary);
-
-        // Update divider views inside layoutSettings
-        for (int i = 0; i < binding.layoutSettings.getChildCount(); i++) {
-            View child = binding.layoutSettings.getChildAt(i);
-            if (!(child instanceof android.widget.LinearLayout)) {
-                child.setBackgroundColor(dividerColor);
-            }
-        }
-    }
-
-    private void updateRowTheme(android.widget.LinearLayout rowLayout, int textPrimary) {
-        if (rowLayout == null) return;
-        View icon = rowLayout.getChildAt(0);
-        if (icon instanceof ImageView) {
-            ((ImageView) icon).setImageTintList(ColorStateList.valueOf(textPrimary));
-        }
-        View label = rowLayout.getChildAt(1);
-        if (label instanceof TextView) {
-            ((TextView) label).setTextColor(textPrimary);
-        }
-    }
-
     public void updateThemeDisplay() {
-        String currentTheme = viewModel.getTheme();
-        if (PreferencesService.THEME_MODE_LIGHT.equals(currentTheme)) {
-            binding.tvCurrentTheme.setText(R.string.theme_light);
-        } else if (PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme)) {
-            binding.tvCurrentTheme.setText(R.string.theme_system);
-        } else {
-            binding.tvCurrentTheme.setText(R.string.theme_dark);
-        }
+        viewModel.updateThemeDisplay();
     }
 
     public void onWebViewDemoClick() {
-        if (getContext() == null) return;
+        if (getContext() == null || getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) return;
         BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme);
-        View sheetView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.layout_bottom_sheet_webview_demo, null);
-        dialog.setContentView(sheetView);
+        LayoutBottomSheetWebviewDemoBinding sheetBinding = LayoutBottomSheetWebviewDemoBinding.inflate(
+                LayoutInflater.from(requireContext()), null, false);
+        sheetBinding.setVm(viewModel);
+        sheetBinding.setLifecycleOwner(getViewLifecycleOwner());
+        sheetBinding.executePendingBindings();
+        dialog.setContentView(sheetBinding.getRoot());
 
         // Báo Tuổi Trẻ
-        sheetView.findViewById(R.id.btn_demo_tuoitre).setOnClickListener(v -> {
+        sheetBinding.btnDemoTuoitre.setOnClickListener(v -> {
             dialog.dismiss();
             WebViewUtils.openTuoitre(requireContext());
         });
 
         // Facebook
-        sheetView.findViewById(R.id.btn_demo_facebook).setOnClickListener(v -> {
+        sheetBinding.btnDemoFacebook.setOnClickListener(v -> {
             dialog.dismiss();
             WebViewUtils.openFacebook(requireContext());
         });
 
         // Nhập URL bất kỳ
-        sheetView.findViewById(R.id.btn_demo_custom_url).setOnClickListener(v -> {
+        sheetBinding.btnDemoCustomUrl.setOnClickListener(v -> {
             dialog.dismiss();
             showCustomUrlDialog();
         });
 
         // Hủy
-        sheetView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+        sheetBinding.btnCancel.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
 
     private void showCustomUrlDialog() {
-        if (getContext() == null) return;
-        EditText input = new EditText(requireContext());
-        input.setHint(R.string.webview_input_url_hint);
-        input.setText("https://");
-        input.setSelection(input.getText().length());
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
-
-        FrameLayout container = new FrameLayout(requireContext());
-        int paddingHorizontal = getResources().getDimensionPixelSize(R.dimen._20sdp);
-        int paddingTop = getResources().getDimensionPixelSize(R.dimen._10sdp);
-        container.setPadding(paddingHorizontal, paddingTop, paddingHorizontal, 0);
-        container.addView(input);
+        if (getContext() == null || getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) return;
+        boolean isDark = ThemeHelper.isDarkMode(requireContext(), viewModel.getTheme());
+        LayoutDialogInputUrlBinding dialogBinding = LayoutDialogInputUrlBinding.inflate(
+                LayoutInflater.from(requireContext()), null, false);
+        dialogBinding.setIsNightMode(isDark);
+        dialogBinding.etUrl.setText("https://");
+        dialogBinding.etUrl.setSelection(dialogBinding.etUrl.getText().length());
+        dialogBinding.executePendingBindings();
 
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.webview_input_url_title)
-                .setView(container)
+                .setView(dialogBinding.getRoot())
                 .setPositiveButton("Mở", (d, which) -> {
-                    String url = input.getText().toString().trim();
+                    String url = dialogBinding.etUrl.getText().toString().trim();
                     if (!url.isEmpty() && !url.equalsIgnoreCase("https://")) {
                         if (!url.startsWith("http://") && !url.startsWith("https://")) {
                             url = "https://" + url;
@@ -462,14 +370,19 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     }
 
     @Override
+    protected void onThemeChanged(boolean isDark) {
+        viewModel.updateThemeDisplay();
+    }
+
+    @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             loadSavedAvatar();
-            updateLanguageDisplay();
-            updateThemeDisplay();
+            viewModel.updateLanguageDisplay();
+            viewModel.updateThemeDisplay();
             boolean isDark = ThemeHelper.isDarkMode(requireContext(), viewModel.getTheme());
-            applyProfileThemeColors(isDark);
+            viewModel.setNightMode(isDark);
         }
     }
 
@@ -479,8 +392,9 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         String currentTheme = viewModel.getTheme();
         if (PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme)) {
             boolean isDark = (newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-            applyProfileThemeColors(isDark);
-            updateThemeDisplay();
+            ThemeHelper.setSystemNightMode(isDark);
+            viewModel.setNightMode(isDark);
+            viewModel.updateThemeDisplay();
         }
     }
 }

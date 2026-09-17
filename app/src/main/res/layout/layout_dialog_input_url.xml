@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.base.android.R" />
+        <variable
+            name="isNightMode"
+            type="Boolean" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_20sdp"
+        android:paddingTop="@dimen/_10sdp">
+
+        <EditText
+            android:id="@+id/et_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/webview_input_url_hint"
+            android:inputType="textUri"
+            android:textColor="?attr/colorTextPrimary"
+            app:textColorResByMode="@{R.color.color_text_primary}"
+            app:isNightMode="@{isNightMode}"
+            android:textColorHint="@color/login_input_hint"
+            android:textSize="16sp"
+            app:fontFamily="@font/sf_pro_display_regular"
+            android:fontFamily="@font/sf_pro_display_regular" />
+
+    </FrameLayout>
+</layout>

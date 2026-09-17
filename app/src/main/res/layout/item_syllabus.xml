@@ -1,72 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_16sdp"
-    app:cardBackgroundColor="@color/syllabus_item_background"
-    app:cardCornerRadius="@dimen/_8sdp"
-    app:cardElevation="0dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/layout_syllabus_content"
+    <data>
+        <import type="com.base.android.R" />
+
+        <variable
+            name="isNightMode"
+            type="Boolean" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/_12sdp">
+        android:layout_marginTop="@dimen/_16sdp"
+        app:cardBackgroundColor="@color/syllabus_item_background"
+        app:cardBgColorResByMode="@{R.color.syllabus_item_background}"
+        app:isNightMode="@{isNightMode}"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp">
 
         <LinearLayout
+            android:id="@+id/layout_syllabus_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="@dimen/_12sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_syllabus_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/color_text_primary"
+                    app:textColorResByMode="@{R.color.color_text_primary}"
+                    app:isNightMode="@{isNightMode}"
+                    android:textSize="16sp"
+                    android:letterSpacing="0.02"
+                    android:includeFontPadding="false"
+                    android:layout_gravity="center_vertical"
+                    app:lineHeight="24sp"
+                    app:fontFamily="@font/sf_pro_display_medium"
+                    android:fontFamily="@font/sf_pro_display_medium"
+                    android:textFontWeight="500"
+                    tools:text="GIAI ĐOẠN HỌC 1: Chuẩn bị nền tảng" />
+
+                <ImageView
+                    android:id="@+id/iv_expand_icon"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/ic_plus"
+                    android:tint="@color/color_text_primary"
+                    app:tintColorResByMode="@{R.color.color_text_primary}"
+                    app:isNightMode="@{isNightMode}" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_syllabus_name"
-                android:layout_width="0dp"
+                android:id="@+id/tv_syllabus_description"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/color_text_primary"
-                android:textSize="16sp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/syllabus_description_text"
+                app:textColorResByMode="@{R.color.syllabus_description_text}"
+                app:isNightMode="@{isNightMode}"
+                android:textSize="14sp"
                 android:letterSpacing="0.02"
                 android:includeFontPadding="false"
-                android:layout_gravity="center_vertical"
-                app:lineHeight="24sp"
-                app:fontFamily="@font/sf_pro_display_medium"
-                android:fontFamily="@font/sf_pro_display_medium"
-                android:textFontWeight="500"
-                tools:text="GIAI ĐOẠN HỌC 1: Chuẩn bị nền tảng" />
-
-            <ImageView
-                android:id="@+id/iv_expand_icon"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="2dp"
-                android:src="@drawable/ic_plus"
-                app:tint="@color/color_text_primary" />
+                android:visibility="gone"
+                app:lineHeight="26sp"
+                app:fontFamily="@font/sf_pro_display_regular"
+                android:fontFamily="@font/sf_pro_display_regular"
+                android:textFontWeight="400"
+                tools:visibility="visible"
+                tools:text="- Môn 3: Lập trình hướng đối tượng\n- Môn 4: Cấu trúc dữ liệu và giải thuật\n- Môn 5: Các hệ cơ sở dữ liệu\n- Môn 6: Phát triển ứng dụng web\n- Môn 7 (không bắt buộc): Lập trình di động" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_syllabus_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textColor="@color/syllabus_description_text"
-            android:textSize="14sp"
-            android:letterSpacing="0.02"
-            android:includeFontPadding="false"
-            android:visibility="gone"
-            app:lineHeight="26sp"
-            app:fontFamily="@font/sf_pro_display_regular"
-            android:fontFamily="@font/sf_pro_display_regular"
-            android:textFontWeight="400"
-            tools:visibility="visible"
-            tools:text="- Môn 3: Lập trình hướng đối tượng\n- Môn 4: Cấu trúc dữ liệu và giải thuật\n- Môn 5: Các hệ cơ sở dữ liệu\n- Môn 6: Phát triển ứng dụng web\n- Môn 7 (không bắt buộc): Lập trình di động" />
-
-    </LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -2,6 +2,7 @@ package com.base.android.ui.main;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -22,16 +23,14 @@ import com.base.android.databinding.ActivityMainBinding;
 import com.base.android.di.component.ActivityComponent;
 import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.activity.BaseActivity;
+import com.base.android.ui.base.fragment.BaseFragment;
+import com.base.android.ui.main.account.login.LoginActivity;
 import com.base.android.ui.main.account.profile.ProfileFragment;
 import com.base.android.ui.main.chart.ChartFragment;
 import com.base.android.ui.main.company.CompanyFragment;
 import com.base.android.ui.main.courses.CoursesFragment;
 import com.base.android.ui.main.mentor.MentorFragment;
 import com.base.android.ui.main.reviews.ReviewsFragment;
-
-import java.util.HashSet;
-import java.util.Set;
-
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
 
@@ -45,7 +44,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     private String currentTag = TAG_COURSES;
     private Fragment activeFragment;
-    private final Set<String> outdatedTabs = new HashSet<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,7 +139,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         FragmentTransaction transaction = fm.beginTransaction();
 
         if (activeFragment != null) {
-            transaction.hide(activeFragment);
+            transaction.hide(activeFragment); // ẩn tab cũ
         }
 
         Fragment targetFragment = fm.findFragmentByTag(targetTag);
@@ -150,31 +148,25 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
             targetFragment = createFragmentByTag(targetTag);
             transaction.add(R.id.fragment_container, targetFragment, targetTag);
         } else {
-            transaction.show(targetFragment);
+            transaction.show(targetFragment); // hiện tab mới -> kích hoạt onHiddenChanged(false)
         }
         transaction.commit();
-
-        if (outdatedTabs.contains(targetTag)) {
-            outdatedTabs.remove(targetTag);
-            boolean isDark = ThemeHelper.isDarkMode(this, viewModel.getTheme());
-            if (targetFragment instanceof ThemeHelper.ThemeRefreshable) {
-                ((ThemeHelper.ThemeRefreshable) targetFragment).refreshTheme(isDark);
-            }
-        }
 
         activeFragment = targetFragment;
         currentTag = targetTag;
     }
 
     public void applyThemeColors(boolean isDark) {
+        viewModel.setNightMode(isDark);
+
         int screenBg = ThemeHelper.getScreenBackgroundColor(isDark);
         int navBg = ThemeHelper.getNavBackgroundColor(isDark);
 
-        // Status Bar & Navigation Bar colors
+        // Đổi màu Status bar & Navigation bar hệ thống
         getWindow().setStatusBarColor(screenBg);
         getWindow().setNavigationBarColor(navBg);
 
-        // Light/Dark System Bar Icons
+        // Đổi màu icon pin, sóng, đồng hồ trên Status bar (Đen khi nền sáng, Trắng khi nền tối)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
             if (controller != null) {
@@ -182,34 +174,22 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
                 controller.setAppearanceLightNavigationBars(!isDark);
             }
         }
-
-        // Bottom Navigation background
-        if (viewBinding != null && viewBinding.bottomNavigation != null) {
-            viewBinding.bottomNavigation.setBackgroundColor(navBg);
-        }
     }
 
-    public void notifyThemeChanged() {
-        outdatedTabs.clear();
-        outdatedTabs.add(TAG_COURSES);
-        outdatedTabs.add(TAG_REVIEWS);
-        outdatedTabs.add(TAG_CHARTS);
-        outdatedTabs.add(TAG_MENTOR);
-        outdatedTabs.add(TAG_COMPANY);
-    }
-
+    /**
+     * Hệ điều hành Android tự động gọi khi máy đổi Dark/Light mode ở chế độ hệ thống.
+     */
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         String currentTheme = viewModel.getTheme();
         if (PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme)) {
+            // Lấy cờ night mode trực tiếp từ cấu hình hệ thống vừa truyền vào
             boolean isDark = (newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-            applyThemeColors(isDark);
-            notifyThemeChanged();
-            Fragment profileFrag = getSupportFragmentManager().findFragmentByTag(TAG_PROFILE);
-            if (profileFrag instanceof ProfileFragment) {
-                ((ProfileFragment) profileFrag).applyProfileThemeColors(isDark);
-                ((ProfileFragment) profileFrag).updateThemeDisplay();
+            ThemeHelper.setSystemNightMode(isDark); // Cập nhật cache
+            applyThemeColors(isDark); // Đổi màu Status Bar, Nav Bar
+            if (activeFragment instanceof BaseFragment) {
+                ((BaseFragment<?, ?>) activeFragment).checkAndSyncNightMode(); // Đổi màu tab đang mở
             }
         }
     }
@@ -250,11 +230,24 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     protected void onResume() {
         super.onResume();
-
+        String currentTheme = viewModel.getTheme();
+        if (PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme)) {
+            int systemMode = Resources.getSystem().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            if (systemMode != Configuration.UI_MODE_NIGHT_UNDEFINED) {
+                ThemeHelper.setSystemNightMode(systemMode == Configuration.UI_MODE_NIGHT_YES);
+            }
+            boolean isDark = ThemeHelper.isDarkMode(this, currentTheme);
+            if (viewModel.isNightMode.get() != isDark) {
+                applyThemeColors(isDark);
+            }
+            if (activeFragment instanceof BaseFragment) {
+                ((BaseFragment<?, ?>) activeFragment).checkAndSyncNightMode();
+            }
+        }
     }
     @Override
     public void doExpireSession() {
-        Intent intent = new Intent(this, com.base.android.ui.main.account.login.LoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finishAffinity();
     }

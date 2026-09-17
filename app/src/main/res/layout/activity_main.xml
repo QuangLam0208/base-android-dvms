@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.base.android.R" />
+
         <variable
             name="a"
             type="com.base.android.ui.main.MainActivity" />
@@ -33,6 +35,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?attr/colorNavBackground"
+            app:bgColorResByMode="@{R.color.color_nav_background}"
+            app:isNightMode="@{vm.isNightMode}"
             app:itemIconTint="@color/bottom_nav_item_color"
             app:itemTextColor="@color/bottom_nav_item_color"
             app:labelVisibilityMode="labeled"

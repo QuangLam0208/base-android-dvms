@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.base.android.R" />
+
         <variable
             name="f"
             type="com.base.android.ui.main.company.CompanyFragment" />
@@ -16,7 +18,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorScreenBackground">
+        android:background="?attr/colorScreenBackground"
+        app:bgColorResByMode="@{R.color.color_screen_background}"
+        app:isNightMode="@{vm.isNightMode}">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"

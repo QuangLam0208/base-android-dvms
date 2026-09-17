@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import com.base.android.R;
+import com.base.android.databinding.LayoutBottomSheetAvatarBinding;
+import com.base.android.helper.ThemeHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,6 +34,8 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.LayoutInflater;
+
 import com.yalantis.ucrop.UCrop;
 
 import timber.log.Timber;
@@ -363,21 +367,23 @@ public class ImagePickerUtils {
                                                            @NonNull Runnable onCameraSelected,
                                                            @NonNull Runnable onGallerySelected) {
         BottomSheetDialog dialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
-        android.view.View sheetView = android.view.LayoutInflater.from(context)
-                .inflate(R.layout.layout_bottom_sheet_avatar, null);
-        dialog.setContentView(sheetView);
+        LayoutBottomSheetAvatarBinding sheetBinding = LayoutBottomSheetAvatarBinding.inflate(
+                LayoutInflater.from(context), null, false);
+        sheetBinding.setIsNightMode(ThemeHelper.isDarkMode(context));
+        sheetBinding.executePendingBindings();
+        dialog.setContentView(sheetBinding.getRoot());
 
-        sheetView.findViewById(R.id.btn_camera).setOnClickListener(v -> {
+        sheetBinding.btnCamera.setOnClickListener(v -> {
             dialog.dismiss();
             onCameraSelected.run();
         });
 
-        sheetView.findViewById(R.id.btn_gallery).setOnClickListener(v -> {
+        sheetBinding.btnGallery.setOnClickListener(v -> {
             dialog.dismiss();
             onGallerySelected.run();
         });
 
-        sheetView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+        sheetBinding.btnCancel.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
         return dialog;

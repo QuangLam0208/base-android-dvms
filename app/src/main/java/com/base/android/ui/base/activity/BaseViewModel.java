@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.base.android.MVVMApplication;
 import com.base.android.data.Repository;
 import com.base.android.data.model.other.ToastMessage;
+import com.base.android.helper.ThemeHelper;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import lombok.Getter;
@@ -28,10 +29,18 @@ public class BaseViewModel extends ViewModel {
     @Getter
     protected final MVVMApplication application;
 
+    public final ObservableBoolean isNightMode = new ObservableBoolean();
+
     public BaseViewModel(Repository repository, MVVMApplication application){
         this.repository = repository;
         this.application = application;
         this.compositeDisposable = new CompositeDisposable();
+        boolean isDark = ThemeHelper.isDarkMode(application, repository.getSharedPreferences().getAppTheme());
+        this.isNightMode.set(isDark);
+    }
+
+    public void setNightMode(boolean isDark) {
+        this.isNightMode.set(isDark);
     }
 
     @Override

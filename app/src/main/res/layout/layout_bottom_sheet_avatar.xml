@@ -1,129 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_bottom_sheet_dark"
-    android:backgroundTint="?attr/colorBottomSheetBackground"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/_24sdp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <View
-        android:layout_width="@dimen/_36sdp"
-        android:layout_height="@dimen/_4sdp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/bg_drag_handle" />
+    <data>
+        <import type="com.base.android.R" />
+        <variable
+            name="isNightMode"
+            type="Boolean" />
+    </data>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_14sdp"
-        android:layout_marginBottom="@dimen/_16sdp"
-        android:text="@string/choose_avatar_title"
-        android:textColor="?attr/colorTextPrimary"
-        android:textSize="18sp"
-        app:fontFamily="@font/sf_pro_display_semibold"
-        android:fontFamily="@font/sf_pro_display_semibold"
-        android:textFontWeight="600" />
-
-    <!-- Option: Camera -->
     <LinearLayout
-        android:id="@+id/btn_camera"
+        android:id="@+id/layout_bottom_sheet_avatar_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/_20sdp"
-        android:paddingVertical="@dimen/_14sdp">
+        android:background="@drawable/bg_bottom_sheet_dark"
+        android:backgroundTint="?attr/colorBottomSheetBackground"
+        app:bgTintResByMode="@{R.color.color_bottom_sheet_background}"
+        app:isNightMode="@{isNightMode}"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_24sdp">
 
-        <ImageView
-            android:layout_width="@dimen/_22sdp"
-            android:layout_height="@dimen/_22sdp"
-            android:src="@drawable/ic_camera"
-            app:tint="@color/accent_color" />
+        <View
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_4sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/bg_drag_handle" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_14sdp"
-            android:text="@string/choose_from_camera"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:text="@string/choose_avatar_title"
             android:textColor="?attr/colorTextPrimary"
-            android:textSize="16sp"
-            app:fontFamily="@font/sf_pro_display_medium"
-            android:fontFamily="@font/sf_pro_display_medium"
-            android:textFontWeight="500" />
-    </LinearLayout>
+            app:textColorResByMode="@{R.color.color_text_primary}"
+            app:isNightMode="@{isNightMode}"
+            android:textSize="18sp"
+            app:fontFamily="@font/sf_pro_display_semibold"
+            android:fontFamily="@font/sf_pro_display_semibold"
+            android:textFontWeight="600" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        android:background="?attr/colorBottomSheetDivider" />
-
-    <!-- Option: Gallery -->
-    <LinearLayout
-        android:id="@+id/btn_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/_20sdp"
-        android:paddingVertical="@dimen/_14sdp">
-
-        <ImageView
-            android:layout_width="@dimen/_22sdp"
-            android:layout_height="@dimen/_22sdp"
-            android:src="@drawable/ic_gallery"
-            app:tint="@color/accent_color" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Option: Camera -->
+        <LinearLayout
+            android:id="@+id/btn_camera"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_14sdp"
-            android:text="@string/choose_from_gallery"
-            android:textColor="?attr/colorTextPrimary"
-            android:textSize="16sp"
-            app:fontFamily="@font/sf_pro_display_medium"
-            android:fontFamily="@font/sf_pro_display_medium"
-            android:textFontWeight="500" />
-    </LinearLayout>
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_14sdp">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        android:background="?attr/colorBottomSheetDivider" />
+            <ImageView
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
+                android:src="@drawable/ic_camera"
+                app:tint="@color/accent_color" />
 
-    <!-- Option: Cancel -->
-    <LinearLayout
-        android:id="@+id/btn_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingVertical="@dimen/_12sdp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:text="@string/choose_from_camera"
+                android:textColor="?attr/colorTextPrimary"
+                app:textColorResByMode="@{R.color.color_text_primary}"
+                app:isNightMode="@{isNightMode}"
+                android:textSize="16sp"
+                app:fontFamily="@font/sf_pro_display_medium"
+                android:fontFamily="@font/sf_pro_display_medium"
+                android:textFontWeight="500" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:background="?attr/colorBottomSheetDivider"
+            app:bgColorResByMode="@{R.color.color_bottom_sheet_divider}"
+            app:isNightMode="@{isNightMode}" />
+
+        <!-- Option: Gallery -->
+        <LinearLayout
+            android:id="@+id/btn_gallery"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:textColor="?attr/colorTextCancel"
-            android:textSize="16sp"
-            app:fontFamily="@font/sf_pro_display_medium"
-            android:fontFamily="@font/sf_pro_display_medium"
-            android:textFontWeight="500" />
-    </LinearLayout>
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_14sdp">
 
-</LinearLayout>
+            <ImageView
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
+                android:src="@drawable/ic_gallery"
+                app:tint="@color/accent_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:text="@string/choose_from_gallery"
+                android:textColor="?attr/colorTextPrimary"
+                app:textColorResByMode="@{R.color.color_text_primary}"
+                app:isNightMode="@{isNightMode}"
+                android:textSize="16sp"
+                app:fontFamily="@font/sf_pro_display_medium"
+                android:fontFamily="@font/sf_pro_display_medium"
+                android:textFontWeight="500" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:background="?attr/colorBottomSheetDivider"
+            app:bgColorResByMode="@{R.color.color_bottom_sheet_divider}"
+            app:isNightMode="@{isNightMode}" />
+
+        <!-- Option: Cancel -->
+        <LinearLayout
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/_12sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:textColor="?attr/colorTextCancel"
+                app:textColorResByMode="@{R.color.color_text_cancel}"
+                app:isNightMode="@{isNightMode}"
+                android:textSize="16sp"
+                app:fontFamily="@font/sf_pro_display_medium"
+                android:fontFamily="@font/sf_pro_display_medium"
+                android:textFontWeight="500" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

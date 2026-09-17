@@ -13,6 +13,7 @@ import com.base.android.R;
 import com.base.android.data.model.api.response.mentor.MentorAccountResponse;
 import com.base.android.data.model.api.response.mentor.MentorResponse;
 import com.base.android.databinding.ItemMentorBinding;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.utils.ImageUtils;
 import com.bumptech.glide.Glide;
@@ -25,10 +26,18 @@ public class MentorAdapter extends RecyclerView.Adapter<MentorAdapter.MentorView
     private final List<MentorResponse> items = new ArrayList<>();
     private final OnItemClickListener listener;
     private final Context context;
+    private boolean isNightMode;
 
     public MentorAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
         this.listener = listener;
+        this.isNightMode = ThemeHelper.isDarkMode(context);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setNightMode(boolean isNightMode) {
+        this.isNightMode = isNightMode;
+        notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -50,7 +59,9 @@ public class MentorAdapter extends RecyclerView.Adapter<MentorAdapter.MentorView
 
     @Override
     public void onBindViewHolder(@NonNull MentorViewHolder holder, int position) {
+        holder.binding.setIsNightMode(isNightMode);
         holder.bind(items.get(position));
+        holder.binding.executePendingBindings();
     }
 
     @Override

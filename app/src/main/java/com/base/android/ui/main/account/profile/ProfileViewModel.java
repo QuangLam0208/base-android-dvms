@@ -6,10 +6,39 @@ import com.base.android.data.Repository;
 import com.base.android.data.local.prefs.PreferencesService;
 import com.base.android.ui.base.fragment.BaseFragmentViewModel;
 
+import androidx.databinding.ObservableField;
+import com.base.android.R;
+import com.base.android.helper.LocaleHelper;
+
 public class ProfileViewModel extends BaseFragmentViewModel {
+
+    public final ObservableField<String> currentThemeDisplay = new ObservableField<>();
+    public final ObservableField<String> currentLanguageDisplay = new ObservableField<>();
 
     public ProfileViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
+        updateThemeDisplay();
+        updateLanguageDisplay();
+    }
+
+    public void updateThemeDisplay() {
+        String currentTheme = getTheme();
+        if (PreferencesService.THEME_MODE_LIGHT.equals(currentTheme)) {
+            currentThemeDisplay.set(application.getString(R.string.theme_light));
+        } else if (PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme)) {
+            currentThemeDisplay.set(application.getString(R.string.theme_system));
+        } else {
+            currentThemeDisplay.set(application.getString(R.string.theme_dark));
+        }
+    }
+
+    public void updateLanguageDisplay() {
+        String currentLang = getLanguage();
+        if (LocaleHelper.LANGUAGE_EN.equals(currentLang)) {
+            currentLanguageDisplay.set(application.getString(R.string.language_en));
+        } else {
+            currentLanguageDisplay.set(application.getString(R.string.language_vi));
+        }
     }
 
     public static final String KEY_USER_AVATAR_URI = "KEY_USER_AVATAR_URI";

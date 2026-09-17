@@ -21,8 +21,7 @@ import com.base.android.ui.main.courses.adapter.CourseAdapter;
 
 import java.util.List;
 
-public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, CoursesViewModel>
-        implements ThemeHelper.ThemeRefreshable {
+public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, CoursesViewModel> {
 
     private CourseAdapter courseAdapter;
 
@@ -188,13 +187,9 @@ public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, Course
     }
 
     @Override
-    public void refreshTheme(boolean isDark) {
-        if (binding != null && getContext() != null) {
-            binding.getRoot().setBackgroundColor(ThemeHelper.getScreenBackgroundColor(isDark));
-            binding.tvHeadingOngoing.setTextColor(ThemeHelper.getTextPrimaryColor(isDark));
-            if (binding.rvCourses != null && courseAdapter != null) {
-                binding.rvCourses.setAdapter(courseAdapter);
-            }
+    protected void onThemeChanged(boolean isDark) {
+        if (courseAdapter != null) {
+            courseAdapter.setNightMode(isDark);
         }
     }
 }

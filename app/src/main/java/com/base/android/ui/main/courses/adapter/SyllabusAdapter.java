@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.base.android.R;
 import com.base.android.data.model.api.response.course.SyllabusResponse;
 import com.base.android.databinding.ItemSyllabusBinding;
+import com.base.android.helper.ThemeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,17 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.Syllab
 
     private final List<SyllabusResponse> items = new ArrayList<>();
     private final Context context;
+    private boolean isNightMode;
 
     public SyllabusAdapter(Context context) {
         this.context = context;
+        this.isNightMode = ThemeHelper.isDarkMode(context);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setNightMode(boolean isNightMode) {
+        this.isNightMode = isNightMode;
+        notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -45,7 +54,9 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.Syllab
 
     @Override
     public void onBindViewHolder(@NonNull SyllabusViewHolder holder, int position) {
+        holder.binding.setIsNightMode(isNightMode);
         holder.bind(items.get(position));
+        holder.binding.executePendingBindings();
     }
 
     @Override

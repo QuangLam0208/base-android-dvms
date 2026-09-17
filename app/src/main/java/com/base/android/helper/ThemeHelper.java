@@ -1,12 +1,21 @@
 package com.base.android.helper;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 
+import android.content.res.Resources;
 import androidx.appcompat.app.AppCompatDelegate;
+import com.base.android.constant.Constants;
 import com.base.android.data.local.prefs.PreferencesService;
 
 public class ThemeHelper {
+
+    private static Boolean sSystemNightMode = null;
+
+    public static void setSystemNightMode(boolean isDark) {
+        sSystemNightMode = isDark;
+    }
 
     public static void applyTheme(String themeMode) {
         if (themeMode == null) {
@@ -49,6 +58,17 @@ public class ThemeHelper {
         }
     }
 
+    public static boolean isDarkMode(Context context) {
+        if (context == null) return true;
+        try {
+            SharedPreferences sp = context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+            String themeMode = sp.getString(PreferencesService.KEY_THEME_MODE, PreferencesService.THEME_MODE_DARK);
+            return isDarkMode(context, themeMode);
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
     public static boolean isDarkMode(Context context, String themeMode) {
         if (themeMode == null) {
             themeMode = PreferencesService.THEME_MODE_DARK;
@@ -58,10 +78,24 @@ public class ThemeHelper {
         } else if (PreferencesService.THEME_MODE_DARK.equals(themeMode)) {
             return true;
         } else {
-            // SYSTEM
-            if (context == null) return true;
-            int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+            // SYSTEM: Ưu tiên cache từ onConfigurationChanged, sau đó kiểm tra Resources.getSystem()
+            if (sSystemNightMode != null) {
+                return sSystemNightMode;
+            }
+            // Đọc trực tiếp từ Configuration cấp hệ thống (Framework-level)
+            int systemMode = Resources.getSystem().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            if (systemMode == Configuration.UI_MODE_NIGHT_YES) {
+                return true;
+            } else if (systemMode == Configuration.UI_MODE_NIGHT_NO) {
+                return false;
+            }
+            // Fallback cuối cùng qua context
+            if (context != null) {
+                Context appCtx = context.getApplicationContext();
+                int appMode = (appCtx != null ? appCtx : context).getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                return appMode == Configuration.UI_MODE_NIGHT_YES;
+            }
+            return false;
         }
     }
 
@@ -100,9 +134,5 @@ public class ThemeHelper {
 
     public static int getBottomSheetDividerColor(boolean isDark) {
         return isDark ? 0xFF2E3542 : 0xFFE5E7EB;
-    }
-
-    public interface ThemeRefreshable {
-        void refreshTheme(boolean isDark);
     }
 }

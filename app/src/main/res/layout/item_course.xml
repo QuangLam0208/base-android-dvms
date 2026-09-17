@@ -1,196 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_course"
+    <data>
+        <import type="com.base.android.R" />
+
+        <variable
+            name="isNightMode"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_9sdp"
-        android:layout_marginTop="@dimen/_9sdp"
-        app:cardBackgroundColor="?attr/colorCardBackground"
-        app:cardCornerRadius="@dimen/_10sdp"
-        app:cardElevation="0dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_course"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/_10sdp">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/course_image_height"
-                app:cardBackgroundColor="?attr/colorCardBackground"
-                app:cardCornerRadius="@dimen/course_image_corner_radius"
-                app:cardElevation="0dp">
-
-                <ImageView
-                    android:id="@+id/iv_course_avatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="Khoá học"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_course_placeholder" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
-                android:id="@+id/tv_course_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_14sdp"
-                android:textColor="?attr/colorTextPrimary"
-                android:textSize="@dimen/course_name_text_size"
-                android:letterSpacing="0"
-                android:includeFontPadding="false"
-                app:lineHeight="20sp"
-                app:fontFamily="@font/sf_pro_display_medium"
-                android:fontFamily="@font/sf_pro_display_medium"
-                android:textFontWeight="500"
-                tools:text="Khoá học ReactJS — Xây dựng chức năng Github với GraphQL" />
-
-            <TextView
-                android:id="@+id/tv_course_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_13sdp"
-                android:textColor="@color/accent_color"
-                android:textSize="@dimen/course_price_text_size"
-                android:letterSpacing="0"
-                android:includeFontPadding="false"
-                app:lineHeight="25sp"
-                app:fontFamily="@font/sf_pro_display_semibold"
-                android:fontFamily="@font/sf_pro_display_semibold"
-                android:textFontWeight="600"
-                tools:text="7,500,000 đ" />
-
-            <TextView
-                android:id="@+id/tv_course_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_13sdp"
-                android:textColor="@color/course_short_description"
-                android:textSize="@dimen/course_description_text_size"
-                android:letterSpacing="0"
-                android:includeFontPadding="false"
-                app:lineHeight="@dimen/course_description_line_height"
-                app:fontFamily="@font/sf_pro_display_regular"
-                android:fontFamily="@font/sf_pro_display_regular"
-                android:textFontWeight="400"
-                tools:text="•  Lazy loading · code splitting · Memoization trong ReactJS\n•  Tìm hiểu GraphQL và so sánh với REST" />
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:layout_marginTop="@dimen/_9sdp"
+            app:cardBackgroundColor="?attr/colorCardBackground"
+            app:cardBgColorResByMode="@{R.color.color_card_background}"
+            app:isNightMode="@{isNightMode}"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="0dp">
 
             <LinearLayout
-                android:id="@+id/btn_view_more"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="@dimen/_19sdp"
-                android:layout_marginBottom="@dimen/_2sdp"
-                android:layout_marginStart="@dimen/_2sdp"
-                android:background="@drawable/bg_btn_view_more"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/course_image_height"
+                    app:cardBackgroundColor="?attr/colorCardBackground"
+                    app:cardBgColorResByMode="@{R.color.color_card_background}"
+                    app:isNightMode="@{isNightMode}"
+                    app:cardCornerRadius="@dimen/course_image_corner_radius"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:id="@+id/iv_course_avatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Khoá học"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_course_placeholder" />
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
-                    android:id="@+id/tv_view_more"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_course_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/button_more"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:letterSpacing="0.02"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:textColor="?attr/colorTextPrimary"
+                    app:textColorResByMode="@{R.color.color_text_primary}"
+                    app:isNightMode="@{isNightMode}"
+                    android:textSize="@dimen/course_name_text_size"
+                    android:letterSpacing="0"
                     android:includeFontPadding="false"
-                    app:lineHeight="26.4sp"
+                    app:lineHeight="20sp"
+                    app:fontFamily="@font/sf_pro_display_medium"
+                    android:fontFamily="@font/sf_pro_display_medium"
+                    android:textFontWeight="500"
+                    tools:text="Khoá học ReactJS — Xây dựng chức năng Github với GraphQL" />
+
+                <TextView
+                    android:id="@+id/tv_course_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_13sdp"
+                    android:textColor="@color/accent_color"
+                    android:textSize="@dimen/course_price_text_size"
+                    android:letterSpacing="0"
+                    android:includeFontPadding="false"
+                    app:lineHeight="25sp"
                     app:fontFamily="@font/sf_pro_display_semibold"
                     android:fontFamily="@font/sf_pro_display_semibold"
-                    android:textFontWeight="600" />
+                    android:textFontWeight="600"
+                    tools:text="7,500,000 đ" />
 
-                <ImageView
-                    android:id="@+id/iv_arrow_more"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="7dp"
-                    android:src="@drawable/ic_arrow_drop_down"
-                    app:tint="@color/white" />
+                <TextView
+                    android:id="@+id/tv_course_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_13sdp"
+                    android:textColor="@color/course_short_description"
+                    app:textColorResByMode="@{R.color.course_short_description}"
+                    app:isNightMode="@{isNightMode}"
+                    android:textSize="@dimen/course_description_text_size"
+                    android:letterSpacing="0"
+                    android:includeFontPadding="false"
+                    app:lineHeight="@dimen/course_description_line_height"
+                    app:fontFamily="@font/sf_pro_display_regular"
+                    android:fontFamily="@font/sf_pro_display_regular"
+                    android:textFontWeight="400"
+                    tools:text="•  Lazy loading · code splitting · Memoization trong ReactJS\n•  Tìm hiểu GraphQL và so sánh với REST" />
+
+                <LinearLayout
+                    android:id="@+id/btn_view_more"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/_19sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:background="@drawable/bg_btn_view_more"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_view_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/button_more"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:letterSpacing="0.02"
+                        android:includeFontPadding="false"
+                        app:lineHeight="26.4sp"
+                        app:fontFamily="@font/sf_pro_display_semibold"
+                        android:fontFamily="@font/sf_pro_display_semibold"
+                        android:textFontWeight="600" />
+
+                    <ImageView
+                        android:id="@+id/iv_arrow_more"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginStart="7dp"
+                        android:src="@drawable/ic_arrow_drop_down"
+                        app:tint="@color/white" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_syllabus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_9sdp"
-        android:layout_marginTop="@dimen/_9sdp"
-        android:visibility="gone"
-        app:cardBackgroundColor="?attr/colorCardBackground"
-        app:cardCornerRadius="@dimen/_10sdp"
-        app:cardElevation="0dp"
-        tools:visibility="visible">
-
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_syllabus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp">
+            android:layout_marginHorizontal="@dimen/_9sdp"
+            android:layout_marginTop="@dimen/_9sdp"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorCardBackground"
+            app:cardBgColorResByMode="@{R.color.color_card_background}"
+            app:isNightMode="@{isNightMode}"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="0dp"
+            tools:visibility="visible">
 
-            <TextView
-                android:id="@+id/tv_syllabus_title"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:text="@string/syllabus_title"
-                android:textColor="?attr/colorTextPrimary"
-                android:textSize="20sp"
-                android:letterSpacing="0"
-                android:includeFontPadding="false"
-                app:lineHeight="28sp"
-                app:fontFamily="@font/sf_pro_display_medium"
-                android:fontFamily="@font/sf_pro_display_medium"
-                android:textFontWeight="500" />
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp">
 
-            <ProgressBar
-                android:id="@+id/pb_syllabus_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginVertical="@dimen/_12sdp"
-                android:indeterminateTint="@color/accent_color"
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tv_syllabus_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:text="@string/syllabus_title"
+                    android:textColor="?attr/colorTextPrimary"
+                    app:textColorResByMode="@{R.color.color_text_primary}"
+                    app:isNightMode="@{isNightMode}"
+                    android:textSize="20sp"
+                    android:letterSpacing="0"
+                    android:includeFontPadding="false"
+                    app:lineHeight="28sp"
+                    app:fontFamily="@font/sf_pro_display_medium"
+                    android:fontFamily="@font/sf_pro_display_medium"
+                    android:textFontWeight="500" />
 
-            <TextView
-                android:id="@+id/tv_syllabus_empty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:gravity="center"
-                android:text="@string/empty_syllabus"
-                android:textColor="@color/course_short_description"
-                android:textSize="14sp"
-                android:includeFontPadding="false"
-                app:fontFamily="@font/sf_pro_display_regular"
-                android:fontFamily="@font/sf_pro_display_regular"
-                android:visibility="gone" />
+                <ProgressBar
+                    android:id="@+id/pb_syllabus_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="@dimen/_12sdp"
+                    android:indeterminateTint="@color/accent_color"
+                    android:visibility="gone" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_syllabuses"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_syllabus" />
+                <TextView
+                    android:id="@+id/tv_syllabus_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:text="@string/empty_syllabus"
+                    android:textColor="@color/course_short_description"
+                    app:textColorResByMode="@{R.color.course_short_description}"
+                    app:isNightMode="@{isNightMode}"
+                    android:textSize="14sp"
+                    android:includeFontPadding="false"
+                    app:fontFamily="@font/sf_pro_display_regular"
+                    android:fontFamily="@font/sf_pro_display_regular"
+                    android:visibility="gone" />
 
-        </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_syllabuses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_syllabus" />
 
-    </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
-</LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</layout>

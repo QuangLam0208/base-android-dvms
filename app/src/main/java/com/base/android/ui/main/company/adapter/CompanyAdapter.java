@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.base.android.R;
 import com.base.android.data.model.api.response.company.CompanyResponse;
 import com.base.android.databinding.ItemCompanyBinding;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.utils.ImageUtils;
 import com.bumptech.glide.Glide;
@@ -24,10 +25,18 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.CompanyV
     private final List<CompanyResponse> items = new ArrayList<>();
     private final OnItemClickListener listener;
     private final Context context;
+    private boolean isNightMode;
 
     public CompanyAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
         this.listener = listener;
+        this.isNightMode = ThemeHelper.isDarkMode(context);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setNightMode(boolean isNightMode) {
+        this.isNightMode = isNightMode;
+        notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -49,7 +58,9 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.CompanyV
 
     @Override
     public void onBindViewHolder(@NonNull CompanyViewHolder holder, int position) {
+        holder.binding.setIsNightMode(isNightMode);
         holder.bind(items.get(position));
+        holder.binding.executePendingBindings();
     }
 
     @Override

@@ -5,6 +5,7 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="com.base.android.R" />
 
         <variable
             name="a"
@@ -18,7 +19,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorScreenBackground">
+        android:background="?attr/colorScreenBackground"
+        app:bgColorResByMode="@{R.color.color_screen_background}"
+        app:isNightMode="@{vm.isNightMode}">
 
         <!-- Custom Toolbar -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,6 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorCardBackground"
+            app:bgColorResByMode="@{R.color.color_card_background}"
+            app:isNightMode="@{vm.isNightMode}"
             android:elevation="2dp"
             android:visibility="@{vm.showToolbar ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +50,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="?attr/colorTextPrimary" />
+                app:tint="?attr/colorTextPrimary"
+                app:tintColorResByMode="@{R.color.color_text_primary}"
+                app:isNightMode="@{vm.isNightMode}" />
 
             <ImageView
                 android:id="@+id/btn_close"
@@ -59,7 +66,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_back"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="?attr/colorTextPrimary" />
+                app:tint="?attr/colorTextPrimary"
+                app:tintColorResByMode="@{R.color.color_text_primary}"
+                app:isNightMode="@{vm.isNightMode}" />
 
             <LinearLayout
                 android:id="@+id/layout_title_group"
@@ -81,6 +90,8 @@
                     android:maxLines="1"
                     android:text="@{vm.title}"
                     android:textColor="?attr/colorTextPrimary"
+                    app:textColorResByMode="@{R.color.color_text_primary}"
+                    app:isNightMode="@{vm.isNightMode}"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     tools:text="Báo Tuổi Trẻ Online" />
@@ -110,7 +121,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_open_browser"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="?attr/colorTextPrimary" />
+                app:tint="?attr/colorTextPrimary"
+                app:tintColorResByMode="@{R.color.color_text_primary}"
+                app:isNightMode="@{vm.isNightMode}" />
 
             <ImageView
                 android:id="@+id/btn_open_browser"
@@ -125,7 +138,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="?attr/colorTextPrimary" />
+                app:tint="?attr/colorTextPrimary"
+                app:tintColorResByMode="@{R.color.color_text_primary}"
+                app:isNightMode="@{vm.isNightMode}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -168,6 +183,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="?attr/colorScreenBackground"
+            app:bgColorResByMode="@{R.color.color_screen_background}"
+            app:isNightMode="@{vm.isNightMode}"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
@@ -192,6 +209,8 @@
                 android:layout_marginTop="@dimen/_16sdp"
                 android:text="@string/webview_error_title"
                 android:textColor="?attr/colorTextPrimary"
+                app:textColorResByMode="@{R.color.color_text_primary}"
+                app:isNightMode="@{vm.isNightMode}"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 

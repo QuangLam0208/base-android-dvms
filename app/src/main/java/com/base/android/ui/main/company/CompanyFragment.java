@@ -8,12 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.base.android.BR;
-
 import com.base.android.R;
 import com.base.android.data.model.api.response.company.CompanyResponse;
 import com.base.android.databinding.FragmentCompanyBinding;
 import com.base.android.di.component.FragmentComponent;
-import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.ui.base.fragment.BaseFragment;
 import com.base.android.ui.main.MainCallback;
@@ -21,8 +19,7 @@ import com.base.android.ui.main.company.adapter.CompanyAdapter;
 
 import java.util.List;
 
-public class CompanyFragment extends BaseFragment<FragmentCompanyBinding, CompanyViewModel>
-        implements ThemeHelper.ThemeRefreshable {
+public class CompanyFragment extends BaseFragment<FragmentCompanyBinding, CompanyViewModel> {
 
     private CompanyAdapter companyAdapter;
 
@@ -118,12 +115,9 @@ public class CompanyFragment extends BaseFragment<FragmentCompanyBinding, Compan
     }
 
     @Override
-    public void refreshTheme(boolean isDark) {
-        if (binding != null && getContext() != null) {
-            binding.getRoot().setBackgroundColor(ThemeHelper.getScreenBackgroundColor(isDark));
-            if (binding.rvCompanies != null && companyAdapter != null) {
-                binding.rvCompanies.setAdapter(companyAdapter);
-            }
+    protected void onThemeChanged(boolean isDark) {
+        if (companyAdapter != null) {
+            companyAdapter.setNightMode(isDark);
         }
     }
 }

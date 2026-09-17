@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.base.android.R" />
+
         <variable
             name="f"
             type="com.base.android.ui.main.reviews.ReviewsFragment" />
@@ -16,7 +18,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorScreenBackground">
+        android:background="?attr/colorScreenBackground"
+        app:bgColorResByMode="@{R.color.color_screen_background}"
+        app:isNightMode="@{vm.isNightMode}">
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="0dp"
@@ -59,6 +63,8 @@
                 android:fontFamily="@font/sf_pro_display_regular"
                 android:textFontWeight="400"
                 android:textColor="@color/course_short_description"
+                app:textColorResByMode="@{R.color.course_short_description}"
+                app:isNightMode="@{vm.isNightMode}"
                 android:textSize="16sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

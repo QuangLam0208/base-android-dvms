@@ -23,8 +23,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.Calendar;
 
-public class ChartFragment extends BaseFragment<FragmentChartBinding, ChartViewModel>
-        implements ThemeHelper.ThemeRefreshable {
+public class ChartFragment extends BaseFragment<FragmentChartBinding, ChartViewModel> {
 
     public static ChartFragment newInstance() {
         return new ChartFragment();
@@ -322,10 +321,8 @@ public class ChartFragment extends BaseFragment<FragmentChartBinding, ChartViewM
     }
 
     @Override
-    public void refreshTheme(boolean isDark) {
+    protected void onThemeChanged(boolean isDark) {
         if (binding != null && getContext() != null) {
-            binding.getRoot().setBackgroundColor(ThemeHelper.getScreenBackgroundColor(isDark));
-            binding.tvHeaderTitle.setTextColor(ThemeHelper.getTextPrimaryColor(isDark));
             initChartStyling();
             reloadActiveChartData();
         }
