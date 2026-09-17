@@ -110,7 +110,7 @@ public class CompanyFragment extends BaseFragment<FragmentCompanyBinding, Compan
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden && companyAdapter != null && companyAdapter.getItemCount() != 0) {
+        if (!hidden && companyAdapter != null && companyAdapter.getItemCount() == 0) {
             loadData();
         }
     }
