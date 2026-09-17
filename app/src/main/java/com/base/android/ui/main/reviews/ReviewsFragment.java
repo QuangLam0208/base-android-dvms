@@ -13,6 +13,7 @@ import com.base.android.R;
 import com.base.android.data.model.api.response.rating.RatingResponse;
 import com.base.android.databinding.FragmentReviewsBinding;
 import com.base.android.di.component.FragmentComponent;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.ui.base.fragment.BaseFragment;
 import com.base.android.ui.main.MainCallback;
@@ -20,7 +21,8 @@ import com.base.android.ui.main.reviews.adapter.ReviewAdapter;
 
 import java.util.List;
 
-public class ReviewsFragment extends BaseFragment<FragmentReviewsBinding, ReviewsViewModel> {
+public class ReviewsFragment extends BaseFragment<FragmentReviewsBinding, ReviewsViewModel>
+        implements ThemeHelper.ThemeRefreshable {
 
     private ReviewAdapter reviewAdapter;
 
@@ -114,6 +116,16 @@ public class ReviewsFragment extends BaseFragment<FragmentReviewsBinding, Review
         super.onHiddenChanged(hidden);
         if (!hidden && reviewAdapter != null && reviewAdapter.getItemCount() == 0) {
             loadData();
+        }
+    }
+
+    @Override
+    public void refreshTheme(boolean isDark) {
+        if (binding != null && getContext() != null) {
+            binding.getRoot().setBackgroundColor(ThemeHelper.getScreenBackgroundColor(isDark));
+            if (binding.rvReviews != null && reviewAdapter != null) {
+                binding.rvReviews.setAdapter(reviewAdapter);
+            }
         }
     }
 }

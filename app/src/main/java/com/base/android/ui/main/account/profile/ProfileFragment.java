@@ -1,6 +1,8 @@
 package com.base.android.ui.main.account.profile;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,6 +78,8 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         loadSavedAvatar();
         updateLanguageDisplay();
         updateThemeDisplay();
+        boolean isDark = ThemeHelper.isDarkMode(requireContext(), viewModel.getTheme());
+        applyProfileThemeColors(isDark);
     }
 
     @Override
@@ -226,47 +231,155 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         ImageView ivCheckLight = sheetView.findViewById(R.id.iv_check_light);
         ImageView ivCheckSystem = sheetView.findViewById(R.id.iv_check_system);
 
-        ivCheckDark.setImageResource(PreferencesService.THEME_MODE_DARK.equals(currentTheme) ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
-        ivCheckLight.setImageResource(PreferencesService.THEME_MODE_LIGHT.equals(currentTheme) ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
-        ivCheckSystem.setImageResource(PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme) ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
+        // Hiển thị trạng thái checkmark hiện tại
+        updateCheckIcons(currentTheme, ivCheckDark, ivCheckLight, ivCheckSystem);
 
-        sheetView.findViewById(R.id.btn_theme_dark).setOnClickListener(v -> {
-            dialog.dismiss();
-            if (!PreferencesService.THEME_MODE_DARK.equals(currentTheme)) {
-                changeTheme(PreferencesService.THEME_MODE_DARK);
-            }
-        });
+        // Hiển thị màu sắc Bottom Sheet theo theme hiện tại
+        boolean isCurrentDark = ThemeHelper.isDarkMode(requireContext(), currentTheme);
+        updateBottomSheetColors(sheetView, isCurrentDark);
 
-        sheetView.findViewById(R.id.btn_theme_light).setOnClickListener(v -> {
-            dialog.dismiss();
-            if (!PreferencesService.THEME_MODE_LIGHT.equals(currentTheme)) {
-                changeTheme(PreferencesService.THEME_MODE_LIGHT);
-            }
-        });
+        // Khi người dùng click vào các lựa chọn: KHÔNG đóng dialog, đổi theme tức thì!
+        sheetView.findViewById(R.id.btn_theme_dark).setOnClickListener(v ->
+                applySelectedTheme(PreferencesService.THEME_MODE_DARK, sheetView, ivCheckDark, ivCheckLight, ivCheckSystem)
+        );
 
-        sheetView.findViewById(R.id.btn_theme_system).setOnClickListener(v -> {
-            dialog.dismiss();
-            if (!PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme)) {
-                changeTheme(PreferencesService.THEME_MODE_SYSTEM);
-            }
-        });
+        sheetView.findViewById(R.id.btn_theme_light).setOnClickListener(v ->
+                applySelectedTheme(PreferencesService.THEME_MODE_LIGHT, sheetView, ivCheckDark, ivCheckLight, ivCheckSystem)
+        );
+
+        sheetView.findViewById(R.id.btn_theme_system).setOnClickListener(v ->
+                applySelectedTheme(PreferencesService.THEME_MODE_SYSTEM, sheetView, ivCheckDark, ivCheckLight, ivCheckSystem)
+        );
 
         sheetView.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
 
-    private void changeTheme(String themeMode) {
-        viewModel.setTheme(themeMode);
-        ThemeHelper.applyTheme(themeMode);
+    private void applySelectedTheme(String selectedThemeMode, View sheetView,
+                                    ImageView ivDark, ImageView ivLight, ImageView ivSystem) {
+        if (getContext() == null || getActivity() == null) return;
 
-        Intent intent = new Intent(requireActivity(), MainActivity.class);
-        intent.putExtra(MainActivity.KEY_CURRENT_TAG, MainActivity.TAG_PROFILE);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        // 1. Checkmark đổi
+        updateCheckIcons(selectedThemeMode, ivDark, ivLight, ivSystem);
+
+        // 2. Save Preferences
+        viewModel.setTheme(selectedThemeMode);
+
+        // 3. Áp dụng setDefaultNightMode
+        ThemeHelper.applyTheme(selectedThemeMode);
+
+        // 4. Xác định isDark thực tế
+        boolean isDark = ThemeHelper.isDarkMode(requireContext(), selectedThemeMode);
+
+        // 5. BottomSheet đổi màu
+        updateBottomSheetColors(sheetView, isDark);
+
+        // 6. Profile đổi màu
+        applyProfileThemeColors(isDark);
+        updateThemeDisplay();
+
+        // 7. MainActivity đổi system UI
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.applyThemeColors(isDark);
+            mainActivity.notifyThemeChanged();
+        }
     }
 
-    private void updateThemeDisplay() {
+    private void updateCheckIcons(String themeMode, ImageView ivDark, ImageView ivLight, ImageView ivSystem) {
+        ivDark.setImageResource(PreferencesService.THEME_MODE_DARK.equals(themeMode)
+                ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
+        ivLight.setImageResource(PreferencesService.THEME_MODE_LIGHT.equals(themeMode)
+                ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
+        ivSystem.setImageResource(PreferencesService.THEME_MODE_SYSTEM.equals(themeMode)
+                ? R.drawable.ic_check_circle : R.drawable.ic_circle_outline);
+    }
+
+    private void updateBottomSheetColors(View sheetView, boolean isDark) {
+        if (sheetView == null) return;
+
+        int sheetBg = ThemeHelper.getBottomSheetBackgroundColor(isDark);
+        int textPrimary = ThemeHelper.getTextPrimaryColor(isDark);
+        int dividerColor = ThemeHelper.getBottomSheetDividerColor(isDark);
+        int textCancel = ThemeHelper.getTextCancelColor(isDark);
+
+        sheetView.setBackgroundTintList(ColorStateList.valueOf(sheetBg));
+
+        TextView tvTitle = sheetView.findViewById(R.id.tv_bottom_sheet_theme_title);
+        if (tvTitle != null) tvTitle.setTextColor(textPrimary);
+
+        TextView tvDark = sheetView.findViewById(R.id.tv_theme_dark_label);
+        if (tvDark != null) tvDark.setTextColor(textPrimary);
+
+        TextView tvLight = sheetView.findViewById(R.id.tv_theme_light_label);
+        if (tvLight != null) tvLight.setTextColor(textPrimary);
+
+        TextView tvSystem = sheetView.findViewById(R.id.tv_theme_system_label);
+        if (tvSystem != null) tvSystem.setTextColor(textPrimary);
+
+        TextView tvCancel = sheetView.findViewById(R.id.tv_cancel_label);
+        if (tvCancel != null) tvCancel.setTextColor(textCancel);
+
+        View dDark = sheetView.findViewById(R.id.divider_dark);
+        if (dDark != null) dDark.setBackgroundColor(dividerColor);
+
+        View dLight = sheetView.findViewById(R.id.divider_light);
+        if (dLight != null) dLight.setBackgroundColor(dividerColor);
+
+        View dSystem = sheetView.findViewById(R.id.divider_system);
+        if (dSystem != null) dSystem.setBackgroundColor(dividerColor);
+    }
+
+    public void applyProfileThemeColors(boolean isDark) {
+        if (binding == null || getContext() == null) return;
+
+        int screenBg = ThemeHelper.getScreenBackgroundColor(isDark);
+        int cardBg = ThemeHelper.getCardBackgroundColor(isDark);
+        int textPrimary = ThemeHelper.getTextPrimaryColor(isDark);
+        int dividerColor = ThemeHelper.getDividerColor(isDark);
+
+        // Root background
+        binding.getRoot().setBackgroundColor(screenBg);
+
+        // Header Title
+        binding.tvTitle.setTextColor(textPrimary);
+
+        // Cards background
+        binding.cardUserInfo.setCardBackgroundColor(cardBg);
+        binding.cardSettings.setCardBackgroundColor(cardBg);
+
+        // Username text
+        binding.tvUsername.setTextColor(textPrimary);
+
+        // Settings items: Row icons and labels
+        updateRowTheme(binding.layoutLanguage, textPrimary);
+        updateRowTheme(binding.layoutQrScan, textPrimary);
+        updateRowTheme(binding.layoutTheme, textPrimary);
+        updateRowTheme(binding.layoutWebviewDemo, textPrimary);
+
+        // Update divider views inside layoutSettings
+        for (int i = 0; i < binding.layoutSettings.getChildCount(); i++) {
+            View child = binding.layoutSettings.getChildAt(i);
+            if (!(child instanceof android.widget.LinearLayout)) {
+                child.setBackgroundColor(dividerColor);
+            }
+        }
+    }
+
+    private void updateRowTheme(android.widget.LinearLayout rowLayout, int textPrimary) {
+        if (rowLayout == null) return;
+        View icon = rowLayout.getChildAt(0);
+        if (icon instanceof ImageView) {
+            ((ImageView) icon).setImageTintList(ColorStateList.valueOf(textPrimary));
+        }
+        View label = rowLayout.getChildAt(1);
+        if (label instanceof TextView) {
+            ((TextView) label).setTextColor(textPrimary);
+        }
+    }
+
+    public void updateThemeDisplay() {
         String currentTheme = viewModel.getTheme();
         if (PreferencesService.THEME_MODE_LIGHT.equals(currentTheme)) {
             binding.tvCurrentTheme.setText(R.string.theme_light);
@@ -354,6 +467,19 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         if (!hidden) {
             loadSavedAvatar();
             updateLanguageDisplay();
+            updateThemeDisplay();
+            boolean isDark = ThemeHelper.isDarkMode(requireContext(), viewModel.getTheme());
+            applyProfileThemeColors(isDark);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        String currentTheme = viewModel.getTheme();
+        if (PreferencesService.THEME_MODE_SYSTEM.equals(currentTheme)) {
+            boolean isDark = (newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            applyProfileThemeColors(isDark);
             updateThemeDisplay();
         }
     }

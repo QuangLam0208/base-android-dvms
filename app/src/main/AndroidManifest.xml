@@ -75,6 +75,7 @@
             android:name="com.base.android.ui.main.MainActivity"
             android:theme="@style/AppTheme"
             android:launchMode="singleTop"
+            android:configChanges="uiMode"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="com.base.android.ui.main.qrscan.QRScanActivity"

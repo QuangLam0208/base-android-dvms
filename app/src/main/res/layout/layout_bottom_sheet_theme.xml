@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_bottom_sheet_theme_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet_dark"
@@ -16,6 +17,7 @@
         android:background="@drawable/bg_drag_handle" />
 
     <TextView
+        android:id="@+id/tv_bottom_sheet_theme_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -42,6 +44,7 @@
         android:paddingVertical="@dimen/_14sdp">
 
         <TextView
+            android:id="@+id/tv_theme_dark_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -60,6 +63,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/divider_dark"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/_20sdp"
@@ -79,6 +83,7 @@
         android:paddingVertical="@dimen/_14sdp">
 
         <TextView
+            android:id="@+id/tv_theme_light_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -97,6 +102,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/divider_light"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/_20sdp"
@@ -116,6 +122,7 @@
         android:paddingVertical="@dimen/_14sdp">
 
         <TextView
+            android:id="@+id/tv_theme_system_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -134,6 +141,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/divider_system"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/_20sdp"
@@ -153,6 +161,7 @@
         android:paddingVertical="@dimen/_12sdp">
 
         <TextView
+            android:id="@+id/tv_cancel_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"

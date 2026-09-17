@@ -13,6 +13,7 @@ import com.base.android.data.model.api.response.course.CourseResponse;
 import com.base.android.data.model.api.response.course.SyllabusResponse;
 import com.base.android.databinding.FragmentCoursesBinding;
 import com.base.android.di.component.FragmentComponent;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.ui.base.fragment.BaseFragment;
 import com.base.android.ui.main.MainCallback;
@@ -20,7 +21,8 @@ import com.base.android.ui.main.courses.adapter.CourseAdapter;
 
 import java.util.List;
 
-public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, CoursesViewModel> {
+public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, CoursesViewModel>
+        implements ThemeHelper.ThemeRefreshable {
 
     private CourseAdapter courseAdapter;
 
@@ -183,5 +185,16 @@ public class CoursesFragment extends BaseFragment<FragmentCoursesBinding, Course
             binding.shimmerViewContainer.stopShimmer();
         }
         super.onDestroyView();
+    }
+
+    @Override
+    public void refreshTheme(boolean isDark) {
+        if (binding != null && getContext() != null) {
+            binding.getRoot().setBackgroundColor(ThemeHelper.getScreenBackgroundColor(isDark));
+            binding.tvHeadingOngoing.setTextColor(ThemeHelper.getTextPrimaryColor(isDark));
+            if (binding.rvCourses != null && courseAdapter != null) {
+                binding.rvCourses.setAdapter(courseAdapter);
+            }
+        }
     }
 }

@@ -23,7 +23,7 @@
     <!-- Card Course (Light Mode defaults) -->
     <color name="course_card_background">#FFFFFF</color>
     <color name="course_short_description">#6B7280</color>
-    <color name="syllabus_item_background">#F3F4F6</color>
+    <color name="syllabus_item_background">#C9FFF5</color>
     <color name="syllabus_description_text">#374151</color>
     <color name="shimmer_placeholder_base">#E2E8F0</color>
     <color name="shimmer_placeholder_highlight">#F8FAFC</color>

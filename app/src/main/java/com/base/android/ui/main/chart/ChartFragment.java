@@ -13,6 +13,7 @@ import com.base.android.BR;
 import com.base.android.R;
 import com.base.android.databinding.FragmentChartBinding;
 import com.base.android.di.component.FragmentComponent;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.fragment.BaseFragment;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend;
@@ -22,7 +23,8 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.Calendar;
 
-public class ChartFragment extends BaseFragment<FragmentChartBinding, ChartViewModel> {
+public class ChartFragment extends BaseFragment<FragmentChartBinding, ChartViewModel>
+        implements ThemeHelper.ThemeRefreshable {
 
     public static ChartFragment newInstance() {
         return new ChartFragment();
@@ -317,5 +319,15 @@ public class ChartFragment extends BaseFragment<FragmentChartBinding, ChartViewM
     @Override
     protected void performDependencyInjection(FragmentComponent buildComponent) {
         buildComponent.inject(this);
+    }
+
+    @Override
+    public void refreshTheme(boolean isDark) {
+        if (binding != null && getContext() != null) {
+            binding.getRoot().setBackgroundColor(ThemeHelper.getScreenBackgroundColor(isDark));
+            binding.tvHeaderTitle.setTextColor(ThemeHelper.getTextPrimaryColor(isDark));
+            initChartStyling();
+            reloadActiveChartData();
+        }
     }
 }

@@ -12,6 +12,7 @@ import com.base.android.R;
 import com.base.android.data.model.api.response.mentor.MentorResponse;
 import com.base.android.databinding.FragmentMentorBinding;
 import com.base.android.di.component.FragmentComponent;
+import com.base.android.helper.ThemeHelper;
 import com.base.android.ui.base.adapter.OnItemClickListener;
 import com.base.android.ui.base.fragment.BaseFragment;
 import com.base.android.ui.main.MainCallback;
@@ -19,7 +20,8 @@ import com.base.android.ui.main.mentor.adapter.MentorAdapter;
 
 import java.util.List;
 
-public class MentorFragment extends BaseFragment<FragmentMentorBinding, MentorViewModel> {
+public class MentorFragment extends BaseFragment<FragmentMentorBinding, MentorViewModel>
+        implements ThemeHelper.ThemeRefreshable {
 
     private MentorAdapter mentorAdapter;
 
@@ -113,6 +115,16 @@ public class MentorFragment extends BaseFragment<FragmentMentorBinding, MentorVi
         super.onHiddenChanged(hidden);
         if (!hidden && mentorAdapter != null && mentorAdapter.getItemCount() == 0) {
             loadData();
+        }
+    }
+
+    @Override
+    public void refreshTheme(boolean isDark) {
+        if (binding != null && getContext() != null) {
+            binding.getRoot().setBackgroundColor(ThemeHelper.getScreenBackgroundColor(isDark));
+            if (binding.rvMentors != null && mentorAdapter != null) {
+                binding.rvMentors.setAdapter(mentorAdapter);
+            }
         }
     }
 }

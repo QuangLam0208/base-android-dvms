@@ -9,4 +9,8 @@ public class MainViewModel extends BaseViewModel {
     public MainViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
+
+    public String getTheme() {
+        return repository.getSharedPreferences().getAppTheme();
+    }
 }
